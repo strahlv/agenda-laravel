@@ -19,7 +19,7 @@
             @for ($j = 0; $j < 7; $j++)
                 @php
                     $dt = $periodDates[$j + $i * 7];
-                    $isOtherMonth = $dt->month != $date->month ? ' other-month' : null;
+                    $isOtherMonth = !$dt->isSameMonth($date) ? ' other-month' : null;
                 @endphp
                 <div class="calendar-day {{ $isOtherMonth }}">
                     <div

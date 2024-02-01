@@ -15,10 +15,11 @@
 
         <!-- JS -->
         <script src="https://kit.fontawesome.com/a783aedd26.js" crossorigin="anonymous"></script>
+        <script src="/js/jquery-3.7.1.js"></script>
+        <script src="/js/scripts.js"></script>
     </head>
 
     <body>
-
         @php
             function formatToCalendarUrl(\Carbon\CarbonImmutable $dt)
             {
@@ -27,3 +28,4 @@
         @endphp
 
         @include('components.nav')
+        <main>

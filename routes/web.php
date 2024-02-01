@@ -15,12 +15,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    return redirect('/month/' . CarbonImmutable::today()->format('Y/n/j'));
     return view('welcome', []);
 });
 
 Route::get('/year/{year}/{month}/{day}', function ($year, $month, $day) {
     $date = CarbonImmutable::create($year, $month, $day);
-    return view('welcome', [
+    return view('year', [
         'date' => $date,
         'pageTitle' => 'Ano ' . $year,
         'navTitle' => $year,
@@ -31,7 +32,7 @@ Route::get('/year/{year}/{month}/{day}', function ($year, $month, $day) {
 
 Route::get('/month/{year}/{month}/{day}', function ($year, $month, $day) {
     $date = CarbonImmutable::create($year, $month, $day);
-    return view('welcome', [
+    return view('month', [
         'date' => $date,
         'pageTitle' => $date->translatedFormat('F \\d\\e Y'),
         'navTitle' => ucfirst($date->translatedFormat('F \\d\\e Y')),
@@ -42,7 +43,7 @@ Route::get('/month/{year}/{month}/{day}', function ($year, $month, $day) {
 
 Route::get('/day/{year}/{month}/{day}', function ($year, $month, $day) {
     $date = CarbonImmutable::create($year, $month, $day);
-    return view('welcome', [
+    return view('day', [
         'date' => $date,
         'pageTitle' => $date->translatedFormat('l, j \\d\\e F \\d\\e Y'),
         'navTitle' => $date->translatedFormat('j \\d\\e F \\d\\e Y'),

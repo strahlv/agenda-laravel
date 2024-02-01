@@ -14,6 +14,14 @@
 
 body {
     background-color: var(--clr-primary);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 1 0;
+    display: flex;
 }
 
 ul {
@@ -41,10 +49,27 @@ label {
 }
 
 .form-create-event {
-    margin-top: 20px;
     display: flex;
     flex-direction: column;
     gap: 16px;
+    padding: 32px;
+    width: 400px;
+    margin-left: 0;
+    background-color: #fff;
+    transition: all 0.2s ease;
+}
+
+.form-create-event.hidden {
+    margin-left: -400px;
+}
+
+.form-header {
+    display: flex;
+    align-items: center;
+}
+
+.form-header h1 {
+    flex: 1;
 }
 
 .form-control {
@@ -52,12 +77,8 @@ label {
     flex-direction: column;
 }
 
-#titulo {
+input#title {
     font-size: 24px;
-}
-
-.hidden {
-    opacity: 0;
 }
 
 .btn {
@@ -97,7 +118,7 @@ label {
 .btn-icon {
     background-color: #fff;
     color: var(--clr-primary);
-    padding: 8px;
+    padding: 8px 12px;
     display: flex;
     align-items: center;
     gap: 4px;
@@ -138,10 +159,9 @@ section#right {
     display: flex;
     align-items: center;
     gap: 16px;
-    padding-bottom: 16px;
+    padding: 16px;
     border-bottom: var(--calendar-border);
     background-color: #fff;
-    padding: 16px;
 }
 
 .navbar-title {
@@ -216,7 +236,6 @@ section#right {
     flex-direction: column;
     flex: 1 1 0;
     /* animation: fade-in 0.5s ease forwards; */
-    height: 90vh;
 }
 
 @keyframes fade-in {
@@ -264,16 +283,17 @@ section#right {
     cursor: pointer;
 }
 
-.calendar-day:hover {
-    background-color: var(--clr-primary-lt);
-}
-
 .calendar-day-number {
     font-size: 14px;
+    height: 24px;
+    width: 24px;
+    line-height: 24px;
     font-weight: 500;
     text-align: center;
     color: var(--clr-primary);
+    border-radius: 50%;
     display: inline-block;
+    transition: all 0.2s ease;
 }
 
 .holiday {
@@ -283,10 +303,6 @@ section#right {
 .today {
     color: #fff;
     background-color: var(--clr-primary);
-    border-radius: 50%;
-    height: 24px;
-    width: 24px;
-    line-height: 24px;
 }
 
 .other-month {
@@ -295,6 +311,10 @@ section#right {
 
 .calendar-day.other-month {
     background-color: #eee;
+}
+
+.calendar-day:hover {
+    background-color: var(--clr-primary-lt);
 }
 
 .calendar-day:last-child {
@@ -326,10 +346,11 @@ section#right {
 
 /* YEAR CALENDAR */
 .year-grid {
+    flex: 1 1 0;
     display: grid;
     grid: repeat(3, 1fr) / repeat(4, 1fr);
-    justify-items: stretch;
     gap: 10px;
+    background-color: #fff;
 }
 
 .year-grid-cell {
