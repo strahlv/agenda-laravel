@@ -20,4 +20,7 @@ mix.js("resources/js/app.js", "public/js").postCss(
 );
 
 // mix.browserSync("127.0.0.1:8000");
-mix.browserSync("agenda-laravel.test");
+mix.browserSync({
+    proxy: "agenda-laravel.test",
+    notify: false,
+});
