@@ -1,9 +1,9 @@
-@include('layout.header')
+@extends('layout')
 
-@if (request()->query('display') == 'list')
-    @include('year_list')
-@else
-    @include('year_grid')
-@endif
-
-@include('layout.footer')
+@section('main')
+    @if (request()->query('display') == 'list')
+        @include('year_list')
+    @else
+        @include('year_grid')
+    @endif
+@endsection

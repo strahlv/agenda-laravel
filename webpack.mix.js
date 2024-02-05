@@ -24,3 +24,5 @@ mix.browserSync({
     proxy: "agenda-laravel.test",
     notify: false,
 });
+
+mix.disableSuccessNotifications();

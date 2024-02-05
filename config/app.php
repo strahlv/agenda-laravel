@@ -229,7 +229,11 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+        // CUSTOM ALIASES
+        'Carbon' => Carbon\Carbon::class,
+        'CarbonPeriod' => Carbon\CarbonPeriod::class,
+        'CarbonImmutable' => Carbon\CarbonImmutable::class,
+        'Helpers' => App\Helpers::class,
     ],
 
 ];

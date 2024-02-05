@@ -1,9 +1,9 @@
-@include('layout.header')
+@extends('layout')
 
-@if (request()->query('display') == 'list')
-    @include('month_list')
-@else
-    @include('month_grid')
-@endif
-
-@include('layout.footer')
+@section('main')
+    @if (request()->query('display') == 'list')
+        @include('month_list')
+    @else
+        @include('month_grid')
+    @endif
+@endsection

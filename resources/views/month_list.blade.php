@@ -1,12 +1,6 @@
-@php
-    $monthEvents = [];
-    foreach ($events as $event) {
-        if (date('m-Y', $event['date']) == $date->format('m-Y')) {
-            $monthEvents[] = $event;
-        }
-    }
-@endphp
-
 <div class="event-list">
-    @include('components.events.event_list', ['events' => $monthEvents])
+    @include('components.events.event_list', [
+        'events' => $events->filter(
+            fn($event) => $event->date->month == $date->month && $event->date->year == $date->year),
+    ])
 </div>

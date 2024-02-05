@@ -3,11 +3,8 @@
         $lastDay = 0;
     @endphp
     @foreach ($events as $event)
-        @php
-            $day = date('d', $event['date']);
-        @endphp
         <li class="event-list-item">
-            <span class="event-day">{{ $lastDay != $day ? $day : '' }}</span>
+            <span class="event-day">{{ $lastDay != $event->date->day ? $event->date->day : '' }}</span>
             @if (!$event['isHoliday'])
                 <form action="" method="POST">
                     @csrf
@@ -24,7 +21,7 @@
             @endif
         </li>
         @php
-            $lastDay = $day;
+            $lastDay = $event->date->day;
         @endphp
     @endforeach
 </ul>

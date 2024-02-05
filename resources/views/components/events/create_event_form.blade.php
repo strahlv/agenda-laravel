@@ -12,5 +12,5 @@
         <label for="title">Data</label>
         <input type="date" name="date" id="date">
     </div>
-    <button type="submit" class="btn btn-save">Salvar</button>
+    <button type="submit" class="btn btn-primary btn-save">Salvar</button>
 </form>

@@ -12,27 +12,26 @@
             'day' => $date->addDay(),
         };
 
-        $formattedDate = formatToCalendarUrl($date);
-        $display = request()->query('display') == 'list' ? '?display=list' : null;
+        $display = request()->query('display');
     @endphp
 
-    <a href="/{{ $view }}/{{ formatToCalendarUrl($today) }}{{ $display }}" class="btn btn-save">Hoje</a>
-    <a href="/{{ $view }}/{{ formatToCalendarUrl($previousDate) }}{{ $display }}" class="btn btn-icon"><i
+    <a href="{{ Helpers::formatToCalendarUrl($view, $today, $display) }}" class="btn btn-primary">Hoje</a>
+    <a href="{{ Helpers::formatToCalendarUrl($view, $previousDate, $display) }}" class="btn btn-icon"><i
             class="fa-solid fa-chevron-left"></i></a>
-    <a href="/{{ $view }}/{{ formatToCalendarUrl($nextDate) }}{{ $display }}" class="btn btn-icon"><i
+    <a href="{{ Helpers::formatToCalendarUrl($view, $nextDate, $display) }}" class="btn btn-icon"><i
             class="fa-solid fa-chevron-right"></i></a>
     <h1 class="navbar-title">{{ $navTitle }}</h1>
-    <a href="/day/{{ $formattedDate }}{{ $display }}"
-        class="btn btn-icon {{ $view != 'day' ?: 'navbar-active' }}">Dia</a>
-    <a href="/month/{{ $formattedDate }}{{ $display }}"
-        class="btn btn-icon {{ $view != 'month' ?: 'navbar-active' }}">Mês</a>
-    <a href="/year/{{ $formattedDate }}{{ $display }}"
-        class="btn btn-icon {{ $view != 'year' ?: 'navbar-active' }}">Ano</a>
+    <a href="{{ Helpers::formatToCalendarUrl('day', $date, $display) }}"
+        class="btn {{ $view == 'day' ? 'navbar-active' : null }}">Dia</a>
+    <a href="{{ Helpers::formatToCalendarUrl('month', $date, $display) }}"
+        class="btn {{ $view == 'month' ? 'navbar-active' : null }}">Mês</a>
+    <a href="{{ Helpers::formatToCalendarUrl('year', $date, $display) }}"
+        class="btn {{ $view == 'year' ? 'navbar-active' : null }}">Ano</a>
     @if (request()->query('display') == 'list')
-        <a href="/{{ $view }}/{{ $formattedDate }}" class="btn btn-icon"><i
+        <a href="{{ Helpers::formatToCalendarUrl($view, $date) }}" class="btn btn-icon"><i
                 class="fa-solid fa-calendar-days"></i></a>
     @else
-        <a href="/{{ $view }}/{{ $formattedDate }}?display=list" class="btn btn-icon"><i
+        <a href="{{ Helpers::formatToCalendarUrl($view, $date, 'list') }}" class="btn btn-icon"><i
                 class="fa-solid fa-list"></i></a>
     @endif
 </nav>

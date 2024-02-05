@@ -24,6 +24,13 @@ main {
     display: flex;
 }
 
+.container {
+    display: flex;
+    gap: 10px;
+    /* justify-content: center; */
+    height: 100vh;
+}
+
 ul {
     list-style: none;
 }
@@ -81,10 +88,12 @@ input#title {
     font-size: 24px;
 }
 
+/* BUTTON */
 .btn {
-    border: 1px solid #ffffff00;
+    border: 1px solid transparent;
     border-radius: 16px;
     padding: 8px 16px;
+    color: var(--clr-primary);
     text-align: center;
     text-decoration: none;
     transition: all 0.2s ease-out;
@@ -94,11 +103,14 @@ input#title {
     opacity: 0.9;
 }
 
+.btn-primary {
+    background-color: var(--clr-primary);
+    color: #fff;
+}
+
 .btn-save {
     width: 100px;
     align-self: flex-end;
-    background-color: var(--clr-primary);
-    color: #fff;
 }
 
 .btn-save:hover {
@@ -118,42 +130,22 @@ input#title {
 .btn-icon {
     background-color: #fff;
     color: var(--clr-primary);
-    padding: 8px 12px;
+    border-radius: 50%;
+    padding: 8px;
     display: flex;
     align-items: center;
     gap: 4px;
 }
 
+.btn:hover,
 .btn-icon:hover {
     background-color: var(--clr-primary-lt);
     color: var(--clr-primary);
 }
 
-.container {
-    display: flex;
-    gap: 10px;
-    /* justify-content: center; */
-    height: 100vh;
-}
-
-section#left {
-    width: 300px;
-    height: -moz-fit-content;
-    height: fit-content;
-    padding: 20px;
-    background-color: #fff;
-}
-
-section#right {
-    flex: 1 1 0;
-    display: flex;
-    flex-direction: column;
-    max-width: 1100px;
-    min-height: 100%;
-    height: -moz-fit-content;
-    height: fit-content;
-    padding: 20px;
-    background-color: #fff;
+.btn-icon i {
+    width: 16px;
+    height: 16px;
 }
 
 /* NAVBAR */
@@ -185,14 +177,22 @@ section#right {
     background-color: #fff;
     flex: 1;
     padding: 0 32px;
-    /* margin: 0 200px; */
+    padding-top: 20px;
 }
 
 .event-list-month-title {
     padding-left: 32px;
-    margin-top: 20px;
     margin-bottom: 10px;
     border-bottom: 2px solid var(--clr-primary-lt);
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: 700;
+    color: #000;
+    transition: all 0.2s ease;
+}
+
+.event-list-month-title:hover {
+    color: var(--clr-primary);
 }
 
 .event-list-item {
@@ -228,15 +228,15 @@ section#right {
 }
 
 .event-day {
-    color: var(--clr-primary);
     font-weight: 900;
+    color: var(--clr-primary);
     border-radius: 100%;
     margin-right: 16px;
     width: 16px;
     display: inline-block;
 }
 
-/* CALENDAR VIEW */
+/* GRID VIEW */
 .calendar-grid {
     display: flex;
     flex-direction: column;

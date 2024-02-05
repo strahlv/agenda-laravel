@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Event;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Route;
 
@@ -24,46 +25,41 @@ function getEvents()
     $events = [
         [
             'title' => 'Aniversário de Fulano',
-            'date' => strtotime('2024-02-21'),
-            'isHoliday' => false
+            'date' => CarbonImmutable::create(2024, 2, 21),
         ],
         [
             'title' => 'Carnaval 2024',
-            'date' => strtotime('2024-02-09'),
-            'isHoliday' => true
+            'date' => CarbonImmutable::create(2024, 2, 9),
         ],
         [
             'title' => 'Quarta-feira de cinzas',
-            'date' => strtotime('2024-02-14'),
-            'isHoliday' => true
+            'date' => CarbonImmutable::create(2024, 2, 14),
         ],
         [
-            'title' => 'dhsadgdsgadgs',
-            'date' => strtotime('2024-02-14'),
-            'isHoliday' => false
+            'title' => 'gfgfewrew Teste',
+            'date' => CarbonImmutable::create(2024, 2, 14),
         ],
         [
             'title' => 'Dia de pagamento',
-            'date' => strtotime('2024-02-29'),
-            'isHoliday' => false
+            'date' => CarbonImmutable::create(2024, 2, 29),
         ],
         [
             'title' => 'Meu niver',
-            'date' => strtotime('2024-03-21'),
-            'isHoliday' => false
+            'date' => CarbonImmutable::create(2024, 3, 21),
         ],
         [
             'title' => 'Natal',
-            'date' => strtotime('2024-12-25'),
-            'isHoliday' => true
+            'date' => CarbonImmutable::create(2024, 12, 25),
         ],
     ];
-    // Ordernar por data ascendente
-    usort($events, function ($a, $b) {
-        return $a['date'] - $b['date'];
-    });
 
-    return $events;
+    $userEvents = Event::all();
+
+    return collect($events)
+        ->map(fn ($item) => new Event(['title' => $item['title'], 'date' => $item['date']]))
+        ->merge($userEvents)
+        ->sortBy('date');
+    // ->toArray();
 }
 
 Route::get('/year/{year}/{month}/{day}', function ($year, $month, $day) {
@@ -76,10 +72,11 @@ Route::get('/year/{year}/{month}/{day}', function ($year, $month, $day) {
         'view' => 'year',
         'today' => CarbonImmutable::today()
     ]);
-});
+})->whereNumber(['year', 'month', 'day']);
 
 Route::get('/month/{year}/{month}/{day}', function ($year, $month, $day) {
     $date = CarbonImmutable::create($year, $month, $day);
+    // ddd(getEvents());
     return view('month', [
         'events' => getEvents(),
         'date' => $date,
@@ -88,7 +85,7 @@ Route::get('/month/{year}/{month}/{day}', function ($year, $month, $day) {
         'view' => 'month',
         'today' => CarbonImmutable::today()
     ]);
-});
+})->whereNumber(['year', 'month', 'day']);
 
 Route::get('/day/{year}/{month}/{day}', function ($year, $month, $day) {
     $date = CarbonImmutable::create($year, $month, $day);
@@ -100,4 +97,4 @@ Route::get('/day/{year}/{month}/{day}', function ($year, $month, $day) {
         'view' => 'day',
         'today' => CarbonImmutable::today()
     ]);
-});
+})->whereNumber(['year', 'month', 'day']);

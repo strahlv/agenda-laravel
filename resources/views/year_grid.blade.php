@@ -3,12 +3,12 @@
 <div class="year-grid">
     @for ($m = 1; $m < 13; $m++)
         @php
-            $monthDate = \Carbon\CarbonImmutable::create($date->year, $m);
-            $period = \Carbon\CarbonPeriod::create($monthDate->startOfMonth()->previous(\Carbon\Carbon::SUNDAY), $monthDate->addWeeks(6));
+            $monthDate = CarbonImmutable::create($date->year, $m);
+            $period = CarbonPeriod::create($monthDate->startOfMonth()->previous(Carbon::SUNDAY), $monthDate->addWeeks(6));
             $periodDates = $period->toArray();
         @endphp
         <div class="year-grid-cell">
-            <a href="/month/{{ $monthDate->format('Y/n/j') }}"
+            <a href="{{ Helpers::formatToCalendarUrl('month', $monthDate) }}"
                 class="month-name">{{ ucfirst($monthDate->translatedFormat('F')) }}</a>
             <div class="calendar-row-sm weekday-sm">
                 <div class="calendar-week-sm holiday">D</div>
@@ -29,7 +29,8 @@
                             $isOtherMonth = !$dt->isSameMonth($monthDate) ? ' other-month' : null;
                             $hasEvent = null;
                             foreach ($events as $event) {
-                                if (date('d-m-Y', $event['date']) == $dt->format('d-m-Y')) {
+                                if (!$isOtherMonth && $event->date->timestamp == $dt->timestamp) {
+                                    // if (date('d-m-Y', $event['date']) == $dt->format('d-m-Y')) {
                                     $hasEvent = ' has-event';
                                     break;
                                 }

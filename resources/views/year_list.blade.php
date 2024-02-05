@@ -1,18 +1,13 @@
-@php
-    function getMonthEvents(array $events, int $year, int $month)
-    {
-        $monthEvents = [];
-        foreach ($events as $event) {
-            if (date('m-Y', $event['date']) == $month . '-' . $year) {
-                $monthEvents[] = $event;
-            }
-        }
-        return $monthEvents;
-    }
-@endphp
-
 <div class="event-list">
     @for ($i = 1; $i < 13; $i++)
-        @include('components.events.event_list', ['events' => getMonthEvents($events, $date->year, $i)])
+        @php
+            $monthEvents = collect($events)->filter(fn($event) => $event->date->month == $i && $event->date->year == $date->year);
+        @endphp
+        @if (count($monthEvents) > 0)
+            <a href="/month/{{ $date->year }}/{{ $i }}/{{ $date->day }}?display=list"
+                class="event-list-month-title">
+                {{ ucfirst(Carbon::createFromDate(1, $i)->translatedFormat('F')) }}</a>
+            @include('components.events.event_list', ['events' => $monthEvents])
+        @endif
     @endfor
 </div>

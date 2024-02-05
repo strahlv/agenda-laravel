@@ -20,12 +20,14 @@
     </head>
 
     <body>
-        @php
-            function formatToCalendarUrl(\Carbon\CarbonImmutable $dt)
-            {
-                return $dt->format('Y/n/j');
-            }
-        @endphp
-
         @include('components.nav')
+
         <main>
+            @yield('main')
+        </main>
+
+        <footer>
+        </footer>
+    </body>
+
+</html>

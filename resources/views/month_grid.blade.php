@@ -11,7 +11,7 @@
         <h2 class="calendar-weekday">Sáb.</h2>
     </div>
     @php
-        $period = \Carbon\CarbonPeriod::create($date->startOfMonth()->previous(\Carbon\Carbon::SUNDAY), $date->endOfMonth()->next(\Carbon\Carbon::SATURDAY));
+        $period = CarbonPeriod::create($date->startOfMonth()->previous(Carbon::SUNDAY), $date->endOfMonth()->next(Carbon::SATURDAY));
         $periodDates = $period->toArray();
     @endphp
     @for ($i = 0; $i < count($periodDates) / 7; $i++)
@@ -28,8 +28,8 @@
                     </div>
                     <ul class="calendar-event-list">
                         @foreach ($events as $event)
-                            @if (date('d-m-Y', $event['date']) == $dt->format('d-m-Y'))
-                                <li class="calendar-event">{{ $event['title'] }}</li>
+                            @if ($event->date->timestamp == $dt->timestamp)
+                                <li class="calendar-event">{{ $event->title }}</li>
                             @endif
                         @endforeach
                     </ul>
