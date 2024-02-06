@@ -1,5 +1,8 @@
+@props(['formAction' => '/'])
+
 <form action={{ $formAction }} class="form-create-event hidden">
     @csrf
+
     <div class="form-header">
         <h1>Criar evento </h1>
         <button type="button" class="btn btn-icon" onclick="hideForm()"><i class="fa-solid fa-x"></i></button>

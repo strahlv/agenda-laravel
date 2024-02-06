@@ -3,6 +3,7 @@
 use App\Models\Event;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,39 +63,14 @@ function getEvents()
     // ->toArray();
 }
 
-Route::get('/year/{year}/{month}/{day}', function ($year, $month, $day) {
-    $date = CarbonImmutable::create($year, $month, $day);
-    return view('year', [
-        'events' => getEvents(),
-        'date' => $date,
-        'pageTitle' => 'Ano ' . $year,
-        'navTitle' => $year,
-        'view' => 'year',
-        'today' => CarbonImmutable::today()
-    ]);
-})->whereNumber(['year', 'month', 'day']);
+Route::get('/{view}/{year}/{month}/{day}', function ($view, $year, $month, $day) {
+    if (!in_array($view, ['year', 'month', 'day'])) {
+        throw new RouteNotFoundException("Rota '$view' não existe");
+    }
 
-Route::get('/month/{year}/{month}/{day}', function ($year, $month, $day) {
     $date = CarbonImmutable::create($year, $month, $day);
-    // ddd(getEvents());
-    return view('month', [
+    return view($view, [
         'events' => getEvents(),
         'date' => $date,
-        'pageTitle' => $date->translatedFormat('F \\d\\e Y'),
-        'navTitle' => ucfirst($date->translatedFormat('F \\d\\e Y')),
-        'view' => 'month',
-        'today' => CarbonImmutable::today()
-    ]);
-})->whereNumber(['year', 'month', 'day']);
-
-Route::get('/day/{year}/{month}/{day}', function ($year, $month, $day) {
-    $date = CarbonImmutable::create($year, $month, $day);
-    return view('day', [
-        'events' => getEvents(),
-        'date' => $date,
-        'pageTitle' => $date->translatedFormat('l, j \\d\\e F \\d\\e Y'),
-        'navTitle' => $date->translatedFormat('j \\d\\e F \\d\\e Y'),
-        'view' => 'day',
-        'today' => CarbonImmutable::today()
     ]);
 })->whereNumber(['year', 'month', 'day']);

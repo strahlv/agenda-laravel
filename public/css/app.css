@@ -152,7 +152,7 @@ input#title {
 .navbar {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 8px;
     padding: 16px;
     border-bottom: var(--calendar-border);
     background-color: #fff;
@@ -176,8 +176,7 @@ input#title {
     flex-direction: column;
     background-color: #fff;
     flex: 1;
-    padding: 0 32px;
-    padding-top: 20px;
+    padding: 20px 32px 100px;
 }
 
 .event-list-month-title {

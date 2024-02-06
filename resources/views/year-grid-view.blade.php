@@ -1,4 +1,4 @@
-@include('components.events.create_event_form', ['formAction' => '/'])
+<x-events.create-form form-action="/" />
 
 <div class="year-grid">
     @for ($m = 1; $m < 13; $m++)
@@ -6,7 +6,9 @@
             $monthDate = CarbonImmutable::create($date->year, $m);
             $period = CarbonPeriod::create($monthDate->startOfMonth()->previous(Carbon::SUNDAY), $monthDate->addWeeks(6));
             $periodDates = $period->toArray();
+            $today = CarbonImmutable::today();
         @endphp
+
         <div class="year-grid-cell">
             <a href="{{ Helpers::formatToCalendarUrl('month', $monthDate) }}"
                 class="month-name">{{ ucfirst($monthDate->translatedFormat('F')) }}</a>
@@ -26,19 +28,28 @@
                     @for ($j = 0; $j < 7; $j++)
                         @php
                             $dt = $periodDates[$j + $i * 7];
-                            $isOtherMonth = !$dt->isSameMonth($monthDate) ? ' other-month' : null;
-                            $hasEvent = null;
+                            $isOtherMonth = !$dt->isSameMonth($monthDate);
+                            $hasEvent = false;
+
                             foreach ($events as $event) {
                                 if (!$isOtherMonth && $event->date->timestamp == $dt->timestamp) {
-                                    // if (date('d-m-Y', $event['date']) == $dt->format('d-m-Y')) {
-                                    $hasEvent = ' has-event';
+                                    $hasEvent = true;
                                     break;
                                 }
                             }
                         @endphp
-                        <div class="calendar-day-sm {{ $isOtherMonth }} {{ $hasEvent }}">
-                            <div class="calendar-day-number {{ $isOtherMonth }} {{ $dt->timestamp == $today->timestamp && !$isOtherMonth ? ' today' : null }} {{ $dt->dayOfWeek == 0 ? ' holiday' : null }}"
-                                onclick="focusForm('{{ $dt->format('Y-m-d') }}')">
+
+                        <div @class([
+                            'calendar-day-sm',
+                            'other-month' => $isOtherMonth,
+                            'has-event' => $hasEvent,
+                        ])>
+                            <div @class([
+                                'calendar-day-number',
+                                'other-month' => $isOtherMonth,
+                                'holiday' => $dt->dayOfWeek == 0,
+                                'today' => $dt->timestamp == $today->timestamp && !$isOtherMonth,
+                            ]) onclick="focusForm('{{ $dt->format('Y-m-d') }}')">
                                 {{ $dt->day }}
                             </div>
                         </div>
