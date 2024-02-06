@@ -11,10 +11,16 @@ class Event extends Model
 
     protected $fillable = [
         'title',
-        'date'
+        'date',
+        'user_id'
     ];
 
     protected $casts = [
         'date' => 'datetime:Y-m-d'
     ];
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
