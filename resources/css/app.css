@@ -94,37 +94,10 @@ input#title {
     border-radius: 16px;
     padding: 8px 16px;
     color: var(--clr-primary);
+    font-size: 16px;
     text-align: center;
     text-decoration: none;
     transition: all 0.2s ease-out;
-}
-
-.btn:hover {
-    opacity: 0.9;
-}
-
-.btn-primary {
-    background-color: var(--clr-primary);
-    color: #fff;
-}
-
-.btn-save {
-    width: 100px;
-    align-self: flex-end;
-}
-
-.btn-save:hover {
-    box-shadow: 0 1px 0 #aaa;
-}
-
-.btn-danger {
-    opacity: 0;
-    color: var(--clr-primary);
-}
-
-.btn-danger:hover {
-    opacity: 1;
-    color: var(--clr-holiday);
 }
 
 .btn-icon {
@@ -138,14 +111,53 @@ input#title {
 }
 
 .btn:hover,
-.btn-icon:hover {
-    background-color: var(--clr-primary-lt);
-    color: var(--clr-primary);
+.btn:focus {
+    opacity: 0.8;
 }
 
 .btn-icon i {
     width: 16px;
     height: 16px;
+}
+
+.btn:hover,
+.btn:focus,
+.btn-icon:hover,
+.btn-icon:focus {
+    background-color: var(--clr-primary-lt);
+    color: var(--clr-primary);
+}
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--clr-primary);
+    color: #fff;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+    box-shadow: 0 1px 0 #aaa;
+}
+
+.btn-save {
+    width: 100px;
+    align-self: flex-end;
+}
+
+.btn-save:hover,
+.btn-save:focus {
+    box-shadow: 0 1px 0 #aaa;
+}
+
+.btn-danger {
+    opacity: 0;
+    color: var(--clr-primary);
+}
+
+.btn-danger:hover,
+.btn-danger:focus {
+    opacity: 1;
+    color: var(--clr-holiday);
 }
 
 /* NAVBAR */
@@ -168,6 +180,42 @@ input#title {
 .navbar-active {
     background-color: var(--clr-primary);
     color: #fff;
+}
+
+/* DROPDOWN */
+.dropdown {
+    position: relative;
+}
+
+.dropdown > * {
+    min-width: 100px;
+}
+
+.dropdown-trigger > * {
+    width: 100%;
+}
+
+.dropdown .btn {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dropdown .btn i {
+    font-size: 10px;
+}
+
+.dropdown-contents {
+    position: absolute;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 4px;
+    border-radius: 0 0 16px 16px;
+    background-color: #fff;
+    border: var(--calendar-border);
+    border-top: none;
 }
 
 /* LIST VIEW */
@@ -378,7 +426,8 @@ input#title {
     flex: 0 0 0;
 }
 
-.month-name:hover {
+.month-name:hover,
+.month-name:focus {
     color: var(--clr-primary);
 }
 
