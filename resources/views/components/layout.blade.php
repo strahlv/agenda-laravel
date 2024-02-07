@@ -30,11 +30,30 @@
         <script src="/js/scripts.js"></script>
     </head>
 
-    <body>
-        {{-- @include('components.nav') --}}
+    <body x-data="{
+        search: '',
+        items: null,
+    
+        get filteredItems() {
+            var keys = Object.keys(this.items)
+            var arr = keys.map((key) => this.items[key])
+    
+            console.log(this.items)
+            console.log(arr)
+    
+            if (this.search === '') {
+                return arr;
+            }
+    
+            return arr.filter(
+                i => {
+                    return i.title.toLowerCase().includes(this.search.toLowerCase())
+                }
+            )
+        }
+    }">
         <x-nav :calendar-view="$calendarView" :date="$date" />
         <main>
-            {{-- @yield('main') --}}
             {{ $slot }}
         </main>
     </body>

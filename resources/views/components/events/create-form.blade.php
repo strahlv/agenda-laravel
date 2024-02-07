@@ -5,7 +5,7 @@
 
     <div class="form-header">
         <h1>Criar evento </h1>
-        <button type="button" class="btn btn-icon" onclick="hideForm()"><i class="fa-solid fa-x"></i></button>
+        <button type="button" class="btn btn-icon" onclick="hideForm()"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="form-control">
         <label for="title">Título</label>

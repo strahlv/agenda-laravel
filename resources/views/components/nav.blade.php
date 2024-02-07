@@ -37,6 +37,15 @@
 
     <h1 class="navbar-title">{{ $title }}</h1>
 
+    {{-- PESQUISAR --}}
+    <div class="search-bar" x-data="{ showClearButton: false }">
+        <i class="fa-solid fa-search"></i>
+        <input x-model="search" type="text" placeholder="Pesquisar eventos..."
+            @input="showClearButton = search !== ''">
+        <button class="btn btn-icon btn-clear" x-show="showClearButton" @click="search = ''; showClearButton = false"><i
+                class="fa-solid fa-xmark"></i></button>
+    </div>
+
     {{-- TROCAR VIEW --}}
     @php
         $dropdownTitle = match ($calendarView) {

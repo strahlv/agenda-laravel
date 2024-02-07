@@ -34,12 +34,16 @@
                     ])>
                         {{ $dt->day }}
                     </div>
-                    <ul class="calendar-event-list">
+                    <ul class="calendar-event-list" x-data="items = {{ $events }}">
                         @foreach ($events as $event)
                             @if ($event->date->timestamp == $dt->timestamp)
                                 <li class="calendar-event">{{ $event->title }}</li>
                             @endif
                         @endforeach
+                        {{-- CSS BUG!!! --}}
+                        {{-- <template x-for="item in filteredItems">
+                            <li x-text="item.title" class="calendar-event"></li>
+                        </template> --}}
                     </ul>
                 </div>
             @endfor
