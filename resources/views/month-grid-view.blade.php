@@ -1,4 +1,4 @@
-<x-events.create-form form-action="/" />
+<x-events.create-form action="{{ route('users.events.store', ['user' => 1]) }}" />
 
 <div class="calendar-grid">
     <div class="calendar-row">
@@ -37,7 +37,8 @@
                     <ul class="calendar-event-list" x-data="items = {{ $events }}">
                         @foreach ($events as $event)
                             @if ($event->date->timestamp == $dt->timestamp)
-                                <li class="calendar-event">{{ $event->title }}</li>
+                                <li class="calendar-event" onclick='showEditForm(event, @json($event))'>
+                                    {{ $event->title }}</li>
                             @endif
                         @endforeach
                         {{-- CSS BUG!!! --}}

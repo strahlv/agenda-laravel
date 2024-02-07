@@ -1,9 +1,13 @@
 <?php
 
+use App\Http\Controllers\EventController;
 use App\Models\Event;
 use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
+
+use function PHPSTORM_META\map;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,56 +25,36 @@ Route::get('/', function () {
     return view('welcome', []);
 });
 
-function getEvents()
+function getEvents(int $year)
 {
-    $events = [
-        [
-            'title' => 'Aniversário de Fulano',
-            'date' => CarbonImmutable::create(2024, 2, 21),
-        ],
-        [
-            'title' => 'Carnaval 2024',
-            'date' => CarbonImmutable::create(2024, 2, 9),
-        ],
-        [
-            'title' => 'Quarta-feira de cinzas',
-            'date' => CarbonImmutable::create(2024, 2, 14),
-        ],
-        [
-            'title' => 'gfgfewrew Teste',
-            'date' => CarbonImmutable::create(2024, 2, 14),
-        ],
-        [
-            'title' => 'Dia de pagamento',
-            'date' => CarbonImmutable::create(2024, 2, 29),
-        ],
-        [
-            'title' => 'Meu niver',
-            'date' => CarbonImmutable::create(2024, 3, 21),
-        ],
-        [
-            'title' => 'Natal',
-            'date' => CarbonImmutable::create(2024, 12, 25),
-        ],
-    ];
+    $holidays = [];
+    // USAR GOOGLE CALENDAR API?
+    // $holidays = json_decode(file_get_contents("https://brasilapi.com.br/api/feriados/v1/$year"));
+    $json = Http::get(route("users.events.index", ['user' => 1]))->json();
+    $userEvents = collect($json)->map(fn ($item) => new Event([
+        'title' => $item['title'],
+        'date' => $item['date'],
+    ]));
 
-    $userEvents = Event::all();
-
-    return collect($events)
-        ->map(fn ($item) => new Event(['title' => $item['title'], 'date' => $item['date']]))
+    return collect($holidays)
+        ->map(fn ($item) => new Event(
+            [
+                'title' => $item->name,
+                'date' => CarbonImmutable::parse($item->date),
+            ]
+        ))
         ->merge($userEvents)
         ->sortBy('date');
-    // ->toArray();
 }
 
 Route::get('/{view}/{year}/{month}/{day}', function ($view, $year, $month, $day) {
     if (!in_array($view, ['year', 'month', 'day'])) {
-        throw new RouteNotFoundException("Rota '$view' não existe");
+        throw new RouteNotFoundException("Rota para a view '$view' não existe");
     }
 
     $date = CarbonImmutable::create($year, $month, $day);
     return view($view, [
-        'events' => getEvents(),
+        'events' => getEvents($year),
         'date' => $date,
     ]);
 })->whereNumber(['year', 'month', 'day']);

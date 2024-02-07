@@ -163,6 +163,11 @@ input#title {
     color: var(--clr-holiday);
 }
 
+.btn:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+}
+
 /* NAVBAR */
 .navbar {
     display: flex;
