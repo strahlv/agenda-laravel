@@ -25,8 +25,8 @@
 
         <!-- JS -->
         <script src="https://kit.fontawesome.com/a783aedd26.js" crossorigin="anonymous"></script>
-        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
         <script src="/js/jquery-3.7.1.js"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
         <script src="/js/scripts.js"></script>
     </head>
 
@@ -54,6 +54,7 @@
     }">
         <x-nav :calendar-view="$calendarView" :date="$date" />
         <main>
+            <x-events.form action="{{ route('users.events.store', ['user' => 1]) }}" />
             {{ $slot }}
         </main>
     </body>

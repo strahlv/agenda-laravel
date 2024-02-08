@@ -1,5 +1,5 @@
 function showCreateForm(dateString, url) {
-    var form = $(".form-create-event");
+    var form = $(".event-form");
     form.removeClass("hidden");
     form.attr("action", url);
     $('input[name="_method"]').val("POST");
@@ -10,14 +10,10 @@ function showCreateForm(dateString, url) {
     $("#title").focus();
 }
 
-function hideForm() {
-    $(".form-create-event").addClass("hidden");
-}
-
 function showEditForm(event, calendarEvent, url) {
     event.stopPropagation();
 
-    var form = $(".form-create-event");
+    var form = $(".event-form");
     form.removeClass("hidden");
     form.attr("action", url);
     $('input[name="_method"]').val("PUT");
@@ -26,4 +22,8 @@ function showEditForm(event, calendarEvent, url) {
     $("#title").val(calendarEvent.title);
     $("#date").val(calendarEvent.date);
     $("#title").focus();
+}
+
+function hideForm() {
+    $(".event-form").addClass("hidden");
 }

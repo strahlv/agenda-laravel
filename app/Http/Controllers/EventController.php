@@ -16,7 +16,7 @@ class EventController extends Controller
     public function store(int $userId, Request $request)
     {
         $inputs = $request->validate([
-            'title' => 'required|max:5',
+            'title' => 'required|max:255',
             'date' => 'required'
         ]);
 
@@ -31,13 +31,22 @@ class EventController extends Controller
 
     public function update(int $id, Request $request)
     {
-        $inputs = $request->input();
+        $inputs = $request->validate([
+            'title' => 'required|max:255',
+            'date' => 'required'
+        ]);
 
         Event::findOrFail($id)->update([
             'title' => $inputs['title'],
             'date' => $inputs['date']
         ]);
 
+        return back();
+    }
+
+    public function destroy(int $id)
+    {
+        Event::destroy($id);
         return back();
     }
 }

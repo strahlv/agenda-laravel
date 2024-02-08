@@ -1,5 +1,3 @@
-<x-events.create-form />
-
 <div class="event-list">
     @php
         $yearHasEvents = false;
@@ -24,7 +22,7 @@
     @if (!$yearHasEvents)
         <div>
             <p>Nenhum evento encontrado.</p>
-            <button type="button" class="btn btn-primary" onclick="focusForm('{{ $date->format('Y-m-d') }}')">Criar
+            <button type="button" class="btn btn-primary" @click="showCreateForm('{{ $date->format('Y-m-d') }}')">Criar
                 evento</button>
         </div>
     @endif

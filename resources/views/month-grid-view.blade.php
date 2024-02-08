@@ -1,5 +1,3 @@
-<x-events.create-form action="{{ route('users.events.store', ['user' => 1]) }}" />
-
 <div class="calendar-grid">
     <div class="calendar-row">
         <h2 class="calendar-weekday">Dom.</h2>
@@ -38,11 +36,20 @@
                         @foreach ($events as $event)
                             @if ($event->date->timestamp == $dt->timestamp)
                                 @php
-                                    $route = route('events.update', ['event' => $event->id ?? -1]);
+                                    $updateRoute = route('events.update', ['event' => $event->id ?? -1]);
                                 @endphp
+
                                 <li class="calendar-event"
-                                    onclick='showEditForm(event, @json($event), "{{ $route }}")'>
-                                    {{ $event->title }}</li>
+                                    onclick='showEditForm(event, @json($event), "{{ $updateRoute }}")'>
+                                    {{ $event->title }}
+                                    @if ($event->id)
+                                        <x-events.delete-form :eventId="$event->id">
+                                            <button type="submit" class="btn btn-icon-sm"
+                                                @click="(event) => event.stopPropagation()"><i
+                                                    class="fa-solid fa-xmark"></i></button>
+                                        </x-events.delete-form>
+                                    @endif
+                                </li>
                             @endif
                         @endforeach
                         {{-- CSS BUG!!! --}}

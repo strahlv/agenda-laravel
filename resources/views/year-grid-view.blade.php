@@ -1,5 +1,3 @@
-<x-events.create-form action="{{ route('users.events.store', ['user' => 1]) }}" />
-
 <div class="year-grid">
     @for ($m = 1; $m < 13; $m++)
         @php

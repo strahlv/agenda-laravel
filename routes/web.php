@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\EventController;
 use App\Models\Event;
+use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -27,7 +28,7 @@ Route::get('/', function () {
 
 function getEvents(int $year)
 {
-    $holidaysJson = [];
+    // $holidaysJson = [];
     // USAR GOOGLE CALENDAR API?
     $holidaysJson = Http::get("https://brasilapi.com.br/api/feriados/v1/$year")->json();
     $holidays = collect($holidaysJson)->map(fn ($item) => new Event(
@@ -37,16 +38,9 @@ function getEvents(int $year)
         ]
     ));
 
-    $eventsJson = Http::get(route("users.events.index", ['user' => 1]))->json();
-    $events = collect($eventsJson)->map(fn ($item) => new Event(
-        [
-            'id' => $item['id'],
-            'title' => $item['title'],
-            'date' => $item['date'],
-        ]
-    ));
+    $events = User::find(1)->events;
 
-    return $events->merge($holidays)->sortBy('date');
+    return $events->concat($holidays)->sortBy('date');
 }
 
 Route::get('/{view}/{year}/{month}/{day}', function ($view, $year, $month, $day) {
@@ -55,8 +49,11 @@ Route::get('/{view}/{year}/{month}/{day}', function ($view, $year, $month, $day)
     }
 
     $date = CarbonImmutable::create($year, $month, $day);
+
     return view($view, [
         'events' => getEvents($year),
         'date' => $date,
     ]);
 })->whereNumber(['year', 'month', 'day']);
+
+Route::resource('users.events', EventController::class)->shallow();

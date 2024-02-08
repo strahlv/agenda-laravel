@@ -56,7 +56,8 @@ label {
     font-size: 12px;
 }
 
-.form-create-event {
+/* EVENT FORM */
+.event-form {
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -67,7 +68,7 @@ label {
     transition: all 0.2s ease;
 }
 
-.form-create-event.hidden {
+.event-form.hidden {
     margin-left: -400px;
 }
 
@@ -101,6 +102,11 @@ input#title {
     transition: all 0.2s ease-out;
 }
 
+.btn:hover,
+.btn:focus {
+    opacity: 0.8;
+}
+
 .btn-icon {
     background-color: #fff;
     color: var(--clr-primary);
@@ -112,11 +118,6 @@ input#title {
     justify-content: center;
     align-items: center;
     gap: 4px;
-}
-
-.btn:hover,
-.btn:focus {
-    opacity: 0.8;
 }
 
 .btn-icon i {
@@ -294,11 +295,6 @@ input#title {
     opacity: 1;
 }
 
-.event-list-item form {
-    flex: 1 1 0;
-    display: flex;
-}
-
 .event-item-input-text {
     flex: 1 1 0;
     cursor: pointer;
@@ -377,6 +373,8 @@ input#title {
     border-left: var(--calendar-border);
     background-color: #fff;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
 }
 
 .calendar-day-number {
@@ -427,6 +425,7 @@ input#title {
     gap: 2px;
     margin-top: 8px;
     overflow: hidden;
+    height: 100%;
 }
 
 .calendar-event {
@@ -435,6 +434,10 @@ input#title {
     font-size: 12px;
     border-radius: 8px;
     padding: 4px 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
     text-wrap: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -442,7 +445,38 @@ input#title {
 }
 
 .calendar-event:hover {
-    opacity: 0.8;
+    /* opacity: 0.8; */
+    box-shadow: 0 1px 0 #999;
+}
+
+.calendar-event form {
+    display: flex;
+    align-self: flex-start;
+    position: absolute;
+    right: 4px;
+}
+
+.calendar-event form:hover {
+    background-color: var(--clr-primary);
+}
+
+.btn-icon-sm {
+    padding: 0;
+    background-color: transparent;
+    color: transparent;
+    font-size: 12px;
+    width: 16px;
+}
+
+.calendar-event:hover .btn-icon-sm {
+    background-color: var(--clr-primary);
+    color: #fff;
+}
+
+.calendar-event:hover .btn-icon-sm:hover,
+.calendar-event:hover .btn-icon-sm:focus {
+    background-color: #fff;
+    color: var(--clr-primary);
 }
 
 /* YEAR CALENDAR */

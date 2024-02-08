@@ -9,10 +9,10 @@
     }
 @endphp
 
-<form {{ $attributes }} method="{{ $method }}" class="form-create-event"
-    onsubmit="document.querySelector('#submit-button').disabled = true">
+<form {{ $attributes }} method="{{ $method }}" class="event-form"
+    @submit="document.getElementById('submit-button').disabled = true">
     @csrf
-    @method($method)
+    @method($spoofMethod)
 
     <div class="form-header">
         <h1 id="form-title">{{ $title }}</h1>
@@ -21,18 +21,24 @@
     <div class="form-control">
         <label for="title">Título</label>
         <input type="text" name="title" id="title" value="{{ old('title') }}">
+        @error('title')
+            {{-- TODO:
+                * estilo css 
+                * tradução da msg
+            --}}
+            <p style="color: red">{{ $message }}</p>
+        @enderror
     </div>
     <div class="form-control">
         <label for="date">Data</label>
-        <input type="date" name="date" id="date">
+        <input type="date" name="date" id="date" value="{{ old('date') }}">
+        @error('date')
+            {{-- TODO:
+                * estilo css 
+                * tradução da msg
+            --}}
+            <p style="color: red">{{ $message }}</p>
+        @enderror
     </div>
-    {{-- VALIDAR INPUTS!!! --}}
-    @if ($errors->any())
-        {{ ddd($errors->all()) }}
-    @endif
-    @error('title')
-        <h1>erro</h1>
-        <h1>{{ $message }}</h1>
-    @enderror
     <button type="submit" id="submit-button" class="btn btn-primary btn-save">Salvar</button>
 </form>
