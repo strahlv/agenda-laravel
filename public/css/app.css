@@ -2,6 +2,7 @@
     --calendar-border: 1px solid var(--clr-primary);
     --clr-primary: #517dbe;
     --clr-primary-lt: #e3ebf7;
+    --clr-primary-wt: #f3f8ff;
     --clr-holiday: #e47070;
 }
 
@@ -409,7 +410,7 @@ input#title {
 }
 
 .calendar-day:hover {
-    background-color: var(--clr-primary-lt);
+    background-color: var(--clr-primary-wt);
 }
 
 .calendar-day:last-child {
@@ -437,6 +438,11 @@ input#title {
     text-wrap: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition: all 0.2s ease;
+}
+
+.calendar-event:hover {
+    opacity: 0.8;
 }
 
 /* YEAR CALENDAR */

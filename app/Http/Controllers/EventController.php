@@ -11,16 +11,14 @@ class EventController extends Controller
     public function index(int $userId)
     {
         return User::find($userId)->events;
-        // return Event::where('user_id', $userId)->get();
     }
 
     public function store(int $userId, Request $request)
     {
-        // ddd($request);
-        // ddd($request->all());
-        // ddd($request->input('title'));
-        // ddd($request->input());
-        $inputs = $request->input();
+        $inputs = $request->validate([
+            'title' => 'required|max:5',
+            'date' => 'required'
+        ]);
 
         Event::create([
             'title' => $inputs['title'],
@@ -28,6 +26,18 @@ class EventController extends Controller
             'user_id' => $userId
         ]);
 
-        return redirect('/');
+        return back();
+    }
+
+    public function update(int $id, Request $request)
+    {
+        $inputs = $request->input();
+
+        Event::findOrFail($id)->update([
+            'title' => $inputs['title'],
+            'date' => $inputs['date']
+        ]);
+
+        return back();
     }
 }

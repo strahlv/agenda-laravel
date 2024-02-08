@@ -1,4 +1,4 @@
-<x-events.create-form form-action="/" />
+<x-events.create-form action="{{ route('users.events.store', ['user' => 1]) }}" />
 
 <div class="year-grid">
     @for ($m = 1; $m < 13; $m++)
@@ -49,7 +49,7 @@
                                 'other-month' => $isOtherMonth,
                                 'holiday' => $dt->dayOfWeek == 0,
                                 'today' => $dt->timestamp == $today->timestamp && !$isOtherMonth,
-                            ]) onclick="focusForm('{{ $dt->format('Y-m-d') }}')">
+                            ]) onclick="showCreateForm('{{ $dt->format('Y-m-d') }}')">
                                 {{ $dt->day }}
                             </div>
                         </div>

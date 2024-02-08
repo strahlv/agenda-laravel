@@ -27,24 +27,26 @@ Route::get('/', function () {
 
 function getEvents(int $year)
 {
-    $holidays = [];
+    $holidaysJson = [];
     // USAR GOOGLE CALENDAR API?
-    // $holidays = json_decode(file_get_contents("https://brasilapi.com.br/api/feriados/v1/$year"));
-    $json = Http::get(route("users.events.index", ['user' => 1]))->json();
-    $userEvents = collect($json)->map(fn ($item) => new Event([
-        'title' => $item['title'],
-        'date' => $item['date'],
-    ]));
+    $holidaysJson = Http::get("https://brasilapi.com.br/api/feriados/v1/$year")->json();
+    $holidays = collect($holidaysJson)->map(fn ($item) => new Event(
+        [
+            'title' => $item['name'],
+            'date' => CarbonImmutable::parse($item['date']),
+        ]
+    ));
 
-    return collect($holidays)
-        ->map(fn ($item) => new Event(
-            [
-                'title' => $item->name,
-                'date' => CarbonImmutable::parse($item->date),
-            ]
-        ))
-        ->merge($userEvents)
-        ->sortBy('date');
+    $eventsJson = Http::get(route("users.events.index", ['user' => 1]))->json();
+    $events = collect($eventsJson)->map(fn ($item) => new Event(
+        [
+            'id' => $item['id'],
+            'title' => $item['title'],
+            'date' => $item['date'],
+        ]
+    ));
+
+    return $events->merge($holidays)->sortBy('date');
 }
 
 Route::get('/{view}/{year}/{month}/{day}', function ($view, $year, $month, $day) {

@@ -1,23 +1,29 @@
-function focusForm(dateString) {
-    $(".form-create-event").removeClass("hidden");
-    // $("#title").val(null);
+function showCreateForm(dateString, url) {
+    var form = $(".form-create-event");
+    form.removeClass("hidden");
+    form.attr("action", url);
+    $('input[name="_method"]').val("POST");
+
+    $("#form-title").html("Criar evento");
+    $("#title").val("");
     $("#date").val(dateString);
     $("#title").focus();
 }
 
 function hideForm() {
     $(".form-create-event").addClass("hidden");
-    $("#date").val("");
-    $("#title").val("");
 }
 
-function showEditForm(e, event) {
-    console.log(e);
-    console.log(event);
-    e.stopPropagation();
-    $(".form-create-event").removeClass("hidden");
-    $(".form-create-event form-header h1").val("Editar evento");
-    $("#title").val(event.title);
-    $("#date").val(event.date);
+function showEditForm(event, calendarEvent, url) {
+    event.stopPropagation();
+
+    var form = $(".form-create-event");
+    form.removeClass("hidden");
+    form.attr("action", url);
+    $('input[name="_method"]').val("PUT");
+
+    $("#form-title").html("Editar evento");
+    $("#title").val(calendarEvent.title);
+    $("#date").val(calendarEvent.date);
     $("#title").focus();
 }

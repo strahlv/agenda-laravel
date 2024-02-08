@@ -25,7 +25,7 @@
                     $isOtherMonth = !$dt->isSameMonth($date);
                 @endphp
 
-                <div @class(['calendar-day', 'other-month' => $isOtherMonth]) onclick="focusForm('{{ $dt->format('Y-m-d') }}')">
+                <div @class(['calendar-day', 'other-month' => $isOtherMonth]) onclick="showCreateForm('{{ $dt->format('Y-m-d') }}')">
                     <div @class([
                         'calendar-day-number',
                         'other-month' => $isOtherMonth,
@@ -37,7 +37,11 @@
                     <ul class="calendar-event-list" x-data="items = {{ $events }}">
                         @foreach ($events as $event)
                             @if ($event->date->timestamp == $dt->timestamp)
-                                <li class="calendar-event" onclick='showEditForm(event, @json($event))'>
+                                @php
+                                    $route = route('events.update', ['event' => $event->id ?? -1]);
+                                @endphp
+                                <li class="calendar-event"
+                                    onclick='showEditForm(event, @json($event), "{{ $route }}")'>
                                     {{ $event->title }}</li>
                             @endif
                         @endforeach
