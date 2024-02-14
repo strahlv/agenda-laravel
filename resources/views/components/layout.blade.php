@@ -4,6 +4,7 @@
     $title = match ($calendarView) {
         'year' => 'Ano ' . $date->year,
         'month' => $date->translatedFormat('F \\d\\e Y'),
+        'week' => 'Semana de ' . $date->translatedFormat('j \\d\\e F \\d\\e Y'),
         'day' => $date->translatedFormat('l, j \\d\\e F \\d\\e Y'),
     };
 @endphp

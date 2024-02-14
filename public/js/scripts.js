@@ -2,7 +2,7 @@ function showCreateForm(dateString, url) {
     var form = $(".event-form");
     form.removeClass("hidden");
     form.attr("action", url);
-    $('input[name="_method"]').val("POST");
+    $('.event-form > input[name="_method"]').val("POST");
 
     $("#form-title").html("Criar evento");
     $("#title").val("");
@@ -16,7 +16,7 @@ function showEditForm(event, calendarEvent, url) {
     var form = $(".event-form");
     form.removeClass("hidden");
     form.attr("action", url);
-    $('input[name="_method"]').val("PUT");
+    $('.event-form > input[name="_method"]').val("PUT");
 
     $("#form-title").html("Editar evento");
     $("#title").val(calendarEvent.title);

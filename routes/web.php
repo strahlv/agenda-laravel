@@ -28,9 +28,9 @@ Route::get('/', function () {
 
 function getEvents(int $year)
 {
-    // $holidaysJson = [];
+    $holidaysJson = [];
     // USAR GOOGLE CALENDAR API?
-    $holidaysJson = Http::get("https://brasilapi.com.br/api/feriados/v1/$year")->json();
+    // $holidaysJson = Http::get("https://brasilapi.com.br/api/feriados/v1/$year")->json();
     $holidays = collect($holidaysJson)->map(fn ($item) => new Event(
         [
             'title' => $item['name'],
@@ -44,7 +44,7 @@ function getEvents(int $year)
 }
 
 Route::get('/{view}/{year}/{month}/{day}', function ($view, $year, $month, $day) {
-    if (!in_array($view, ['year', 'month', 'day'])) {
+    if (!in_array($view, ['year', 'month', 'week', 'day'])) {
         throw new RouteNotFoundException("Rota para a view '$view' não existe");
     }
 

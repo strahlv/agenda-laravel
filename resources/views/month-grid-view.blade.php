@@ -1,5 +1,5 @@
 <div class="calendar-grid">
-    <div class="calendar-row">
+    <div class="calendar-row calendar-row-header">
         <h2 class="calendar-weekday">Dom.</h2>
         <h2 class="calendar-weekday">Seg.</h2>
         <h2 class="calendar-weekday">Ter.</h2>

@@ -6,12 +6,14 @@
         $previousDate = match ($calendarView) {
             'year' => $date->subYear(),
             'month' => $date->subMonth(),
+            'week' => $date->addWeek(),
             'day' => $date->subDay(),
         };
 
         $nextDate = match ($calendarView) {
             'year' => $date->addYear(),
             'month' => $date->addMonth(),
+            'week' => $date->addWeek(),
             'day' => $date->addDay(),
         };
 
@@ -31,6 +33,7 @@
         $title = match ($calendarView) {
             'year' => $date->year,
             'month' => ucfirst($date->translatedFormat('F \\d\\e Y')),
+            'week' => ucfirst($date->translatedFormat('F \\d\\e Y')),
             'day' => $date->translatedFormat('j \\d\\e F \\d\\e Y'),
         };
     @endphp
@@ -51,6 +54,7 @@
         $dropdownTitle = match ($calendarView) {
             'year' => 'Ano',
             'month' => 'Mês',
+            'week' => 'Semana',
             'day' => 'Dia',
         };
     @endphp
@@ -61,6 +65,7 @@
         </x-slot>
 
         <x-dropdown.nav-link :href="Helpers::formatToCalendarUrl('day', $date, $display)" :active="$calendarView == 'day'">Dia</x-dropdown.nav-link>
+        <x-dropdown.nav-link :href="Helpers::formatToCalendarUrl('week', $date, $display)" :active="$calendarView == 'week'">Semana</x-dropdown.nav-link>
         <x-dropdown.nav-link :href="Helpers::formatToCalendarUrl('month', $date, $display)" :active="$calendarView == 'month'">Mês</x-dropdown.nav-link>
         <x-dropdown.nav-link :href="Helpers::formatToCalendarUrl('year', $date, $display)" :active="$calendarView == 'year'">Ano</x-dropdown.nav-link>
     </x-dropdown>
