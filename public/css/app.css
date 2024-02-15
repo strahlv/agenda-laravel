@@ -224,6 +224,7 @@ input#title {
     background-color: #fff;
     border: var(--calendar-border);
     border-top: none;
+    z-index: 999;
 }
 
 /* SEARCH BAR */
@@ -581,7 +582,7 @@ input#title {
     top: -8px;
 }
 
-.week-events-container {
+.week-events-grid-container {
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -613,6 +614,15 @@ input#title {
     transition: all 0.2s ease;
 }
 
+.calendar-row-weekday-number.today {
+    background-color: #fff;
+    color: var(--clr-primary);
+}
+
+.calendar-row-weekday-number:hover {
+    opacity: 0.8;
+}
+
 .calendar-row-weekday-number:hover,
 .calendar-row-weekday-number:focus {
     background-color: #fff;
@@ -638,7 +648,10 @@ input#title {
 
 .week-cell .calendar-event-list {
     margin-top: 2px;
-    padding-right: 2px;
+    margin-left: 1px;
+    padding-right: 8px;
+    height: -moz-fit-content;
+    height: fit-content;
 }
 
 .week-row:first-of-type .week-cell {
@@ -662,5 +675,10 @@ input#title {
 
 .line-col > *:last-child {
     border-bottom: none;
+}
+
+.scroll-width {
+    overflow: scroll;
+    visibility: hidden;
 }
 

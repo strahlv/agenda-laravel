@@ -5,33 +5,39 @@
         $today = CarbonImmutable::today();
     @endphp
 
-    <div class="calendar-row calendar-row-header" style="padding-left: 40px">
+    <header class="calendar-row calendar-row-header" style="padding-left: 40px">
         @for ($i = 0; $i < count($periodDates); $i++)
             <h2 class="calendar-row-weekday">
                 <div class="calendar-row-weekday-name">
                     {{ Str::ucfirst(Str::limit($periodDates[$i]->getTranslatedDayName(), 3, '.')) }}
                 </div>
-                <div class="calendar-row-weekday-number">
+                <div @class([
+                    'calendar-row-weekday-number',
+                    'today' => $periodDates[$i]->timestamp == $today->timestamp,
+                ])>
                     {{ $periodDates[$i]->day }}
                 </div>
             </h2>
         @endfor
-    </div>
+        <div class="scroll-width"></div>
+    </header>
 
     <div class="week-grid-container">
         <div class="week-grid">
             <div class="hour-col">
-                @for ($i = 0; $i < 24; $i++)
-                    <span>{{ $i != 0 ? $i . 'h' : null }}</span>
+                @for ($i = -1; $i < 24; $i++)
+                    <span>{{ $i > 0 ? $i . 'h' : null }}</span>
                 @endfor
             </div>
+
             <div class="line-col">
-                @for ($i = 0; $i < 24; $i++)
+                @for ($i = -1; $i < 24; $i++)
                     <div></div>
                 @endfor
             </div>
-            <div class="week-events-container">
-                @for ($i = 0; $i < 24; $i++)
+
+            <div class="week-events-grid-container">
+                @for ($i = -1; $i < 24; $i++)
                     <div class="week-row">
                         @for ($j = 0; $j < 7; $j++)
                             @php

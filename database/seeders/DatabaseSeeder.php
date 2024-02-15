@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         // Event::create(['title' => 'Abertura Carnaval 2024', 'date' => Carbon::create(2024, 2, 8), 'user_id' => 1]);
         // Event::create(['title' => 'Meu Aniversário', 'date' => Carbon::create(2024, 3, 21), 'user_id' => 1]);
         // Event::create(['title' => 'Payday', 'date' => Carbon::create(2024, 2, 29), 'user_id' => 2]);
-        Event::factory(7)->create(['user_id' => 1]);
-        Event::factory(3)->create(['user_id' => 2]);
+        Event::factory(30)->create(['user_id' => 1]);
+        Event::factory(20)->create(['user_id' => 2]);
     }
 }

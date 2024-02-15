@@ -6,7 +6,7 @@
         $previousDate = match ($calendarView) {
             'year' => $date->subYear(),
             'month' => $date->subMonth(),
-            'week' => $date->addWeek(),
+            'week' => $date->subWeek(),
             'day' => $date->subDay(),
         };
 
