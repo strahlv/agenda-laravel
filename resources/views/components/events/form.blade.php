@@ -9,7 +9,7 @@
     }
 @endphp
 
-<form {{ $attributes }} method="{{ $method }}" class="event-form"
+<form {{ $attributes }} method="{{ $method }}" @class(['event-form', 'hidden' => !$errors->any()])
     @submit="document.getElementById('submit-button').disabled = true">
     @csrf
     @method($spoofMethod)
@@ -30,9 +30,20 @@
         @enderror
     </div>
     <div class="form-control">
-        <label for="date">Data</label>
-        <input type="date" name="date" id="date" value="{{ old('date') }}">
-        @error('date')
+        <label for="start-date">Início</label>
+        <input type="date" name="start_date" id="start-date" value="{{ old('date') }}">
+        @error('start_date')
+            {{-- TODO:
+                * estilo css 
+                * tradução da msg
+            --}}
+            <p style="color: red">{{ $message }}</p>
+        @enderror
+    </div>
+    <div class="form-control">
+        <label for="end-date">Fim</label>
+        <input type="date" name="end_date" id="end-date" value="{{ old('date') }}">
+        @error('end_date')
             {{-- TODO:
                 * estilo css 
                 * tradução da msg

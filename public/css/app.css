@@ -196,6 +196,7 @@ input#title {
 .dropdown {
     position: relative;
     min-width: 120px;
+    z-index: 1000;
 }
 
 .dropdown-trigger > * {
@@ -224,7 +225,6 @@ input#title {
     background-color: #fff;
     border: var(--calendar-border);
     border-top: none;
-    z-index: 999;
 }
 
 /* SEARCH BAR */
@@ -372,7 +372,7 @@ input#title {
 
 .calendar-day {
     flex: 1 1 0;
-    overflow: hidden;
+    overflow-y: clip;
     padding: 5px;
     border-top: var(--calendar-border);
     border-left: var(--calendar-border);
@@ -429,7 +429,7 @@ input#title {
     flex-direction: column;
     gap: 2px;
     margin-top: 8px;
-    overflow: hidden;
+    position: relative;
     height: 100%;
 }
 
@@ -448,6 +448,9 @@ input#title {
     overflow: hidden;
     text-overflow: ellipsis;
     transition: all 0.2s ease;
+    position: absolute;
+    top: 0;
+    z-index: 999;
 }
 
 .calendar-event:hover {
@@ -582,6 +585,11 @@ input#title {
     top: -8px;
 }
 
+.hour-col *:first-child {
+    top: 0;
+    padding: 0;
+}
+
 .week-events-grid-container {
     display: flex;
     flex-direction: column;
@@ -635,11 +643,11 @@ input#title {
 
 .week-cell {
     cursor: pointer;
-    border-top: var(--calendar-border);
+    border-bottom: var(--calendar-border);
     border-left: var(--calendar-border);
     flex: 1;
-    height: 64px;
-    overflow: hidden;
+    height: 74px;
+    /* overflow-y: clip; */
 }
 
 .week-cell:hover {
@@ -650,12 +658,15 @@ input#title {
     margin-top: 2px;
     margin-left: 1px;
     padding-right: 8px;
-    height: -moz-fit-content;
-    height: fit-content;
+    /* height: fit-content; */
 }
 
 .week-row:first-of-type .week-cell {
     border-top: none;
+}
+
+.week-row:last-child .week-cell {
+    border-bottom: none;
 }
 
 .line-col {
@@ -669,16 +680,22 @@ input#title {
     flex: 1;
 }
 
-.line-col > *:first-child {
-    border-top: 1px solid transparent;
-}
-
 .line-col > *:last-child {
-    border-bottom: none;
+    border-bottom: 1px solid transparent;
 }
 
 .scroll-width {
     overflow: scroll;
     visibility: hidden;
+}
+
+.calendar-event.starts-before {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.calendar-event.ends-after {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
 }
 

@@ -30,7 +30,7 @@
                             $hasEvent = false;
 
                             foreach ($events as $event) {
-                                if (!$isOtherMonth && $event->date->timestamp == $dt->timestamp) {
+                                if (!$isOtherMonth && $event->start_date->timestamp == $dt->timestamp) {
                                     $hasEvent = true;
                                     break;
                                 }

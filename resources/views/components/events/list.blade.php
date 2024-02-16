@@ -8,7 +8,7 @@
     @if ($events->count())
         @foreach ($events as $event)
             <li class="event-list-item">
-                <span class="event-day">{{ $lastDay != $event->date->day ? $event->date->day : '' }}</span>
+                <span class="event-day">{{ $lastDay != $event->start_date->day ? $event->start_date->day : '' }}</span>
                 @if (!$event['isHoliday'])
                     @php
                         $route = route('events.update', ['event' => $event->id ?? -1]);
@@ -31,7 +31,7 @@
             </li>
 
             @php
-                $lastDay = $event->date->day;
+                $lastDay = $event->start_date->day;
             @endphp
         @endforeach
     @else

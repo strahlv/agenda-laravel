@@ -5,7 +5,7 @@
 
     @for ($i = 1; $i < 13; $i++)
         @php
-            $monthEvents = collect($events)->filter(fn($event) => $event->date->month == $i && $event->date->year == $date->year);
+            $monthEvents = collect($events)->filter(fn($event) => $event->start_date->month == $i && $event->start_date->year == $date->year);
         @endphp
 
         @if (count($monthEvents) > 0)

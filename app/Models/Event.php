@@ -12,12 +12,14 @@ class Event extends Model
     protected $fillable = [
         'id',
         'title',
-        'date',
+        'start_date',
+        'end_date',
         'user_id'
     ];
 
     protected $casts = [
-        'date' => 'datetime:Y-m-d'
+        'start_date' => 'datetime:Y-m-d',
+        'end_date' => 'datetime:Y-m-d'
     ];
 
     public function creator()

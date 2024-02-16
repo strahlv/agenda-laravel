@@ -40,7 +40,7 @@ function getEvents(int $year)
 
     $events = User::find(1)->events;
 
-    return $events->concat($holidays)->sortBy('date');
+    return $events->concat($holidays)->sortBy('start_date');
 }
 
 Route::get('/{view}/{year}/{month}/{day}', function ($view, $year, $month, $day) {

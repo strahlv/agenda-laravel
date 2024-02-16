@@ -6,7 +6,8 @@ function showCreateForm(dateString, url) {
 
     $("#form-title").html("Criar evento");
     $("#title").val("");
-    $("#date").val(dateString);
+    $("#start-date").val(dateString);
+    $("#end-date").val(dateString);
     $("#title").focus();
 }
 
@@ -20,10 +21,15 @@ function showEditForm(event, calendarEvent, url) {
 
     $("#form-title").html("Editar evento");
     $("#title").val(calendarEvent.title);
-    $("#date").val(calendarEvent.date);
+    $("#start-date").val(calendarEvent.start_date);
+    $("#end-date").val(calendarEvent.end_date);
     $("#title").focus();
 }
 
 function hideForm() {
     $(".event-form").addClass("hidden");
+}
+
+function submitForm() {
+    // TODO:
 }

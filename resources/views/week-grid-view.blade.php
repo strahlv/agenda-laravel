@@ -1,8 +1,11 @@
 <div class="calendar-grid">
     @php
-        $period = CarbonPeriod::create($date->previous(Carbon::SUNDAY), $date->next(Carbon::SATURDAY));
+        $period = CarbonPeriod::create($date->startOfWeek(Carbon::SUNDAY), $date->endOfWeek(Carbon::SATURDAY));
         $periodDates = $period->toArray();
         $today = CarbonImmutable::today();
+        $events = $events->filter(fn($event) => CarbonPeriod::create($event->start_date, $event->end_date)->overlaps($period));
+        $allDayEventsCount = $events->filter(fn($event) => $event->end_date->greaterThanOrEqualTo($event->start_date->endOfDay()))->count();
+        $allDayEventsCellHeight = max(74, $allDayEventsCount * 24 + 2);
     @endphp
 
     <header class="calendar-row calendar-row-header" style="padding-left: 40px">
@@ -26,13 +29,17 @@
         <div class="week-grid">
             <div class="hour-col">
                 @for ($i = -1; $i < 24; $i++)
-                    <span>{{ $i > 0 ? $i . 'h' : null }}</span>
+                    <span
+                        @if ($i == -1) style="{{ $allDayEventsCount ? 'flex: 0 0 auto; height: ' . $allDayEventsCellHeight . 'px;' : null }}" @endif>
+                        {{ $i >= 0 ? $i . 'h' : 'O dia todo' }}</span>
                 @endfor
             </div>
 
             <div class="line-col">
                 @for ($i = -1; $i < 24; $i++)
-                    <div></div>
+                    <div
+                        @if ($i == -1) style="{{ $allDayEventsCount ? 'flex: 0 0 auto; height: ' . $allDayEventsCellHeight . 'px;' : null }}" @endif>
+                    </div>
                 @endfor
             </div>
 
@@ -42,27 +49,52 @@
                         @for ($j = 0; $j < 7; $j++)
                             @php
                                 $dt = $periodDates[$j];
+                                $yOffset = 0;
+                                $yOffsetHour = 0;
                             @endphp
-                            <div class="week-cell" onclick="showCreateForm('{{ $dt->format('Y-m-d') }}')">
-                                <ul class="calendar-event-list" x-data="items = {{ $events }}">
+                            <div class="week-cell" onclick="showCreateForm('{{ $dt->format('Y-m-d') }}')"
+                                @if ($i == -1) style={{ $allDayEventsCount ? 'height:' . $allDayEventsCellHeight . 'px;' : null }} @endif>
+                                <ul class="calendar-event-list" {{-- x-data="items = {{ $events }}" --}}>
                                     @foreach ($events as $event)
-                                        @if ($event->date->timestamp == $dt->timestamp)
-                                            @php
-                                                $updateRoute = route('events.update', ['event' => $event->id ?? -1]);
-                                            @endphp
+                                        @php
+                                            $startsBeforeThisWeek = $j == 0 && $event->start_date->lessThan($periodDates[0]);
+                                            $endsAfterThisWeek = $event->end_date->greaterThan($period->getEndDate());
 
-                                            <li class="calendar-event"
-                                                onclick='showEditForm(event, @json($event), "{{ $updateRoute }}")'>
+                                            $isSameDay = $event->start_date->isSameDay($dt);
+                                            $isAllDayEvent = $event->end_date->greaterThanOrEqualTo($event->start_date->endOfDay());
+                                            $isSameStartHour = $event->start_date->hour == $i;
+
+                                            $eventWidth = min($startsBeforeThisWeek ? $periodDates[0]->diffInDays($event->end_date) + 1 : $event->start_date->diffInDays($event->end_date) + 1, 7 - $j);
+
+                                            $updateRoute = route('events.update', ['event' => $event->id ?? -1]);
+                                        @endphp
+
+                                        @if ($i == -1 && ($isSameDay || $startsBeforeThisWeek) && $isAllDayEvent)
+                                            <x-events.grid-list-item :event="$event" :starts-before="$startsBeforeThisWeek"
+                                                :ends-after="$endsAfterThisWeek" :update-route="$updateRoute" :y-offset="$yOffset * 24" :width="'calc(100% *' .
+                                                    $eventWidth .
+                                                    ' + 2px * ' .
+                                                    ($eventWidth - 1) .
+                                                    ')'">
                                                 {{ $event->title }}
-                                                @if ($event->id)
-                                                    <x-events.delete-form :eventId="$event->id">
-                                                        <button type="submit" class="btn btn-icon-sm"
-                                                            @click="(event) => event.stopPropagation()"><i
-                                                                class="fa-solid fa-xmark"></i></button>
-                                                    </x-events.delete-form>
-                                                @endif
-                                            </li>
+                                            </x-events.grid-list-item>
+                                        @elseif ($isSameDay && !$isAllDayEvent && $isSameStartHour)
+                                            <x-events.grid-list-item :event="$event" :starts-before="$startsBeforeThisWeek"
+                                                :ends-after="$endsAfterThisWeek" :update-route="$updateRoute" :y-offset="$yOffsetHour * 24">
+                                                {{ $event->title }} ({{ $event->start_date->format('G:i') }} às
+                                                {{ $event->end_date->format('G:i') }})
+                                            </x-events.grid-list-item>
+
+                                            @php
+                                                $yOffsetHour++;
+                                            @endphp
                                         @endif
+
+                                        @php
+                                            if ($isAllDayEvent) {
+                                                $yOffset++;
+                                            }
+                                        @endphp
                                     @endforeach
                                 </ul>
                             </div>

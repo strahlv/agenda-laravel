@@ -13,14 +13,19 @@
         $period = CarbonPeriod::create($date->startOfMonth()->previous(Carbon::SUNDAY), $date->endOfMonth()->next(Carbon::SATURDAY));
         $periodDates = $period->toArray();
         $today = CarbonImmutable::today();
+        $events = $events->filter(fn($event) => CarbonPeriod::create($event->start_date, $event->end_date)->overlaps($period));
     @endphp
 
     @for ($i = 0; $i < count($periodDates) / 7; $i++)
+        @php
+            $yOffset = 0;
+        @endphp
         <div class="calendar-row">
             @for ($j = 0; $j < 7; $j++)
                 @php
                     $dt = $periodDates[$j + $i * 7];
                     $isOtherMonth = !$dt->isSameMonth($date);
+                    $weekPeriod = CarbonPeriod::create($dt->copy()->startOfWeek(Carbon::SUNDAY), $dt->copy()->endOfWeek(Carbon::SATURDAY));
                 @endphp
 
                 <div @class(['calendar-day', 'other-month' => $isOtherMonth]) onclick="showCreateForm('{{ $dt->format('Y-m-d') }}')">
@@ -32,24 +37,27 @@
                     ])>
                         {{ $dt->day }}
                     </div>
-                    <ul class="calendar-event-list" x-data="items = {{ $events }}">
+                    <ul class="calendar-event-list" {{-- x-data="items = {{ $events }}" --}}>
                         @foreach ($events as $event)
-                            @if ($event->date->timestamp == $dt->timestamp)
-                                @php
-                                    $updateRoute = route('events.update', ['event' => $event->id ?? -1]);
-                                @endphp
+                            @php
+                                $startsBeforeThisWeek = $j == 0 && $event->start_date->lessThan($weekPeriod->getStartDate());
+                                $endsAfterThisWeek = $event->end_date->greaterThan($weekPeriod->getEndDate());
 
-                                <li class="calendar-event"
-                                    onclick='showEditForm(event, @json($event), "{{ $updateRoute }}")'>
+                                $isSameDay = $event->start_date->isSameDay($dt);
+
+                                $eventWidth = min($startsBeforeThisWeek ? $weekPeriod->getStartDate()->diffInDays($event->end_date) + 1 : $event->start_date->diffInDays($event->end_date) + 1, 7 - $j);
+
+                                $updateRoute = route('events.update', ['event' => $event->id ?? -1]);
+                            @endphp
+
+                            @if ($isSameDay)
+                                <x-events.grid-list-item :event="$event" :starts-before="$startsBeforeThisWeek" :ends-after="$endsAfterThisWeek"
+                                    :update-route="$updateRoute" :y-offset="$yOffset * 24" :width="'calc(100% *' . $eventWidth . ' + 10px * ' . ($eventWidth - 1) . ')'">
                                     {{ $event->title }}
-                                    @if ($event->id)
-                                        <x-events.delete-form :eventId="$event->id">
-                                            <button type="submit" class="btn btn-icon-sm"
-                                                @click="(event) => event.stopPropagation()"><i
-                                                    class="fa-solid fa-xmark"></i></button>
-                                        </x-events.delete-form>
-                                    @endif
-                                </li>
+                                </x-events.grid-list-item>
+                                @php
+                                    $yOffset++;
+                                @endphp
                             @endif
                         @endforeach
                         {{-- CSS BUG!!! --}}
