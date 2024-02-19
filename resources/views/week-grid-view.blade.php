@@ -57,14 +57,19 @@
                                 <ul class="calendar-event-list" {{-- x-data="items = {{ $events }}" --}}>
                                     @foreach ($events as $event)
                                         @php
-                                            $startsBeforeThisWeek = $j == 0 && $event->start_date->lessThan($periodDates[0]);
-                                            $endsAfterThisWeek = $event->end_date->greaterThan($period->getEndDate());
+                                            $startDate = $event->start_date;
+                                            $endDate = $event->end_date;
 
-                                            $isSameDay = $event->start_date->isSameDay($dt);
-                                            $isAllDayEvent = $event->end_date->greaterThanOrEqualTo($event->start_date->endOfDay());
-                                            $isSameStartHour = $event->start_date->hour == $i;
+                                            $isInPeriod = $dt->between($startDate, $endDate);
 
-                                            $eventWidth = min($startsBeforeThisWeek ? $periodDates[0]->diffInDays($event->end_date) + 1 : $event->start_date->diffInDays($event->end_date) + 1, 7 - $j);
+                                            $startsBeforeThisWeek = $j == 0 && $startDate->lessThan($periodDates[0]);
+                                            $endsAfterThisWeek = $endDate->greaterThan($period->getEndDate());
+
+                                            $isSameDay = $startDate->isSameDay($dt);
+                                            $isAllDayEvent = $startDate == $endDate || $endDate->greaterThanOrEqualTo($startDate->copy()->endOfDay());
+                                            $isSameStartHour = $startDate->hour == $i;
+
+                                            $eventWidth = min($startsBeforeThisWeek ? $periodDates[0]->diffInDays($endDate) + 1 : $startDate->diffInDays($endDate) + 1, 7 - $j);
 
                                             $updateRoute = route('events.update', ['event' => $event->id ?? -1]);
                                         @endphp
@@ -81,8 +86,8 @@
                                         @elseif ($isSameDay && !$isAllDayEvent && $isSameStartHour)
                                             <x-events.grid-list-item :event="$event" :starts-before="$startsBeforeThisWeek"
                                                 :ends-after="$endsAfterThisWeek" :update-route="$updateRoute" :y-offset="$yOffsetHour * 24">
-                                                {{ $event->title }} ({{ $event->start_date->format('G:i') }} às
-                                                {{ $event->end_date->format('G:i') }})
+                                                {{ $event->title }} ({{ $startDate->format('G:i') }} às
+                                                {{ $endDate->format('G:i') }})
                                             </x-events.grid-list-item>
 
                                             @php
@@ -91,7 +96,7 @@
                                         @endif
 
                                         @php
-                                            if ($isAllDayEvent) {
+                                            if ($isInPeriod && $isAllDayEvent) {
                                                 $yOffset++;
                                             }
                                         @endphp

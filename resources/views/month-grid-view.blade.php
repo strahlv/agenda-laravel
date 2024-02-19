@@ -18,11 +18,11 @@
 
     @for ($i = 0; $i < count($periodDates) / 7; $i++)
         @php
-            $yOffset = 0;
         @endphp
         <div class="calendar-row">
             @for ($j = 0; $j < 7; $j++)
                 @php
+                    $yOffset = 0;
                     $dt = $periodDates[$j + $i * 7];
                     $isOtherMonth = !$dt->isSameMonth($date);
                     $weekPeriod = CarbonPeriod::create($dt->copy()->startOfWeek(Carbon::SUNDAY), $dt->copy()->endOfWeek(Carbon::SATURDAY));
@@ -40,6 +40,8 @@
                     <ul class="calendar-event-list" {{-- x-data="items = {{ $events }}" --}}>
                         @foreach ($events as $event)
                             @php
+                                $isInPeriod = $dt->between($event->start_date, $event->end_date);
+
                                 $startsBeforeThisWeek = $j == 0 && $event->start_date->lessThan($weekPeriod->getStartDate());
                                 $endsAfterThisWeek = $event->end_date->greaterThan($weekPeriod->getEndDate());
 
@@ -50,15 +52,18 @@
                                 $updateRoute = route('events.update', ['event' => $event->id ?? -1]);
                             @endphp
 
-                            @if ($isSameDay)
+                            @if (($j == 0 && $startsBeforeThisWeek && $isInPeriod) || $isSameDay)
                                 <x-events.grid-list-item :event="$event" :starts-before="$startsBeforeThisWeek" :ends-after="$endsAfterThisWeek"
                                     :update-route="$updateRoute" :y-offset="$yOffset * 24" :width="'calc(100% *' . $eventWidth . ' + 10px * ' . ($eventWidth - 1) . ')'">
                                     {{ $event->title }}
                                 </x-events.grid-list-item>
-                                @php
-                                    $yOffset++;
-                                @endphp
                             @endif
+
+                            @php
+                                if ($isInPeriod) {
+                                    $yOffset++;
+                                }
+                            @endphp
                         @endforeach
                         {{-- CSS BUG!!! --}}
                         {{-- <template x-for="item in filteredItems">
