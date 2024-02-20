@@ -28,7 +28,8 @@
                     $weekPeriod = CarbonPeriod::create($dt->copy()->startOfWeek(Carbon::SUNDAY), $dt->copy()->endOfWeek(Carbon::SATURDAY));
                 @endphp
 
-                <div @class(['calendar-day', 'other-month' => $isOtherMonth]) onclick="showCreateForm('{{ $dt->format('Y-m-d') }}')">
+                <div @class(['calendar-day', 'other-month' => $isOtherMonth])
+                    onclick="showCreateForm('{{ $dt->format('Y-m-d') }}', '{{ $dt->format('H:i') }}')">
                     <div @class([
                         'calendar-day-number',
                         'other-month' => $isOtherMonth,

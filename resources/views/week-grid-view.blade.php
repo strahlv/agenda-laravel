@@ -4,7 +4,7 @@
         $periodDates = $period->toArray();
         $today = CarbonImmutable::today();
         $events = $events->filter(fn($event) => CarbonPeriod::create($event->start_date, $event->end_date)->overlaps($period));
-        $allDayEventsCount = $events->filter(fn($event) => $event->end_date->greaterThanOrEqualTo($event->start_date->endOfDay()))->count();
+        $allDayEventsCount = $events->filter(fn($event) => $event->is_all_day)->count();
         $allDayEventsCellHeight = max(74, $allDayEventsCount * 24 + 2);
     @endphp
 
@@ -49,10 +49,13 @@
                         @for ($j = 0; $j < 7; $j++)
                             @php
                                 $dt = $periodDates[$j];
+                                $dt->hour = max($i, 0);
                                 $yOffset = 0;
                                 $yOffsetHour = 0;
+                                $isEmptySpace = false;
                             @endphp
-                            <div class="week-cell" onclick="showCreateForm('{{ $dt->format('Y-m-d') }}')"
+                            <div class="week-cell"
+                                onclick="showCreateForm('{{ $dt->format('Y-m-d') }}', '{{ $dt->format('H:i') }}', {{ $i == -1 ? 'true' : 'false' }})"
                                 @if ($i == -1) style={{ $allDayEventsCount ? 'height:' . $allDayEventsCellHeight . 'px;' : null }} @endif>
                                 <ul class="calendar-event-list" {{-- x-data="items = {{ $events }}" --}}>
                                     @foreach ($events as $event)
@@ -60,13 +63,17 @@
                                             $startDate = $event->start_date;
                                             $endDate = $event->end_date;
 
+                                            if ($j == 4) {
+                                            }
+
                                             $isInPeriod = $dt->between($startDate, $endDate);
 
                                             $startsBeforeThisWeek = $j == 0 && $startDate->lessThan($periodDates[0]);
                                             $endsAfterThisWeek = $endDate->greaterThan($period->getEndDate());
 
                                             $isSameDay = $startDate->isSameDay($dt);
-                                            $isAllDayEvent = $startDate == $endDate || $endDate->greaterThanOrEqualTo($startDate->copy()->endOfDay());
+
+                                            $isAllDayEvent = $event->is_all_day;
                                             $isSameStartHour = $startDate->hour == $i;
 
                                             $eventWidth = min($startsBeforeThisWeek ? $periodDates[0]->diffInDays($endDate) + 1 : $startDate->diffInDays($endDate) + 1, 7 - $j);
@@ -96,7 +103,8 @@
                                         @endif
 
                                         @php
-                                            if ($isInPeriod && $isAllDayEvent) {
+                                            // if ($isAllDayEvent && $isInPeriod) {
+                                            if ($isAllDayEvent) {
                                                 $yOffset++;
                                             }
                                         @endphp

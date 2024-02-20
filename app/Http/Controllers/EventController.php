@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EventRequest;
 use App\Models\Event;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -13,38 +15,42 @@ class EventController extends Controller
         return User::find($userId)->events;
     }
 
-    public function store(int $userId, Request $request)
+    public function store(int $userId, EventRequest $request)
     {
-        // TODO: criar EventRequest
-        $inputs = $request->validate([
-            'title' => 'required|max:255',
-            'start_date' => 'required',
-            'end_date' => 'required'
-        ]);
+        $inputs = $request->validated();
+
+        if (array_key_exists('is_all_day', $inputs)) {
+            $inputs['start_time'] = '00:00:00';
+            $inputs['end_time'] = '23:59:59';
+        } else {
+            $inputs['end_date'] = $inputs['start_date'];
+        }
 
         Event::create([
             'title' => $inputs['title'],
-            'start_date' => $inputs['start_date'],
-            'end_date' => $inputs['end_date'],
+            'start_date' => $inputs['start_date'] . " " . $inputs['start_time'],
+            'end_date' => $inputs['end_date'] . " " . $inputs['end_time'],
             'user_id' => $userId
         ]);
 
         return back();
     }
 
-    public function update(int $id, Request $request)
+    public function update(int $id, EventRequest $request)
     {
-        // TODO: criar EventRequest
-        $inputs = $request->validate([
-            'title' => 'required|max:255',
-            'start_date' => 'required',
-            'end_date' => 'required'
-        ]);
+        $inputs = $request->validated();
+
+        if (array_key_exists('is_all_day', $inputs)) {
+            $inputs['start_time'] = '00:00:00';
+            $inputs['end_time'] = '23:59:59';
+        } else {
+            $inputs['end_date'] = $inputs['start_date'];
+        }
 
         Event::findOrFail($id)->update([
             'title' => $inputs['title'],
-            'start_date' => $inputs['start_date'],
-            'end_date' => $inputs['end_date']
+            'start_date' => $inputs['start_date'] . " " . $inputs['start_time'],
+            'end_date' => $inputs['end_date'] . " " . $inputs['end_time'],
         ]);
 
         return back();

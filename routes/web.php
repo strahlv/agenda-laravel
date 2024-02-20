@@ -8,8 +8,6 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
-use function PHPSTORM_META\map;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
