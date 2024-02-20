@@ -55,6 +55,7 @@
     }">
         <x-nav :calendar-view="$calendarView" :date="$date" />
         <main>
+            <x-flash />
             <x-events.form action="{{ route('users.events.store', ['user' => 1]) }}" />
             {{ $slot }}
         </main>

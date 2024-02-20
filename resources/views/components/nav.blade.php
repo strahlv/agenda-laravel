@@ -78,4 +78,13 @@
         <a href="{{ Helpers::formatToCalendarUrl($calendarView, $date, 'list') }}" class="btn btn-icon"><i
                 class="fa-solid fa-list"></i></a>
     @endif
+
+    {{-- LOGOUT --}}
+    @auth
+        <form method="POST" action="/logout">
+            @csrf
+
+            <button type="submit">Sair</button>
+        </form>
+    @endauth
 </nav>

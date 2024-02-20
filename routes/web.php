@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\SessionController;
+use App\Http\Controllers\UserController;
 use App\Models\Event;
 use App\Models\User;
 use Carbon\CarbonImmutable;
@@ -21,7 +24,6 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 Route::get('/', function () {
     return redirect('/month/' . CarbonImmutable::today()->format('Y/n/j'));
-    return view('welcome', []);
 });
 
 function getEvents(int $year)
@@ -54,4 +56,12 @@ Route::get('/{view}/{year}/{month}/{day}', function ($view, $year, $month, $day)
     ]);
 })->whereNumber(['year', 'month', 'day']);
 
+Route::get('register', [RegisterController::class, 'create'])->middleware('guest');
+Route::post('register', [RegisterController::class, 'store'])->middleware('guest');
+
+Route::get('login', [SessionController::class, 'create'])->middleware('guest');
+Route::post('login', [SessionController::class, 'store'])->middleware('guest');
+Route::post('logout', [SessionController::class, 'destroy'])->middleware('auth');
+
+Route::resource('users', UserController::class);
 Route::resource('users.events', EventController::class)->shallow();

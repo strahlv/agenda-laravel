@@ -47,6 +47,7 @@ input {
     border: none;
     border-bottom: 2px solid #aaa;
     font-size: 16px;
+    padding: 4px 0;
 }
 
 input:focus {
@@ -123,6 +124,16 @@ input[type="checkbox"] {
 
 .event-form .hidden {
     display: none;
+}
+
+.flash-message {
+    background: #fff;
+    border-bottom: 2px solid var(--clr-primary);
+    box-shadow: 0 0 20px #aaaaaa75;
+    position: fixed;
+    bottom: 2rem;
+    right: 1rem;
+    padding: 1rem 2rem;
 }
 
 /* BUTTON */
