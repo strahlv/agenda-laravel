@@ -335,7 +335,7 @@ input[type="checkbox"] {
     opacity: 1;
 }
 
-.event-item-input-text {
+.event-item-title {
     flex: 1 1 0;
     cursor: pointer;
     font-size: 16px !important;
@@ -345,8 +345,13 @@ input[type="checkbox"] {
     transition: all 0.2s ease;
 }
 
-.event-item-input-text:hover {
+.event-item-title:hover {
     background-color: var(--clr-primary-lt);
+}
+
+.event-item-time {
+    color: #aaa;
+    font-size: 12px;
 }
 
 .event-day {

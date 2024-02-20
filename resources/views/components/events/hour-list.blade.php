@@ -2,13 +2,14 @@
 
 <ul>
     @php
-        $lastDay = 0;
+        $lastHour = 0;
     @endphp
 
     @if ($events->count())
         @foreach ($events as $event)
             <li class="event-list-item">
-                <span class="event-day">{{ $lastDay != $event->start_date->day ? $event->start_date->day : '' }}</span>
+                <span
+                    class="event-day">{{ $lastHour != $event->start_date->hour ? $event->start_date->hour . 'h' : null }}</span>
                 @if (!$event['isHoliday'])
                     @php
                         $route = route('events.update', ['event' => $event->id ?? -1]);
@@ -17,7 +18,8 @@
                     <span class="event-item-title"
                         @@click='showEditForm(event, @json($event), "{{ $route }}")'>{{ $event->title }}
                         <span
-                            class="event-item-time">({{ $event->is_all_day ? 'o dia todo' : $event->start_date->format('G:i') . ' - ' . $event->end_date->format('G:i') }})</span></span>
+                            class="event-item-time">({{ $event->is_all_day ? 'o dia todo' : $event->start_date->format('G:i') . ' - ' . $event->end_date->format('G:i') }})</span>
+                    </span>
 
                     <div>
                         @if ($event->id)
@@ -33,7 +35,7 @@
             </li>
 
             @php
-                $lastDay = $event->start_date->day;
+                $lastHour = $event->start_date->hour;
             @endphp
         @endforeach
     @else

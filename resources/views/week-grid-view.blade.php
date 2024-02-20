@@ -52,7 +52,6 @@
                                 $dt->hour = max($i, 0);
                                 $yOffset = 0;
                                 $yOffsetHour = 0;
-                                $isEmptySpace = false;
                             @endphp
                             <div class="week-cell"
                                 onclick="showCreateForm('{{ $dt->format('Y-m-d') }}', '{{ $dt->format('H:i') }}', {{ $i == -1 ? 'true' : 'false' }})"
@@ -62,9 +61,6 @@
                                         @php
                                             $startDate = $event->start_date;
                                             $endDate = $event->end_date;
-
-                                            if ($j == 4) {
-                                            }
 
                                             $isInPeriod = $dt->between($startDate, $endDate);
 

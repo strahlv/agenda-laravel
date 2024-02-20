@@ -2,7 +2,6 @@
     @if (request()->query('display') == 'list')
         @include('day-list-view')
     @else
-        {{-- @include('day-grid-view') --}}
-        @include('day-list-view')
+        @include('day-grid-view')
     @endif
 </x-layout>

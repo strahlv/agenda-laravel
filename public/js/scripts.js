@@ -18,7 +18,6 @@ function showCreateForm(
     $("#start-time").val(timeString);
     $("#end-time").val(timeString);
 
-    $("#is-all-day").prop("checked", isAllDay);
     setTimeInputsDisplay(isAllDay);
 
     $("#title").focus();
@@ -38,6 +37,8 @@ function showEditForm(event, calendarEvent, url) {
     $("#end-date").val(calendarEvent.end_date);
     $("#start-time").val(calendarEvent.start_time);
     $("#end-time").val(calendarEvent.end_time);
+
+    setTimeInputsDisplay(calendarEvent.is_all_day);
 
     $("#title").focus();
 }
@@ -64,6 +65,8 @@ function toggleTimeInputs() {
 }
 
 function setTimeInputsDisplay(isHidden) {
+    $("#is-all-day").prop("checked", isHidden);
+
     if (isHidden) {
         $("#end-date-control").removeClass("hidden");
         $("#time-control").addClass("hidden");
