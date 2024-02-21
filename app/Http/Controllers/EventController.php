@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EventRequest;
 use App\Models\Event;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -47,7 +46,9 @@ class EventController extends Controller
             $inputs['end_date'] = $inputs['start_date'];
         }
 
-        Event::findOrFail($id)->update([
+        $event = Event::findOrFail($id);
+
+        $event->update([
             'title' => $inputs['title'],
             'start_date' => $inputs['start_date'] . " " . $inputs['start_time'],
             'end_date' => $inputs['end_date'] . " " . $inputs['end_time'],

@@ -79,12 +79,18 @@
                 class="fa-solid fa-list"></i></a>
     @endif
 
-    {{-- LOGOUT --}}
+    {{-- AUTENTICAÇÃO --}}
+    @guest
+        <a href="/login" class="btn btn-primary"><i class="fa-solid fa-sign-in"></i> Entrar</a>
+    @endguest
+
     @auth
+        <a href="/settings" class="btn btn-icon"><i class="fa-solid fa-gear"></i></a>
+
         <form method="POST" action="/logout">
             @csrf
 
-            <button type="submit">Sair</button>
+            <button type="submit" class="btn btn-icon"><i class="fa-solid fa-sign-out"></i></button>
         </form>
     @endauth
 </nav>

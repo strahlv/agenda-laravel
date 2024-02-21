@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\Password;
 
 class RegisterController extends Controller
 {
@@ -16,9 +17,9 @@ class RegisterController extends Controller
     public function store(Request $request)
     {
         $inputs = $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|confirmed|min:8|max:255',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => ['required', 'confirmed', Password::defaults()],
         ]);
 
         $user = User::create($inputs);
@@ -27,6 +28,6 @@ class RegisterController extends Controller
 
         // session()->flash('success', 'Usuário cadastrado com sucesso.');
 
-        return redirect('/month/' . Carbon::today()->format('Y/n/j'))->with('success', 'Usuário cadastrado com sucesso.');
+        return redirect('/')->with('success', 'Usuário cadastrado com sucesso.');
     }
 }

@@ -22,14 +22,17 @@
         <div class="calendar-row">
             @for ($j = 0; $j < 7; $j++)
                 @php
-                    $yOffset = 0;
                     $dt = $periodDates[$j + $i * 7];
                     $isOtherMonth = !$dt->isSameMonth($date);
                     $weekPeriod = CarbonPeriod::create($dt->copy()->startOfWeek(Carbon::SUNDAY), $dt->copy()->endOfWeek(Carbon::SATURDAY));
+
+                    $yOffset = 0;
+
+                    $createRoute = route('users.events.store', ['user' => auth()->user()->id ?? -1]);
                 @endphp
 
                 <div @class(['calendar-day', 'other-month' => $isOtherMonth])
-                    onclick="showCreateForm('{{ $dt->format('Y-m-d') }}', '{{ $dt->format('H:i') }}')">
+                    onclick="showCreateForm('{{ $dt->format('Y-m-d') }}', '{{ $dt->format('H:i') }}', true, '{{ $createRoute }}')">
                     <div @class([
                         'calendar-day-number',
                         'other-month' => $isOtherMonth,

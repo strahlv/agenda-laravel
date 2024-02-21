@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class SessionController extends Controller
 {
@@ -17,23 +17,30 @@ class SessionController extends Controller
     public function store(Request $request)
     {
         $inputs = $request->validate([
-            'email' => 'required|email|exists:users',
+            'email' => 'required|email',
             'password' => 'required|min:8',
         ]);
 
-        $user = User::where('email', $inputs['email'])->first();
+        if (!auth()->attempt($inputs)) {
+            throw ValidationException::withMessages([
+                'password' => 'As credenciais que você inseriu estão incorretas.'
+            ]);
 
-        if (Hash::check($inputs['password'], $user->password)) {
-            auth()->login($user);
-            return redirect('/month/' . Carbon::today()->format('Y/n/j'))->with('success', 'Usuário logado com sucesso.');
+            // return back()
+            //     ->withInput()
+            //     ->withErrors(['password' => 'As credenciais que você inseriu estão incorretas.']);
         }
 
-        return redirect('/login');
+        // session fixation
+        session()->invalidate();
+        session()->regenerate();
+
+        return redirect('/')->with('success', 'Usuário logado com sucesso.');
     }
 
     public function destroy()
     {
         auth()->logout();
-        return redirect('/month/' . Carbon::today()->format('Y/n/j'))->with('success', 'Usuário deslogado com sucesso.');
+        return redirect('/')->with('success', 'Usuário deslogado com sucesso.');
     }
 }

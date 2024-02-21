@@ -12,12 +12,12 @@
                 @if (!$event['isHoliday'])
                     @php
                         $route = route('events.update', ['event' => $event->id ?? -1]);
+                        $eventTime = $event->is_all_day ? 'o dia todo' : ($event->start_time == $event->end_time ? $event->start_date->format('G:i') : $event->start_date->format('G:i') . ' - ' . $event->end_date->format('G:i'));
                     @endphp
 
                     <span class="event-item-title"
                         @@click='showEditForm(event, @json($event), "{{ $route }}")'>{{ $event->title }}
-                        <span
-                            class="event-item-time">({{ $event->is_all_day ? 'o dia todo' : $event->start_date->format('G:i') . ' - ' . $event->end_date->format('G:i') }})</span></span>
+                        <span class="event-item-time">({{ $eventTime }})</span></span>
 
                     <div>
                         @if ($event->id)
@@ -38,8 +38,12 @@
         @endforeach
     @else
         <p>Nenhum evento encontrado.</p>
+        {{-- TODO: extrair componente --}}
+        @php
+            $createRoute = route('users.events.store', ['user' => auth()->user()->id ?? -1]);
+        @endphp
         <button type="button" class="btn btn-primary"
-            @@click="showCreateForm('{{ $date->format('Y-m-d') }}')">Criar
+            @@click="showCreateForm('{{ $date->format('Y-m-d') }}','{{ $date->format('H:i') }}', true, '{{ $createRoute }}')">Criar
             evento</button>
     @endif
 </ul>

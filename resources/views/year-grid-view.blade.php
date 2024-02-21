@@ -30,11 +30,13 @@
                             $hasEvent = false;
 
                             foreach ($events as $event) {
-                                if (!$isOtherMonth && $event->start_date->timestamp == $dt->timestamp) {
+                                if ((!$isOtherMonth && $event->start_date->isSameDay($dt)) || $dt->between($event->start_date, $event->end_date)) {
                                     $hasEvent = true;
                                     break;
                                 }
                             }
+
+                            $createRoute = route('users.events.store', ['user' => auth()->user()->id ?? -1]);
                         @endphp
 
                         <div @class([
@@ -47,7 +49,8 @@
                                 'other-month' => $isOtherMonth,
                                 'holiday' => $dt->dayOfWeek == 0,
                                 'today' => $dt->timestamp == $today->timestamp && !$isOtherMonth,
-                            ]) onclick="showCreateForm('{{ $dt->format('Y-m-d') }}')">
+                            ])
+                                onclick="showCreateForm('{{ $dt->format('Y-m-d') }}','{{ $dt->format('H:i') }}', true, '{{ $createRoute }}')">
                                 {{ $dt->day }}
                             </div>
                         </div>

@@ -10,8 +10,8 @@
 @endphp
 
 {{-- <form {{ $attributes }} method="{{ $method }}" @class(['event-form', 'hidden' => false]) --}}
-<form {{ $attributes }} method="{{ $method }}" @class(['event-form', 'hidden' => !$errors->any()])
-    @@submit="document.getElementById('submit-button').disabled = true">
+<form method="{{ $method }}" {{ $attributes }} @class(['event-form', 'hidden' => !$errors->any()])
+    @@submit="disableSubmitButton()">
     @csrf
     @method($spoofMethod)
 

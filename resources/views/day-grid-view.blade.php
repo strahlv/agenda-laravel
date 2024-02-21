@@ -29,7 +29,7 @@
         <div class="week-grid">
             <div class="hour-col">
                 @for ($i = -1; $i < 24; $i++)
-                    <span
+                    <span id="{{ $i }}"
                         @if ($i == -1) style="{{ $allDayEventsCount ? 'flex: 0 0 auto; height: ' . $allDayEventsCellHeight . 'px;' : null }}" @endif>
                         {{ $i >= 0 ? $i . 'h' : 'O dia todo' }}</span>
                 @endfor
@@ -49,11 +49,14 @@
                         @php
                             $dt = $periodDates[0];
                             $dt->hour = max($i, 0);
+
                             $yOffset = 0;
                             $yOffsetHour = 0;
+
+                            $createRoute = route('users.events.store', ['user' => auth()->user()->id ?? -1]) . "#$i";
                         @endphp
                         <div class="week-cell"
-                            onclick="showCreateForm('{{ $dt->format('Y-m-d') }}', '{{ $dt->format('H:i') }}', {{ $i == -1 ? 'true' : 'false' }})"
+                            onclick="showCreateForm('{{ $dt->format('Y-m-d') }}', '{{ $dt->format('H:i') }}', {{ $i == -1 ? 'true' : 'false' }}, '{{ $createRoute }}')"
                             @if ($i == -1) style={{ $allDayEventsCount ? 'height:' . $allDayEventsCellHeight . 'px;' : null }} @endif>
                             <ul class="calendar-event-list" {{-- x-data="items = {{ $events }}" --}}>
                                 @foreach ($events as $event)

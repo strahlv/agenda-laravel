@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Cadastrar usuário</title>
+        <title>Entrar</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Barlow&display=swap" rel="stylesheet">

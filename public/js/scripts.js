@@ -2,7 +2,7 @@ function showCreateForm(
     dateString,
     timeString = null,
     isAllDay = true,
-    url = "/users/1/events"
+    url = "/"
 ) {
     console.log(dateString);
     console.log(timeString);
@@ -77,5 +77,5 @@ function setTimeInputsDisplay(isHidden) {
 }
 
 function disableSubmitButton() {
-    // TODO:
+    $("#submit-button").prop("disabled", true);
 }

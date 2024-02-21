@@ -22,7 +22,12 @@
     @if (!$yearHasEvents)
         <div>
             <p>Nenhum evento encontrado.</p>
-            <button type="button" class="btn btn-primary" @click="showCreateForm('{{ $date->format('Y-m-d') }}')">Criar
+            {{-- TODO: extrair componente --}}
+            @php
+                $createRoute = route('users.events.store', ['user' => auth()->user()->id ?? -1]);
+            @endphp
+            <button type="button" class="btn btn-primary"
+                @@click="showCreateForm('{{ $date->format('Y-m-d') }}','{{ $date->format('H:i') }}', true, '{{ $createRoute }}')">Criar
                 evento</button>
         </div>
     @endif

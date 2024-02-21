@@ -23,14 +23,20 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 */
 
 Route::get('/', function () {
+    if (session()->has('success')) {
+        session()->flash('success', session('success'));
+    }
+
     return redirect('/month/' . CarbonImmutable::today()->format('Y/n/j'));
 });
 
+// function getEvents($from, $to)
 function getEvents(int $year)
 {
     $holidaysJson = [];
     // USAR GOOGLE CALENDAR API?
     // $holidaysJson = Http::get("https://brasilapi.com.br/api/feriados/v1/$year")->json();
+
     $holidays = collect($holidaysJson)->map(fn ($item) => new Event(
         [
             'title' => $item['name'],
@@ -38,7 +44,7 @@ function getEvents(int $year)
         ]
     ));
 
-    $events = User::find(1)->events;
+    $events = auth()->user() ? auth()->user()->events : collect([]);
 
     return $events->concat($holidays)->sortBy('start_date');
 }
@@ -64,4 +70,4 @@ Route::post('login', [SessionController::class, 'store'])->middleware('guest');
 Route::post('logout', [SessionController::class, 'destroy'])->middleware('auth');
 
 Route::resource('users', UserController::class);
-Route::resource('users.events', EventController::class)->shallow();
+Route::resource('users.events', EventController::class)->shallow()->middleware(['auth', 'can:creator']);
