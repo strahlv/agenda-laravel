@@ -51,4 +51,14 @@ class Event extends Model
         $startDateEnd->second = 59;
         return $this->end_date->greaterThanOrEqualTo($startDateEnd);
     }
+
+    public function getIsHolidayAttribute()
+    {
+        return $this->id == -1;
+    }
+
+    public function getCanUpdateOrDestroyAttribute()
+    {
+        return !$this->is_holiday;
+    }
 }

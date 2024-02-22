@@ -29,47 +29,22 @@
                 <div class="flex-col">
                     <label for="name" class="form-label">Nome</label>
                     <input type="text" name="name" id="name" value="{{ old('name') }}">
-                    @error('name')
-                        {{-- TODO:
-                            * estilo css 
-                            * tradução da msg
-                        --}}
-                        <p style="color: red">{{ $message }}</p>
-                    @enderror
+                    <x-form-error error="name" />
                 </div>
                 <div class="flex-col">
                     <label for="email" class="form-label">E-mail</label>
                     <input type="email" name="email" id="email" value="{{ old('email') }}">
-                    @error('email')
-                        {{-- TODO:
-                            * estilo css 
-                            * tradução da msg
-                        --}}
-                        <p style="color:
-                        red">{{ $message }}</p>
-                    @enderror
+                    <x-form-error error="email" />
                 </div>
                 <div class="flex-col">
                     <label for="password" class="form-label">Senha</label>
                     <input type="password" name="password" id="password">
-                    @error('password')
-                        {{-- TODO:
-                            * estilo css 
-                            * tradução da msg
-                        --}}
-                        <p style="color: red">{{ $message }}</p>
-                    @enderror
+                    <x-form-error error="password" />
                 </div>
                 <div class="flex-col">
                     <label for="password-confirm" class="form-label">Confirmar senha</label>
                     <input type="password" name="password_confirmation" id="password-confirmation">
-                    @error('password_confirmation')
-                        {{-- TODO:
-                            * estilo css 
-                            * tradução da msg
-                        --}}
-                        <p style="color: red">{{ $message }}</p>
-                    @enderror
+                    <x-form-error error="password_confirmation" />
                 </div>
                 <button type="submit" class="btn btn-primary">Cadastrar</button>
                 <p>Já possui uma conta? <a href="/login">Entrar</a></p>

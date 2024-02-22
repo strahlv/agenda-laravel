@@ -16,13 +16,12 @@
 }
 
 body {
-    background-color: var(--clr-primary);
     height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
-main {
+.calendar-container {
     flex: 1 1 0;
     display: flex;
 }
@@ -66,8 +65,8 @@ input:focus {
     width: 100%;
 }
 
-.flex-auto {
-    flex: 1 1 auto;
+.flex-1 {
+    flex: 1 1 0;
 }
 
 .gap-10 {
@@ -86,12 +85,15 @@ input:focus {
     padding: 32px;
     width: 400px;
     margin-left: 0;
-    background-color: #fff;
     transition: all 0.2s ease;
 }
 
 .event-form.hidden {
     margin-left: -400px;
+}
+
+.event-form.hidden * {
+    visibility: none;
 }
 
 .form-header {
@@ -126,6 +128,11 @@ input[type="checkbox"] {
     display: none;
 }
 
+.form-error {
+    color: var(--clr-danger);
+    font-size: 14px;
+}
+
 .flash-message {
     background: #fff;
     border-bottom: 2px solid var(--clr-primary);
@@ -142,8 +149,9 @@ input[type="checkbox"] {
 /* BUTTON */
 .btn {
     border: 1px solid transparent;
-    border-radius: 16px;
+    border-radius: 32px;
     padding: 8px 16px;
+    height: 40px;
     color: var(--clr-primary);
     font-size: 16px;
     text-align: center;
@@ -161,8 +169,8 @@ input[type="checkbox"] {
     color: var(--clr-primary);
     border-radius: 50%;
     padding: 8px;
-    height: 32px;
-    width: 32px;
+    height: 40px;
+    width: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -511,6 +519,10 @@ input[type="checkbox"] {
     box-shadow: 0 1px 0 #999;
 }
 
+.calendar-event.holiday {
+    background-color: var(--clr-holiday);
+}
+
 .calendar-event form {
     display: flex;
     align-self: flex-start;
@@ -527,6 +539,7 @@ input[type="checkbox"] {
     background-color: transparent;
     color: transparent;
     font-size: 12px;
+    height: 16px;
     width: 16px;
 }
 
@@ -613,7 +626,7 @@ input[type="checkbox"] {
 
 /* WEEK GRID */
 .week-grid-container {
-    max-height: calc(100vh - 70px - 81px);
+    max-height: calc(100vh - 70px - 84px);
     overflow: auto;
 }
 
@@ -656,6 +669,7 @@ input[type="checkbox"] {
     gap: 8px;
     flex: 1;
     padding: 8px 0;
+    background: var(--clr-primary);
 }
 
 .calendar-row-weekday-name {
@@ -750,4 +764,41 @@ input[type="checkbox"] {
 .calendar-event.ends-after {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+}
+
+/* SETTINGS */
+
+/* LOADING BAR */
+.loading-bar {
+    width: 100%;
+    height: 2px;
+    position: absolute;
+    top: 0;
+    overflow: hidden;
+}
+
+.loading-bar.hidden {
+    opacity: 0;
+}
+
+.loading-bar-fill {
+    position: absolute;
+
+    width: 25%;
+    height: 100%;
+    background-color: var(--clr-primary);
+    animation: loading 1s ease infinite;
+}
+
+@keyframes loading {
+    from {
+        left: -25%;
+    }
+    to {
+        left: 100%;
+    }
+}
+
+.loading-content {
+    opacity: 0.8;
 }

@@ -29,25 +29,12 @@
                 <div class="flex-col">
                     <label for="email" class="form-label">E-mail</label>
                     <input type="email" name="email" id="email" value="{{ old('email') }}">
-                    @error('email')
-                        {{-- TODO:
-                            * estilo css 
-                            * tradução da msg
-                        --}}
-                        <p style="color:
-                        red">{{ $message }}</p>
-                    @enderror
+                    <x-form-error error="email" />
                 </div>
                 <div class="flex-col">
                     <label for="password" class="form-label">Senha</label>
                     <input type="password" name="password" id="password">
-                    @error('password')
-                        {{-- TODO:
-                            * estilo css 
-                            * tradução da msg
-                        --}}
-                        <p style="color: red">{{ $message }}</p>
-                    @enderror
+                    <x-form-error error="password" />
                 </div>
                 <button type="submit" class="btn btn-primary">Entrar</button>
                 <p>Não possui uma conta? <a href="/register">Cadastrar</a></p>

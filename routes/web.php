@@ -33,14 +33,16 @@ Route::get('/', function () {
 // function getEvents($from, $to)
 function getEvents(int $year)
 {
-    $holidaysJson = [];
+    // $holidaysJson = [];
     // USAR GOOGLE CALENDAR API?
-    // $holidaysJson = Http::get("https://brasilapi.com.br/api/feriados/v1/$year")->json();
+    $holidaysJson = Http::get("https://brasilapi.com.br/api/feriados/v1/$year")->json();
 
     $holidays = collect($holidaysJson)->map(fn ($item) => new Event(
         [
+            'id' => -1,
             'title' => $item['name'],
-            'date' => CarbonImmutable::parse($item['date']),
+            'start_date' => CarbonImmutable::parse($item['date']),
+            'end_date' => CarbonImmutable::parse($item['date'])->endOfDay(),
         ]
     ));
 
@@ -62,12 +64,14 @@ Route::get('/{view}/{year}/{month}/{day}', function ($view, $year, $month, $day)
     ]);
 })->whereNumber(['year', 'month', 'day']);
 
-Route::get('register', [RegisterController::class, 'create'])->middleware('guest');
-Route::post('register', [RegisterController::class, 'store'])->middleware('guest');
+Route::get('/register', [RegisterController::class, 'create'])->middleware('guest');
+Route::post('/register', [RegisterController::class, 'store'])->middleware('guest');
 
-Route::get('login', [SessionController::class, 'create'])->middleware('guest');
-Route::post('login', [SessionController::class, 'store'])->middleware('guest');
-Route::post('logout', [SessionController::class, 'destroy'])->middleware('auth');
+Route::get('/login', [SessionController::class, 'create'])->name('login')->middleware('guest');
+Route::post('/login', [SessionController::class, 'store'])->middleware('guest');
+Route::post('/logout', [SessionController::class, 'destroy'])->middleware('auth');
 
-Route::resource('users', UserController::class);
+Route::get('/settings', [UserController::class, 'edit'])->middleware('auth');
+Route::patch('/settings', [UserController::class, 'update'])->middleware('auth');
+
 Route::resource('users.events', EventController::class)->shallow()->middleware(['auth', 'can:creator']);

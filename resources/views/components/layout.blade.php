@@ -53,10 +53,11 @@
             )
         }
     }">
+        <x-loading-bar />
         <x-nav :calendar-view="$calendarView" :date="$date" />
-        <main>
+        <main class="calendar-container">
             <x-flash />
-            <x-events.form action="{{ route('users.events.store', ['user' => 1]) }}" />
+            <x-events.form action="{{ route('users.events.store', ['user' => auth()->id()]) }}" />
             {{ $slot }}
         </main>
     </body>

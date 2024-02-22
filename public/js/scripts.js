@@ -76,6 +76,8 @@ function setTimeInputsDisplay(isHidden) {
     }
 }
 
-function disableSubmitButton() {
+function onSubmitEventForm() {
     $("#submit-button").prop("disabled", true);
+    $("#loading-bar").removeClass("hidden");
+    $(".calendar-container").addClass("loading-content");
 }

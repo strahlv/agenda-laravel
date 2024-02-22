@@ -32,7 +32,7 @@ class SessionController extends Controller
         }
 
         // session fixation
-        session()->invalidate();
+        // session()->invalidate();
         session()->regenerate();
 
         return redirect('/')->with('success', 'Usuário logado com sucesso.');
@@ -41,6 +41,10 @@ class SessionController extends Controller
     public function destroy()
     {
         auth()->logout();
+
+        session()->invalidate();
+        session()->regenerateToken();
+
         return redirect('/')->with('success', 'Usuário deslogado com sucesso.');
     }
 }
