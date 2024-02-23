@@ -1,13 +1,4 @@
-@props(['calendarView', 'date'])
-
-@php
-    $title = match ($calendarView) {
-        'year' => 'Ano ' . $date->year,
-        'month' => $date->translatedFormat('F \\d\\e Y'),
-        'week' => 'Semana de ' . $date->translatedFormat('j \\d\\e F \\d\\e Y'),
-        'day' => $date->translatedFormat('l, j \\d\\e F \\d\\e Y'),
-    };
-@endphp
+@props(['title' => 'Sem título'])
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -16,7 +7,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Agenda - {{ $title }}</title>
+        <title>Agenda | {{ $title }}</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Barlow&display=swap" rel="stylesheet">
@@ -54,12 +45,8 @@
         }
     }">
         <x-loading-bar />
-        <x-nav :calendar-view="$calendarView" :date="$date" />
-        <main class="calendar-container">
-            <x-flash />
-            <x-events.form action="{{ route('users.events.store', ['user' => auth()->id() ?? -1]) }}" />
-            {{ $slot }}
-        </main>
+        <x-flash />
+        {{ $slot }}
     </body>
 
 </html>

@@ -53,10 +53,10 @@
                             $yOffset = 0;
                             $yOffsetHour = 0;
 
-                            $createRoute = route('users.events.store', ['user' => auth()->user()->id ?? -1]) . "#$i";
+                            $storeRoute = route('users.events.store', ['user' => auth()->user()->id ?? -1]) . "#$i";
                         @endphp
                         <div class="week-cell"
-                            onclick="showCreateForm('{{ $dt->format('Y-m-d') }}', '{{ $dt->format('H:i') }}', {{ $i == -1 ? 'true' : 'false' }}, '{{ $createRoute }}')"
+                            onclick="showCreateForm('{{ $dt->format('Y-m-d') }}', '{{ $dt->format('H:i') }}', {{ $i == -1 ? 'true' : 'false' }}, '{{ $storeRoute }}')"
                             @if ($i == -1) style={{ $allDayEventsCount ? 'height:' . $allDayEventsCellHeight . 'px;' : null }} @endif>
                             <ul class="calendar-event-list" {{-- x-data="items = {{ $events }}" --}}>
                                 @foreach ($events as $event)
@@ -76,7 +76,7 @@
 
                                         $eventWidth = 1;
 
-                                        $updateRoute = route('events.update', ['event' => $event->id ?? -1]);
+                                        $updateRoute = route('events.update', ['event' => $event->id ?? -1]) . "#$event->id";
                                     @endphp
 
                                     @if ($i == -1 && ($isSameDay || $startsBeforeThisWeek) && $isAllDayEvent)

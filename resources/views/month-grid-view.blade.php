@@ -29,11 +29,11 @@
                     $weekPeriod = CarbonPeriod::create($dt->copy()->startOfWeek(Carbon::SUNDAY), $dt->copy()->endOfWeek(Carbon::SATURDAY));
                     $weekEvents = $events->filter(fn($event) => $event->period->overlaps($weekPeriod));
 
-                    $createRoute = route('users.events.store', ['user' => auth()->user()->id ?? -1]);
+                    $storeRoute = route('users.events.store', ['user' => auth()->user()->id ?? -1]);
                 @endphp
 
                 <div @class(['calendar-day', 'other-month' => $isOtherMonth])
-                    onclick="showCreateForm('{{ $dt->format('Y-m-d') }}', '{{ $dt->format('H:i') }}', true, '{{ $createRoute }}')">
+                    onclick="showCreateForm('{{ $dt->format('Y-m-d') }}', '{{ $dt->format('H:i') }}', true, '{{ $storeRoute }}')">
                     <div @class([
                         'calendar-day-number',
                         'other-month' => $isOtherMonth,
@@ -42,7 +42,7 @@
                     ])>
                         {{ $dt->day }}
                     </div>
-                    {{-- TODO: componente --}}
+                    {{-- TODO: extrair componente --}}
                     <ul class="calendar-event-list" {{-- x-data="items = {{ $events }}" --}}>
                         @foreach ($weekEvents as $event)
                             @php
@@ -53,7 +53,7 @@
                                 $canPlace = ($j == 0 && $startsBeforeThisWeek && $isInPeriod) || $event->startsAt($dt);
 
                                 $eventWidth = min($startsBeforeThisWeek ? $startOfWeek->diffInDays($event->end_date) + 1 : $event->start_date->diffInDays($event->end_date) + 1, 7 - $j);
-                                $updateRoute = route('events.update', ['event' => $event->id ?? -1]);
+                                $updateRoute = route('events.update', ['event' => $event->id ?? -1]) . "#$event->id";
 
                                 // Posiciona os eventos no grid
                                 $y = 0;

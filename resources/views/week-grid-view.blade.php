@@ -57,12 +57,12 @@
 
                                 $yHour = 0;
 
-                                $createRoute = route('users.events.store', ['user' => auth()->user()->id ?? -1]) . "#$i";
+                                $storeRoute = route('users.events.store', ['user' => auth()->user()->id ?? -1]) . "#$i";
                             @endphp
                             <div class="week-cell"
-                                onclick="showCreateForm('{{ $dt->format('Y-m-d') }}', '{{ $dt->format('H:i') }}', {{ $i == -1 ? 'true' : 'false' }}, '{{ $createRoute }}')"
+                                onclick="showCreateForm('{{ $dt->format('Y-m-d') }}', '{{ $dt->format('H:i') }}', {{ $i == -1 ? 'true' : 'false' }}, '{{ $storeRoute }}')"
                                 @if ($i == -1) style={{ $allDayEventsCount ? 'height:' . $allDayEventsCellHeight . 'px;' : null }} @endif>
-                                {{-- TODO: componente --}}
+                                {{-- TODO: extrair componente --}}
                                 <ul class="calendar-event-list" {{-- x-data="items = {{ $events }}" --}}>
                                     @foreach ($events as $event)
                                         @php
@@ -75,7 +75,7 @@
                                             $canPlaceAtHour = $event->startsAt($dt) && !$isAllDayEvent && $event->startsAtHour($i);
 
                                             $eventWidth = min($startsBeforeThisWeek ? $startOfWeek->diffInDays($event->end_date) + 1 : $event->durationInDays + 1, 7 - $j);
-                                            $updateRoute = route('events.update', ['event' => $event->id ?? -1]);
+                                            $updateRoute = route('events.update', ['event' => $event->id ?? -1]) . "#$event->id";
 
                                             // Posiciona os eventos no grid
                                             $y = 0;

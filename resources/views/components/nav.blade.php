@@ -19,7 +19,7 @@
         $display = request()->query('display');
     @endphp
 
-    {{-- NAVEGAÇÃO --}}
+    {{-- Navegação --}}
     <a href="{{ Helpers::formatToCalendarUrl($calendarView, today(), $display) }}" class="btn btn-primary">Hoje</a>
     <a href="{{ Helpers::formatToCalendarUrl($calendarView, $previousDate, $display) }}" class="btn btn-icon"><i
             class="fa-solid fa-chevron-left"></i></a>
@@ -37,17 +37,17 @@
 
     <h1 class="navbar-title">{{ $title }}</h1>
 
-    {{-- PESQUISAR --}}
+    {{-- TODO: Pesquisar --}}
     @auth
         <div class="search-bar" x-data="{ showClearButton: false }">
             <i class="fa-solid fa-search"></i>
             <input x-model="search" type="text" placeholder="Pesquisar eventos..."
-                @input="showClearButton = search !== ''">
+                @@input="showClearButton = search !== ''">
             <button class="btn btn-icon btn-clear" x-show="showClearButton" @click="search = ''; showClearButton = false"><i
                     class="fa-solid fa-xmark"></i></button>
         </div>
 
-        {{-- TROCAR VIEW --}}
+        {{-- Trocar View --}}
         @php
             $dropdownTitle = match ($calendarView) {
                 'year' => 'Ano',
@@ -57,9 +57,10 @@
             };
         @endphp
 
-        <x-dropdown :title="$dropdownTitle">
+        <x-dropdown>
             <x-slot name="trigger">
-                <button class="btn btn-primary">{{ $dropdownTitle }}<i class="fa-solid fa-chevron-down"></i></button>
+                <button class="btn btn-primary btn-with-icon">{{ $dropdownTitle }}<i
+                        class="fa-solid fa-angle-down"></i></button>
             </x-slot>
 
             <x-dropdown.nav-link :href="Helpers::formatToCalendarUrl('day', $date, $display)" :active="$calendarView == 'day'">Dia</x-dropdown.nav-link>
@@ -68,7 +69,7 @@
             <x-dropdown.nav-link :href="Helpers::formatToCalendarUrl('year', $date, $display)" :active="$calendarView == 'year'">Ano</x-dropdown.nav-link>
         </x-dropdown>
 
-        {{-- TROCAR DISPLAY --}}
+        {{-- Trocar Display --}}
         @if (request()->query('display') == 'list')
             <a href="{{ Helpers::formatToCalendarUrl($calendarView, $date) }}" class="btn btn-icon"><i
                     class="fa-solid fa-calendar-days"></i></a>
@@ -78,18 +79,24 @@
         @endif
     @endauth
 
-    {{-- AUTENTICAÇÃO --}}
+    {{-- Autenticação --}}
     @guest
         <a href="/login" class="btn btn-primary"><i class="fa-solid fa-sign-in"></i> Entrar</a>
     @endguest
 
     @auth
-        <a href="/settings" class="btn btn-icon"><i class="fa-solid fa-gear"></i></a>
+        <x-dropdown>
+            <x-slot name="trigger">
+                <button class="btn btn-icon"><i class="fa-solid fa-user"></i></button>
+            </x-slot>
 
-        <form method="POST" action="/logout">
-            @csrf
+            <a href="/settings" class="btn btn-with-icon"><i class="fa-solid fa-gear"></i> Configurações</a>
 
-            <button type="submit" class="btn btn-icon"><i class="fa-solid fa-sign-out"></i></button>
-        </form>
+            <form method="POST" action="/logout" class="flex-col">
+                @csrf
+
+                <button type="submit" class="btn btn-with-icon"><i class="fa-solid fa-sign-out"></i> Sair</button>
+            </form>
+        </x-dropdown>
     @endauth
 </nav>

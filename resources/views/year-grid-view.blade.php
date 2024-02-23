@@ -35,7 +35,7 @@
                                 }
                             }
 
-                            $createRoute = route('users.events.store', ['user' => auth()->user()->id ?? -1]);
+                            $storeRoute = route('users.events.store', ['user' => auth()->user()->id ?? -1]);
                         @endphp
 
                         <div @class([
@@ -49,7 +49,7 @@
                                 'holiday' => $dt->dayOfWeek == 0,
                                 'today' => $dt->isSameDay(today()) && !$isOtherMonth,
                             ])
-                                onclick="showCreateForm('{{ $dt->format('Y-m-d') }}','{{ $dt->format('H:i') }}', true, '{{ $createRoute }}')">
+                                onclick="showCreateForm('{{ $dt->format('Y-m-d') }}','{{ $dt->format('H:i') }}', true, '{{ $storeRoute }}')">
                                 {{ $dt->day }}
                             </div>
                         </div>

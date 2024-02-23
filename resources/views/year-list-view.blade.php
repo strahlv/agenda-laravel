@@ -1,4 +1,4 @@
-<div class="event-list">
+<div class="event-list-container">
     @php
         $yearHasEvents = false;
     @endphp
@@ -10,8 +10,7 @@
 
         @if (count($monthEvents) > 0)
             <a href="/month/{{ $date->year }}/{{ $i }}/{{ $date->day }}?display=list"
-                class="event-list-month-title">
-                {{ ucfirst(Carbon::createFromDate(1, $i)->translatedFormat('F')) }}</a>
+                class="event-list-month-title">{{ ucfirst(Carbon::createFromDate(1, $i)->translatedFormat('F')) }}</a>
             <x-events.list :date="$date" :events="$monthEvents" />
 
             @php
@@ -20,15 +19,6 @@
         @endif
     @endfor
     @if (!$yearHasEvents)
-        <div>
-            <p>Nenhum evento encontrado.</p>
-            {{-- TODO: extrair componente --}}
-            @php
-                $createRoute = route('users.events.store', ['user' => auth()->user()->id ?? -1]);
-            @endphp
-            <button type="button" class="btn btn-primary"
-                @@click="showCreateForm('{{ $date->format('Y-m-d') }}','{{ $date->format('H:i') }}', true, '{{ $createRoute }}')">Criar
-                evento</button>
-        </div>
+        <x-events.none :date="$date" />
     @endif
 </div>

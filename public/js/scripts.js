@@ -81,3 +81,7 @@ function onSubmitEventForm() {
     $("#loading-bar").removeClass("hidden");
     $(".calendar-container").addClass("loading-content");
 }
+
+function disableSubmitButton(event) {
+    $(event.target).children('button[type="submit"]').prop("disabled", true);
+}

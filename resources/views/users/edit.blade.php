@@ -1,101 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
+<x-layout title="Configurações">
+    <main>
+        <x-flash />
+        <nav class="navbar">
+            <a href="/" class="btn btn-icon"><i class="fa-solid fa-chevron-left"></i></a>
+            <h1 class="navbar-title">Configurações</h1>
+        </nav>
+        <section>
+            <form method="POST" action="/settings" class="event-form">
+                @csrf
+                @method('PATCH')
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Agenda - Configurações</title>
+                @php
+                    $user = auth()->user();
+                @endphp
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Barlow&display=swap" rel="stylesheet">
+                <h1>Dados do usuário</h1>
 
-        <!-- Styles -->
-        <link rel="stylesheet" href="/css/app.css">
+                <x-input type="text" name="name" label="Nome" placeholder="{{ $user->name }}" />
+                <x-input type="email" name="email" label="E-mail" placeholder="{{ $user->email }}" />
+                <x-input type="password" name="password" label="Senha" />
+                <x-input type="password" name="password_confirmation" label="Confirmar senha" />
 
-        <!-- JS -->
-        <script src="https://kit.fontawesome.com/a783aedd26.js" crossorigin="anonymous"></script>
-        <script src="/js/jquery-3.7.1.js"></script>
-        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-        <script src="/js/scripts.js"></script>
-    </head>
+                <button type="submit" class="btn btn-primary btn-save">Salvar</button>
+            </form>
+        </section>
+        <section>
+            <form method="POST" action="/" class="event-form">
+                @csrf
+                @method('PATCH')
 
-    <body>
-        <main>
-            <x-flash />
+                <h1>Configurações do calendário</h1>
 
-            <nav class="navbar">
-                <a href="/" class="btn btn-icon"><i class="fa-solid fa-chevron-left"></i></a>
-                <h1 class="navbar-title">Configurações</h1>
-            </nav>
-            <section>
-                <form method="POST" action="/settings" class="event-form">
-                    @csrf
-                    @method('PATCH')
+                <x-input.checkbox name="week_starts_monday" label="Semana começando na segunda-feira" />
+                <x-input.checkbox name="year_starts_day_one" label="Ano começando dia primeiro" :checked="false" />
+                <x-input.checkbox name="hide_holidays" label="Mostrar feriados" :checked="true" />
 
-                    <h1>Dados do usuário</h1>
-
-                    <div class="flex-col">
-                        <label for="name" class="form-label">Nome</label>
-                        <input type="text" name="name" id="name" placeholder="{{ auth()->user()->name }}"
-                            value="{{ old('name') }}">
-                        <x-form-error error="name" />
-                    </div>
-                    <div class="flex-col">
-                        <label for="email" class="form-label">E-mail</label>
-                        <input type="email" name="email" id="email" placeholder="{{ auth()->user()->email }}"
-                            value="{{ old('email') }}">
-                        <x-form-error error="email" />
-                    </div>
-                    <div class="flex-col">
-                        <label for="password" class="form-label">Senha</label>
-                        <input type="password" name="password" id="password">
-                        <x-form-error error="password" />
-                    </div>
-                    <div class="flex-col">
-                        <label for="password-confirm" class="form-label">Confirmar senha</label>
-                        <input type="password" name="password_confirmation" id="password-confirmation">
-                        <x-form-error error="password_confirmation" />
-                    </div>
-
-                    <button type="submit" class="btn btn-primary btn-save">Salvar</button>
-                </form>
-            </section>
-            <section>
-                <form method="POST" action="/" class="event-form">
-                    @csrf
-                    @method('PATCH')
-
-                    <h1>Configurações do calendário</h1>
-                    <div class="flex-row">
-                        <label for="week-starts-monday">
-                            <input type="checkbox" name="week_starts_monday" id="week-starts-monday"
-                                onchange="toggleTimeInputs()">
-                            <span>Semana começando na segunda-feira</span>
-                        </label>
-                        <x-form-error error="week_starts_monday" />
-                    </div>
-                    <div class="flex-row">
-                        <label for="year-starts-day-one">
-                            <input type="checkbox" name="year_starts_day_one" id="year-starts-day-one"
-                                onchange="toggleTimeInputs()">
-                            <span>Ano começando dia primeiro</span>
-                        </label>
-                        <x-form-error error="year_starts_day_one" />
-                    </div>
-                    <div class="flex-row">
-                        <label for="hide-holidays">
-                            <input type="checkbox" name="hide_holidays" id="hide-holidays" checked
-                                onchange="toggleTimeInputs()">
-                            <span>Mostrar feriados</span>
-                        </label>
-                        <x-form-error error="hide_holidays" />
-                    </div>
-
-                    <button type="submit" class="btn btn-primary btn-save">Salvar</button>
-                </form>
-            </section>
-        </main>
-    </body>
-
-</html>
+                <button type="submit" class="btn btn-primary btn-save">Salvar</button>
+            </form>
+        </section>
+    </main>
+</x-layout>

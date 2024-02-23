@@ -1,22 +1,22 @@
 @props(['date', 'events'])
 
-<ul>
-    @php
-        $lastDay = 0;
-    @endphp
+@php
+    $lastDay = 0;
+@endphp
 
-    @if ($events->count())
+@if ($events->count())
+    <ul class="event-list">
         @foreach ($events as $event)
-            <li class="event-list-item">
+            <li class="event-list-item" id="{{ $event->id }}">
                 <span class="event-day">{{ $lastDay != $event->start_date->day ? $event->start_date->day : '' }}</span>
                 @if (!$event['isHoliday'])
                     @php
-                        $route = route('events.update', ['event' => $event->id ?? -1]);
+                        $updateRoute = route('events.update', ['event' => $event->id ?? -1]) . "#$event->id";
                         $eventTime = $event->is_all_day ? 'o dia todo' : ($event->start_time == $event->end_time ? $event->start_date->format('G:i') : $event->start_date->format('G:i') . ' - ' . $event->end_date->format('G:i'));
                     @endphp
 
                     <span class="event-item-title"
-                        @@click='showEditForm(event, @json($event), "{{ $route }}")'>{{ $event->title }}
+                        @@click='showEditForm(event, @json($event), "{{ $updateRoute }}")'>{{ $event->title }}
                         <span class="event-item-time">({{ $eventTime }})</span></span>
 
                     <div>
@@ -36,14 +36,7 @@
                 $lastDay = $event->start_date->day;
             @endphp
         @endforeach
-    @else
-        <p>Nenhum evento encontrado.</p>
-        {{-- TODO: extrair componente --}}
-        @php
-            $createRoute = route('users.events.store', ['user' => auth()->user()->id ?? -1]);
-        @endphp
-        <button type="button" class="btn btn-primary"
-            @@click="showCreateForm('{{ $date->format('Y-m-d') }}','{{ $date->format('H:i') }}', true, '{{ $createRoute }}')">Criar
-            evento</button>
-    @endif
-</ul>
+    </ul>
+@else
+    <x-events.none :date="$date" />
+@endif

@@ -1,6 +1,6 @@
 @props(['date', 'events'])
 
-<ul>
+<ul class="event-list">
     @php
         $lastHour = 0;
     @endphp
@@ -12,11 +12,11 @@
                     class="event-day">{{ $lastHour != $event->start_date->hour ? $event->start_date->hour . 'h' : null }}</span>
                 @if (!$event['isHoliday'])
                     @php
-                        $route = route('events.update', ['event' => $event->id ?? -1]);
+                        $updateRoute = route('events.update', ['event' => $event->id ?? -1]) . "#$event->id";
                     @endphp
 
                     <span class="event-item-title"
-                        @@click='showEditForm(event, @json($event), "{{ $route }}")'>{{ $event->title }}
+                        @@click='showEditForm(event, @json($event), "{{ $updateRoute }}")'>{{ $event->title }}
                         <span
                             class="event-item-time">({{ $event->is_all_day ? 'o dia todo' : $event->start_date->format('G:i') . ' - ' . $event->end_date->format('G:i') }})</span>
                     </span>
@@ -39,13 +39,6 @@
             @endphp
         @endforeach
     @else
-        <p>Nenhum evento encontrado.</p>
-        {{-- TODO: extrair componente --}}
-        @php
-            $createRoute = route('users.events.store', ['user' => auth()->user()->id ?? -1]);
-        @endphp
-        <button type="button" class="btn btn-primary"
-            @@click="showCreateForm('{{ $date->format('Y-m-d') }}','{{ $date->format('H:i') }}', true, '{{ $createRoute }}')">Criar
-            evento</button>
+        <x-events.none :date="$date" />
     @endif
 </ul>

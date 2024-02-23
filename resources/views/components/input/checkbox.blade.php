@@ -1,4 +1,4 @@
-@props(['name', 'label', 'checked'])
+@props(['name', 'label', 'checked' => false])
 
 @php
     $id = str_replace('_', '-', $name);

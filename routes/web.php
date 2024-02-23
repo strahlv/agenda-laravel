@@ -30,13 +30,13 @@ Route::get('/', function () {
     return redirect('/month/' . CarbonImmutable::today()->format('Y/n/j'));
 });
 
-// TODO: filtrar por data
+// TODO: Filtrar por data
 // function getEvents($from, $to)
 function getEvents(int $year)
 {
-    // $holidaysJson = [];
-    // USAR GOOGLE CALENDAR API?
+    // Usar Google Calendar API?
     $holidaysJson = Http::get("https://brasilapi.com.br/api/feriados/v1/$year")->json();
+    // $holidaysJson = [];
 
     $holidays = collect($holidaysJson)->map(fn ($item) => new Event(
         [
