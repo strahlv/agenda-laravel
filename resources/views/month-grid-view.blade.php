@@ -12,21 +12,22 @@
     @php
         $period = CarbonPeriod::create($date->startOfMonth()->previous(Carbon::SUNDAY), $date->endOfMonth()->next(Carbon::SATURDAY));
         $periodDates = $period->toArray();
-        $today = CarbonImmutable::today();
+
         $events = $events->filter(fn($event) => CarbonPeriod::create($event->start_date, $event->end_date)->overlaps($period));
     @endphp
 
     @for ($i = 0; $i < count($periodDates) / 7; $i++)
         @php
+            $endDates = [];
         @endphp
+
         <div class="calendar-row">
             @for ($j = 0; $j < 7; $j++)
                 @php
                     $dt = $periodDates[$j + $i * 7];
                     $isOtherMonth = !$dt->isSameMonth($date);
                     $weekPeriod = CarbonPeriod::create($dt->copy()->startOfWeek(Carbon::SUNDAY), $dt->copy()->endOfWeek(Carbon::SATURDAY));
-
-                    $yOffset = 0;
+                    $weekEvents = $events->filter(fn($event) => $event->period->overlaps($weekPeriod));
 
                     $createRoute = route('users.events.store', ['user' => auth()->user()->id ?? -1]);
                 @endphp
@@ -36,38 +37,46 @@
                     <div @class([
                         'calendar-day-number',
                         'other-month' => $isOtherMonth,
-                        'today' => $dt->timestamp == $today->timestamp,
+                        'today' => $dt->isSameDay(today()),
                         'holiday' => $dt->dayOfWeek == 0,
                     ])>
                         {{ $dt->day }}
                     </div>
+                    {{-- TODO: componente --}}
                     <ul class="calendar-event-list" {{-- x-data="items = {{ $events }}" --}}>
-                        @foreach ($events as $event)
+                        @foreach ($weekEvents as $event)
                             @php
+                                $startOfWeek = $weekPeriod->getStartDate();
+                                $startsBeforeThisWeek = $event->startsBefore($startOfWeek);
+                                $endsAfterThisWeek = $event->endsAfter($weekPeriod->getEndDate());
                                 $isInPeriod = $dt->between($event->start_date, $event->end_date);
+                                $canPlace = ($j == 0 && $startsBeforeThisWeek && $isInPeriod) || $event->startsAt($dt);
 
-                                $startsBeforeThisWeek = $j == 0 && $event->start_date->lessThan($weekPeriod->getStartDate());
-                                $endsAfterThisWeek = $event->end_date->greaterThan($weekPeriod->getEndDate());
-
-                                $isSameDay = $event->start_date->isSameDay($dt);
-
-                                $eventWidth = min($startsBeforeThisWeek ? $weekPeriod->getStartDate()->diffInDays($event->end_date) + 1 : $event->start_date->diffInDays($event->end_date) + 1, 7 - $j);
-
+                                $eventWidth = min($startsBeforeThisWeek ? $startOfWeek->diffInDays($event->end_date) + 1 : $event->start_date->diffInDays($event->end_date) + 1, 7 - $j);
                                 $updateRoute = route('events.update', ['event' => $event->id ?? -1]);
+
+                                // Posiciona os eventos no grid
+                                $y = 0;
+
+                                foreach ($endDates as $endDate) {
+                                    if ($event->start_date->isAfter($endDate)) {
+                                        break;
+                                    }
+
+                                    $y++;
+                                }
+
+                                if ($canPlace) {
+                                    $endDates[$y] = $event->end_date;
+                                }
                             @endphp
 
-                            @if (($j == 0 && $startsBeforeThisWeek && $isInPeriod) || $isSameDay)
+                            @if ($canPlace)
                                 <x-events.grid-list-item :event="$event" :starts-before="$startsBeforeThisWeek" :ends-after="$endsAfterThisWeek"
-                                    :update-route="$updateRoute" :y-offset="$yOffset * 24" :width="'calc(100% *' . $eventWidth . ' + 10px * ' . ($eventWidth - 1) . ')'">
+                                    :update-route="$updateRoute" :y-offset="$y * 24" :width="'calc(100% *' . $eventWidth . ' + 10px * ' . ($eventWidth - 1) . ')'">
                                     {{ $event->title }}
                                 </x-events.grid-list-item>
                             @endif
-
-                            @php
-                                if ($isInPeriod) {
-                                    $yOffset++;
-                                }
-                            @endphp
                         @endforeach
                         {{-- CSS BUG!!! --}}
                         {{-- <template x-for="item in filteredItems">

@@ -4,7 +4,6 @@
             $monthDate = CarbonImmutable::create($date->year, $m);
             $period = CarbonPeriod::create($monthDate->startOfMonth()->previous(Carbon::SUNDAY), $monthDate->addWeeks(6));
             $periodDates = $period->toArray();
-            $today = CarbonImmutable::today();
         @endphp
 
         <div class="year-grid-cell">
@@ -48,7 +47,7 @@
                                 'calendar-day-number',
                                 'other-month' => $isOtherMonth,
                                 'holiday' => $dt->dayOfWeek == 0,
-                                'today' => $dt->timestamp == $today->timestamp && !$isOtherMonth,
+                                'today' => $dt->isSameDay(today()) && !$isOtherMonth,
                             ])
                                 onclick="showCreateForm('{{ $dt->format('Y-m-d') }}','{{ $dt->format('H:i') }}', true, '{{ $createRoute }}')">
                                 {{ $dt->day }}

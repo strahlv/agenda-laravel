@@ -57,7 +57,7 @@
         <x-nav :calendar-view="$calendarView" :date="$date" />
         <main class="calendar-container">
             <x-flash />
-            <x-events.form action="{{ route('users.events.store', ['user' => auth()->id()]) }}" />
+            <x-events.form action="{{ route('users.events.store', ['user' => auth()->id() ?? -1]) }}" />
             {{ $slot }}
         </main>
     </body>

@@ -30,6 +30,7 @@ Route::get('/', function () {
     return redirect('/month/' . CarbonImmutable::today()->format('Y/n/j'));
 });
 
+// TODO: filtrar por data
 // function getEvents($from, $to)
 function getEvents(int $year)
 {

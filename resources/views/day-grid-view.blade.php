@@ -2,7 +2,7 @@
     @php
         $period = CarbonPeriod::create($date, $date->endOfDay());
         $periodDates = $period->toArray();
-        $today = CarbonImmutable::today();
+
         $events = $events->filter(fn($event) => CarbonPeriod::create($event->start_date, $event->end_date)->overlaps($period));
         $allDayEventsCount = $events->filter(fn($event) => $event->is_all_day)->count();
         $allDayEventsCellHeight = max(74, $allDayEventsCount * 24 + 2);
@@ -16,7 +16,7 @@
                 </div>
                 <div @class([
                     'calendar-row-weekday-number',
-                    'today' => $periodDates[$i]->timestamp == $today->timestamp,
+                    'today' => $periodDates[$i]->isSameDay(today()),
                 ])>
                     {{ $periodDates[$i]->day }}
                 </div>

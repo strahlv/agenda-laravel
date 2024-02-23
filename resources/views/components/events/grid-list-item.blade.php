@@ -1,4 +1,12 @@
-@props(['event', 'startsBefore', 'endsAfter', 'yOffset', 'width' => '100%', 'isHoliday' => false, 'updateRoute'])
+@props([
+    'event',
+    'startsBefore' => false,
+    'endsAfter' => false,
+    'isHoliday' => false,
+    'yOffset' => 0,
+    'width' => '100%',
+    'updateRoute',
+])
 
 <li {{ $attributes->class(['calendar-event', 'holiday' => $event->is_holiday, 'starts-before' => $startsBefore, 'ends-after' => $endsAfter]) }}
     style="top: {{ $yOffset }}px; width: {{ $width }}"

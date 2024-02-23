@@ -2,7 +2,6 @@
 
 <nav class="navbar">
     @php
-
         $previousDate = match ($calendarView) {
             'year' => $date->subYear(),
             'month' => $date->subMonth(),
@@ -17,13 +16,11 @@
             'day' => $date->addDay(),
         };
 
-        $today = CarbonImmutable::today();
-
         $display = request()->query('display');
     @endphp
 
     {{-- NAVEGAÇÃO --}}
-    <a href="{{ Helpers::formatToCalendarUrl($calendarView, $today, $display) }}" class="btn btn-primary">Hoje</a>
+    <a href="{{ Helpers::formatToCalendarUrl($calendarView, today(), $display) }}" class="btn btn-primary">Hoje</a>
     <a href="{{ Helpers::formatToCalendarUrl($calendarView, $previousDate, $display) }}" class="btn btn-icon"><i
             class="fa-solid fa-chevron-left"></i></a>
     <a href="{{ Helpers::formatToCalendarUrl($calendarView, $nextDate, $display) }}" class="btn btn-icon"><i
