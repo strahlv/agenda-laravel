@@ -39,8 +39,6 @@ function showEditForm(event, calendarEvent, url) {
     $("#end-time").val(calendarEvent.end_time);
 
     setTimeInputsDisplay(calendarEvent.is_all_day);
-
-    $("#title").focus();
 }
 
 function hideForm() {
@@ -74,6 +72,17 @@ function setTimeInputsDisplay(isHidden) {
         $("#end-date-control").addClass("hidden");
         $("#time-control").removeClass("hidden");
     }
+}
+
+function togglePasswordVisibility(id) {
+    var input = $("#" + id);
+    input.attr("type", input.attr("type") == "text" ? "password" : "text");
+
+    var icon = $("#" + id + " ~ button").children();
+    icon.toggleClass("fa-eye");
+    icon.toggleClass("fa-eye-slash");
+
+    input.focus();
 }
 
 function onSubmitEventForm() {

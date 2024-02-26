@@ -116,10 +116,19 @@ input:invalid {
     font-size: 12px;
 }
 
+.form-input {
+    position: relative;
+}
+
 input[type="checkbox"] {
     cursor: pointer;
     width: 16px;
     height: 16px;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 0;
 }
 
 .event-form .hidden {
@@ -273,6 +282,12 @@ input[type="checkbox"] {
     border-radius: 16px;
     box-shadow: 0 2px 0 #ccc;
     animation: fade-in 0.2s ease forwards;
+}
+
+.greeting {
+    padding: 8px;
+    text-align: center;
+    font-size: 1.25rem;
 }
 
 /* SEARCH BAR */

@@ -39,13 +39,13 @@
 
     {{-- TODO: Pesquisar --}}
     @auth
-        <div class="search-bar" x-data="{ showClearButton: false }">
+        {{-- <div class="search-bar" x-data="{ showClearButton: false }">
             <i class="fa-solid fa-search"></i>
             <input x-model="search" type="text" placeholder="Pesquisar eventos..."
                 @@input="showClearButton = search !== ''">
             <button class="btn btn-icon btn-clear" x-show="showClearButton" @click="search = ''; showClearButton = false"><i
                     class="fa-solid fa-xmark"></i></button>
-        </div>
+        </div> --}}
 
         {{-- Trocar View --}}
         @php
@@ -81,7 +81,7 @@
 
     {{-- Autenticação --}}
     @guest
-        <a href="/login" class="btn btn-primary"><i class="fa-solid fa-sign-in"></i> Entrar</a>
+        <a href="/login" class="btn btn-with-icon"><i class="fa-solid fa-sign-in"></i> Entrar</a>
     @endguest
 
     @auth
@@ -89,6 +89,8 @@
             <x-slot name="trigger">
                 <button class="btn btn-icon"><i class="fa-solid fa-user"></i></button>
             </x-slot>
+
+            <p class="greeting">Olá, {{ auth()->user()->name }}!</p>
 
             <a href="/settings" class="btn btn-with-icon"><i class="fa-solid fa-gear"></i> Configurações</a>
 

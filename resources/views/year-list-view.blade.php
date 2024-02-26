@@ -5,7 +5,7 @@
 
     @for ($i = 1; $i < 13; $i++)
         @php
-            $monthEvents = collect($events)->filter(fn($event) => $event->start_date->month == $i && $event->start_date->year == $date->year);
+            $monthEvents = collect($events)->filter(fn($event) => $event->period->overlaps($date->month($i)->startOfMonth(), $date->month($i)->endOfMonth()));
         @endphp
 
         @if (count($monthEvents) > 0)
