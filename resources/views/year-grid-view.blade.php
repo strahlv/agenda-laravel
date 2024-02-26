@@ -2,7 +2,8 @@
     @for ($m = 1; $m < 13; $m++)
         @php
             $monthDate = CarbonImmutable::create($date->year, $m);
-            $period = CarbonPeriod::create($monthDate->startOfMonth()->previous(Carbon::SUNDAY), $monthDate->addWeeks(6));
+            $startOfMonth = auth()->user()->settings->year_starts_day_one ? $monthDate->startOfMonth() : $monthDate->startOfMonth()->previous(Carbon::SUNDAY);
+            $period = CarbonPeriod::create($startOfMonth, $monthDate->addWeeks(6));
             $periodDates = $period->toArray();
         @endphp
 

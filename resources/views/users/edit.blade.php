@@ -6,7 +6,7 @@
             <h1 class="navbar-title">Configurações</h1>
         </nav>
         <section>
-            <form method="POST" action="/settings" class="event-form">
+            <form method="POST" action="/user" class="event-form">
                 @csrf
                 @method('PATCH')
 
@@ -25,15 +25,20 @@
             </form>
         </section>
         <section>
-            <form method="POST" action="/" class="event-form">
+            <form method="POST" action="/settings" class="event-form">
                 @csrf
                 @method('PATCH')
 
+                @php
+                    $settings = auth()->user()->settings;
+                @endphp
+
                 <h1>Configurações do calendário</h1>
 
-                <x-input.checkbox name="week_starts_monday" label="Semana começando na segunda-feira" />
-                <x-input.checkbox name="year_starts_day_one" label="Ano começando dia primeiro" :checked="false" />
-                <x-input.checkbox name="hide_holidays" label="Mostrar feriados" :checked="true" />
+                <x-input.checkbox name="week_starts_monday" label="Semana começando na segunda-feira"
+                    :checked="$settings->week_starts_monday" />
+                <x-input.checkbox name="year_starts_day_one" label="Ano começando dia primeiro" :checked="$settings->year_starts_day_one" />
+                <x-input.checkbox name="show_holidays" label="Mostrar feriados" :checked="$settings->show_holidays" />
 
                 <button type="submit" class="btn btn-primary btn-save">Salvar</button>
             </form>

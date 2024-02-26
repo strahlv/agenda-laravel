@@ -1,20 +1,20 @@
 <div class="calendar-grid">
-    <div class="calendar-row calendar-row-header">
-        <h2 class="calendar-weekday">Dom.</h2>
-        <h2 class="calendar-weekday">Seg.</h2>
-        <h2 class="calendar-weekday">Ter.</h2>
-        <h2 class="calendar-weekday">Qua.</h2>
-        <h2 class="calendar-weekday">Qui.</h2>
-        <h2 class="calendar-weekday">Sex.</h2>
-        <h2 class="calendar-weekday">Sáb.</h2>
-    </div>
-
     @php
-        $period = CarbonPeriod::create($date->startOfMonth()->previous(Carbon::SUNDAY), $date->endOfMonth()->next(Carbon::SATURDAY));
+        $firstWeekDay = auth()->user()->first_week_day ?? Carbon::SUNDAY;
+        $lastWeekDay = auth()->user()->last_week_day ?? Carbon::SATURDAY;
+
+        $period = CarbonPeriod::create($date->startOfMonth()->previous($firstWeekDay), $date->endOfMonth()->next($lastWeekDay));
         $periodDates = $period->toArray();
 
         $events = $events->filter(fn($event) => CarbonPeriod::create($event->start_date, $event->end_date)->overlaps($period));
     @endphp
+
+    <header class="calendar-row calendar-row-header">
+        @for ($i = 0; $i < 7; $i++)
+            <h2 class="calendar-weekday">
+                {{ Str::of($periodDates[$i]->getTranslatedDayName())->limit(3, '.')->ucfirst() }}</h2>
+        @endfor
+    </header>
 
     @for ($i = 0; $i < count($periodDates) / 7; $i++)
         @php
@@ -26,7 +26,7 @@
                 @php
                     $dt = $periodDates[$j + $i * 7];
                     $isOtherMonth = !$dt->isSameMonth($date);
-                    $weekPeriod = CarbonPeriod::create($dt->copy()->startOfWeek(Carbon::SUNDAY), $dt->copy()->endOfWeek(Carbon::SATURDAY));
+                    $weekPeriod = CarbonPeriod::create($dt->copy()->startOfWeek($firstWeekDay), $dt->copy()->endOfWeek($lastWeekDay));
                     $weekEvents = $events->filter(fn($event) => $event->period->overlaps($weekPeriod));
 
                     $storeRoute = route('users.events.store', ['user' => auth()->user()->id ?? -1]);

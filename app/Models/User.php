@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -47,8 +48,23 @@ class User extends Authenticatable
         return $this->hasMany(Event::class);
     }
 
+    public function settings()
+    {
+        return $this->hasOne(UserSetting::class);
+    }
+
     public function setPasswordAttribute(string $password)
     {
         $this->attributes['password'] = bcrypt($password);
+    }
+
+    public function getFirstWeekDayAttribute()
+    {
+        return $this->settings->week_starts_monday ? Carbon::MONDAY : Carbon::SUNDAY;
+    }
+
+    public function getLastWeekDayAttribute()
+    {
+        return $this->settings->week_starts_monday ? Carbon::SUNDAY : Carbon::SATURDAY;
     }
 }

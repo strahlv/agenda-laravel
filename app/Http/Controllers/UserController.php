@@ -9,7 +9,7 @@ use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
-    public function edit(Request $request)
+    public function edit()
     {
         return view('users.edit');
     }

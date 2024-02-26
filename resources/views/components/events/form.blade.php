@@ -1,4 +1,4 @@
-@props(['method' => 'POST', 'title' => 'Criar evento'])
+@props(['method' => 'POST', 'action' => '/', 'title' => 'Criar evento'])
 
 @php
     $spoofMethod = '';
@@ -8,18 +8,18 @@
         $method = 'POST';
     }
 @endphp
-
-<form method="{{ $method }}" {{ $attributes }} @class(['event-form', 'hidden' => !$errors->any()])
+<form method="{{ $method }}" action="{{ $errors->get('action')[0] ?? $action }}" @class(['event-form', 'hidden' => !$errors->any()])
     @@submit="onSubmitEventForm()">
     @csrf
-    @method($spoofMethod)
+    @method($errors->get('method')[0] ?? $spoofMethod)
 
     @php
         $isAllDay = !$errors->any() || old('is_all_day');
     @endphp
 
     <div class="form-header">
-        <h1 id="form-title">{{ $title }}</h1>
+        {{-- TODO: Deixar mais elegante --}}
+        <h1 id="form-title">{{ !$errors->any() || $errors->get('method')[0] == 'POST' ? $title : 'Editar evento' }}</h1>
         <button type="button" class="btn btn-icon" onclick="hideForm()"><i class="fa-solid fa-xmark"></i></button>
     </div>
 

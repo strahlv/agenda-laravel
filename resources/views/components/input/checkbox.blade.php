@@ -6,8 +6,9 @@
 
 <div class="flex-row">
     <label for="{{ $id }}">
+        <input type="hidden" name="{{ $name }}" value="false">
         <input type="checkbox" {{ $checked ? 'checked' : null }} name="{{ $name }}" id="{{ $id }}"
-            {{ $attributes }}>
+            value="true" {{ $attributes }}>
         <span>{{ $label }}</span>
     </label>
 </div>

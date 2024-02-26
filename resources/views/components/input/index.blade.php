@@ -10,7 +10,6 @@
         {{ $attributes }}>
     <x-form-error error="{{ $name }}" />
     @if ($type == 'password')
-        {{-- TODO: FINISH!!! --}}
         <button type="button" class="btn btn-icon password-toggle"
             @@click="togglePasswordVisibility('{{ $id }}')"><i class="fa-solid fa-eye"
                 id="{{ $id }}"></i></button>

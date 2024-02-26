@@ -12,7 +12,7 @@
 <x-layout :calendar-view="$calendarView" :date="$date" :title="$title">
     <x-nav :calendar-view="$calendarView" :date="$date" />
     <main class="calendar-container">
-        <x-events.form action="{{ route('users.events.store', ['user' => auth()->id() ?? -1]) }}" />
+        <x-events.form :action="route('users.events.store', ['user' => auth()->id() ?? -1])" />
         {{ $slot }}
     </main>
 </x-layout>

@@ -4,8 +4,8 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserSettingController;
 use App\Models\Event;
-use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -34,9 +34,13 @@ Route::get('/', function () {
 // function getEvents($from, $to)
 function getEvents(int $year)
 {
-    // Usar Google Calendar API?
-    $holidaysJson = Http::get("https://brasilapi.com.br/api/feriados/v1/$year")->json();
-    // $holidaysJson = [];
+    $user = auth()->user();
+
+    $holidaysJson = [];
+    if (!$user || $user->settings->show_holidays) {
+        // Usar Google Calendar API?
+        $holidaysJson = Http::get("https://brasilapi.com.br/api/feriados/v1/$year")->json();
+    }
 
     $holidays = collect($holidaysJson)->map(fn ($item) => new Event(
         [
@@ -47,7 +51,7 @@ function getEvents(int $year)
         ]
     ));
 
-    $events = auth()->user() ? auth()->user()->events : collect([]);
+    $events = $user ? $user->events : collect([]);
 
     return $events->concat($holidays)->sortBy('start_date');
 }
@@ -73,6 +77,8 @@ Route::post('/login', [SessionController::class, 'store'])->middleware('guest');
 Route::post('/logout', [SessionController::class, 'destroy'])->middleware('auth');
 
 Route::get('/settings', [UserController::class, 'edit'])->middleware('auth');
-Route::patch('/settings', [UserController::class, 'update'])->middleware('auth');
+Route::patch('/user', [UserController::class, 'update'])->middleware('auth');
+
+Route::patch('/settings', [UserSettingController::class, 'update'])->middleware('auth');
 
 Route::resource('users.events', EventController::class)->shallow()->middleware(['auth', 'can:creator']);

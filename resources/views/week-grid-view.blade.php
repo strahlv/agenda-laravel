@@ -1,6 +1,9 @@
 <div class="calendar-grid">
     @php
-        $period = CarbonPeriod::create($date->startOfWeek(Carbon::SUNDAY), $date->endOfWeek(Carbon::SATURDAY));
+        $firstWeekDay = auth()->user()->first_week_day ?? Carbon::SUNDAY;
+        $lastWeekDay = auth()->user()->last_week_day ?? Carbon::SATURDAY;
+
+        $period = CarbonPeriod::create($date->startOfWeek($firstWeekDay), $date->endOfWeek($lastWeekDay));
         $periodDates = $period->toArray();
 
         $events = $events->filter(fn($event) => $event->period->overlaps($period));

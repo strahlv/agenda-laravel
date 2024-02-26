@@ -586,6 +586,7 @@ input[type="checkbox"] {
     grid: repeat(3, 1fr) / repeat(4, 1fr);
     gap: 10px;
     background-color: #fff;
+    animation: fade-in 0.2s ease forwards;
 }
 
 .year-grid-cell {

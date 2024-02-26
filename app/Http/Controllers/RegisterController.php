@@ -23,6 +23,7 @@ class RegisterController extends Controller
         ]);
 
         $user = User::create($inputs);
+        $user->settings()->create();
 
         auth()->login($user);
 
