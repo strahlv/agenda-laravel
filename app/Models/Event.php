@@ -79,11 +79,6 @@ class Event extends Model
         return $this->id == -1;
     }
 
-    public function getCanUpdateOrDestroyAttribute()
-    {
-        return !$this->is_holiday;
-    }
-
     public function getPeriodAttribute()
     {
         return CarbonPeriod::create($this->start_date, $this->end_date);

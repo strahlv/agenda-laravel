@@ -49,7 +49,7 @@ class EventPolicy
      */
     public function delete(User $user, Event $event)
     {
-        return $user->id === $event->creator->id
+        return $user->id === $event->creator?->id
             ? Response::allow()
             : Response::deny('Você não tem permissão para deletar este evento.');
     }

@@ -12,11 +12,11 @@
     style="top: {{ $yOffset }}px; width: {{ $width }}"
     @@click='showEditForm(event, @json($event), "{{ $updateRoute }}")'>
     {{ $slot }}
-    {{-- Checar autoria --}}
-    @if ($event->can_update_or_destroy)
+
+    @can('delete', $event)
         <x-events.delete-form :eventId="$event->id">
-            <button type="submit" class="btn btn-icon-sm"
-                @@click="(event) => event.stopPropagation()"><i class="fa-solid fa-xmark"></i></button>
+            <button type="submit" class="btn btn-icon-sm" @@click="(event) => event.stopPropagation()"><i
+                    class="fa-solid fa-xmark"></i></button>
         </x-events.delete-form>
-    @endif
+    @endcan
 </li>
