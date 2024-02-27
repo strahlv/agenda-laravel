@@ -10,12 +10,12 @@ use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
-    public function index(int $userId)
+    public function index(User $user)
     {
-        return User::find($userId)->events;
+        return $user->events;
     }
 
-    public function store(int $userId, EventRequest $request)
+    public function store(User $user, EventRequest $request)
     {
         $inputs = $request->validated();
 
@@ -30,14 +30,16 @@ class EventController extends Controller
             'title' => $inputs['title'],
             'start_date' => $inputs['start_date'] . " " . $inputs['start_time'],
             'end_date' => $inputs['end_date'] . " " . $inputs['end_time'],
-            'user_id' => $userId
+            'user_id' => $user->id
         ]);
 
         return back();
     }
 
-    public function update(int $id, EventRequest $request)
+    public function update(Event $event, EventRequest $request)
     {
+        $this->authorize('update', $event);
+
         $inputs = $request->validated();
 
         if (array_key_exists('is_all_day', $inputs)) {
@@ -46,8 +48,6 @@ class EventController extends Controller
         } else {
             $inputs['end_date'] = $inputs['start_date'];
         }
-
-        $event = Event::findOrFail($id);
 
         $event->update([
             'title' => $inputs['title'],
@@ -58,9 +58,12 @@ class EventController extends Controller
         return back();
     }
 
-    public function destroy(int $id)
+    public function destroy(Event $event)
     {
-        Event::destroy($id);
+        $this->authorize('delete', $event);
+
+        $event->delete();
+
         return back();
     }
 }

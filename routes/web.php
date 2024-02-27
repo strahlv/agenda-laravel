@@ -81,4 +81,4 @@ Route::patch('/user', [UserController::class, 'update'])->middleware('auth');
 
 Route::patch('/settings', [UserSettingController::class, 'update'])->middleware('auth');
 
-Route::resource('users.events', EventController::class)->shallow()->middleware(['auth', 'can:creator']);
+Route::resource('users.events', EventController::class)->shallow()->middleware('auth');

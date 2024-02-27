@@ -26,15 +26,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Gate::define('creator', function () {
-            $eventId = request()->route('event');
-
-            if (!$eventId) {
-                return true;
-            }
-
-            $event = Event::findOrFail($eventId);
-            return $event->creator->id == auth()->id();
-        });
+        //
     }
 }
