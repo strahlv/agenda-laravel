@@ -16,7 +16,7 @@
                     @endphp
 
                     <span class="event-item-title"
-                        @@click='showEditForm(event, @json($event), "{{ $updateRoute }}")'>{{ $event->title }}
+                        onclick='showEditForm(event, @json($event), "{{ $updateRoute }}")'>{{ $event->title }}
                         <span class="event-item-time">({{ $eventTime }})</span></span>
 
                     <div>

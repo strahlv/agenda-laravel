@@ -8,6 +8,6 @@
     @endphp
 
     <button type="button" class="btn btn-primary"
-        @@click="showCreateForm('{{ $date->format('Y-m-d') }}','{{ $date->format('H:i') }}', true, '{{ $storeRoute }}')">Criar
+        onclick="showCreateForm('{{ $date->format('Y-m-d') }}','{{ $date->format('H:i') }}', true, '{{ $storeRoute }}')">Criar
         evento</button>
 </div>

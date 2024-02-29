@@ -4,10 +4,10 @@ function showCreateForm(
     isAllDay = true,
     url = "/"
 ) {
-    console.log(dateString);
-    console.log(timeString);
+    console.log("showCreateForm"); //
     var form = $(".event-form");
     form.removeClass("hidden");
+
     form.attr("action", url);
     $('.event-form > input[name="_method"]').val("POST");
 
@@ -24,10 +24,12 @@ function showCreateForm(
 }
 
 function showEditForm(event, calendarEvent, url) {
+    console.log("showEditForm"); //
     event.stopPropagation();
 
     var form = $(".event-form");
     form.removeClass("hidden");
+
     form.attr("action", url);
     $('.event-form > input[name="_method"]').val("PUT");
 

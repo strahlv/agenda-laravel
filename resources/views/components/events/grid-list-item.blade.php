@@ -10,7 +10,7 @@
 
 <li {{ $attributes->class(['calendar-event', 'holiday' => $event->is_holiday, 'starts-before' => $startsBefore, 'ends-after' => $endsAfter]) }}
     style="top: {{ $yOffset }}px; width: {{ $width }}"
-    @@click='showEditForm(event, @json($event), "{{ $updateRoute }}")'>
+    onclick='showEditForm(event, @json($event), "{{ $updateRoute }}")'>
     {{ $slot }}
 
     @can('delete', $event)

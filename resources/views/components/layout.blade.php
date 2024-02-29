@@ -18,32 +18,11 @@
         <!-- JS -->
         <script src="https://kit.fontawesome.com/a783aedd26.js" crossorigin="anonymous"></script>
         <script src="/js/jquery-3.7.1.js"></script>
+        <script src="/js/helpers.js"></script>
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-        <script src="/js/scripts.js"></script>
     </head>
 
-    <body x-data="{
-        search: '',
-        items: null,
-    
-        get filteredItems() {
-            var keys = Object.keys(this.items)
-            var arr = keys.map((key) => this.items[key])
-    
-            console.log(this.items)
-            console.log(arr)
-    
-            if (this.search === '') {
-                return arr;
-            }
-    
-            return arr.filter(
-                i => {
-                    return i.title.toLowerCase().includes(this.search.toLowerCase())
-                }
-            )
-        }
-    }">
+    <body>
         <x-loading-bar />
         <x-flash />
         {{ $slot }}

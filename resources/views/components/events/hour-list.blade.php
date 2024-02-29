@@ -16,7 +16,7 @@
                     @endphp
 
                     <span class="event-item-title"
-                        @@click='showEditForm(event, @json($event), "{{ $updateRoute }}")'>{{ $event->title }}
+                        onclick='showEditForm(event, @json($event), "{{ $updateRoute }}")'>{{ $event->title }}
                         <span
                             class="event-item-time">({{ $event->is_all_day ? 'o dia todo' : $event->start_date->format('G:i') . ' - ' . $event->end_date->format('G:i') }})</span>
                     </span>

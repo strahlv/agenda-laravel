@@ -7,8 +7,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserSettingController;
 use App\Models\Event;
 use Carbon\CarbonImmutable;
+use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 /*
@@ -30,16 +32,14 @@ Route::get('/', function () {
     return redirect('/month/' . CarbonImmutable::today()->format('Y/n/j'));
 });
 
-// TODO: Filtrar por data
-// function getEvents($from, $to)
-function getEvents(int $year)
+function getEvents(CarbonImmutable $date)
 {
     $user = auth()->user();
 
     $holidaysJson = [];
     if (!$user || $user->settings->show_holidays) {
         // Usar Google Calendar API?
-        $holidaysJson = Http::get("https://brasilapi.com.br/api/feriados/v1/$year")->json();
+        $holidaysJson = Http::get("https://brasilapi.com.br/api/feriados/v1/$date->year")->json();
     }
 
     $holidays = collect($holidaysJson)->map(fn ($item) => new Event(
@@ -51,20 +51,36 @@ function getEvents(int $year)
         ]
     ));
 
+    $period = CarbonPeriod::create($date->startOfYear(), $date->endOfYear());
+
     $events = $user ? $user->events : collect([]);
+    $events->filter(
+        fn ($event) =>
+        $period->overlaps($event->period)
+    );
 
     return $events->concat($holidays)->sortBy('start_date');
 }
 
+// TODO: CalendarController?
 Route::get('/{view}/{year}/{month}/{day}', function ($view, $year, $month, $day) {
     if (!in_array($view, ['year', 'month', 'week', 'day'])) {
         throw new RouteNotFoundException("Rota para a view '$view' não existe");
     }
 
     $date = CarbonImmutable::create($year, $month, $day);
+    $searchQuery = Str::of(request()->query('search'))->lower();
+
+    $events = getEvents($date);
+
+    if (!$searchQuery->isEmpty()) {
+        $events = $events->filter(
+            fn ($event) => Str::of($event->title)->lower()->contains($searchQuery)
+        );
+    }
 
     return view($view, [
-        'events' => getEvents($year),
+        'events' => $events,
         'date' => $date,
     ]);
 })->whereNumber(['year', 'month', 'day']);

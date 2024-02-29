@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EventRequest;
 use App\Models\Event;
 use App\Models\User;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
@@ -19,7 +17,7 @@ class EventController extends Controller
     {
         $inputs = $request->validated();
 
-        if (array_key_exists('is_all_day', $inputs)) {
+        if ($inputs['is_all_day'] == 'true') {
             $inputs['start_time'] = '00:00:00';
             $inputs['end_time'] = '23:59:59';
         } else {
@@ -42,7 +40,7 @@ class EventController extends Controller
 
         $inputs = $request->validated();
 
-        if (array_key_exists('is_all_day', $inputs)) {
+        if ($inputs['is_all_day'] == 'true') {
             $inputs['start_time'] = '00:00:00';
             $inputs['end_time'] = '23:59:59';
         } else {

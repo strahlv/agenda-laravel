@@ -37,15 +37,23 @@
 
     <h1 class="navbar-title">{{ $title }}</h1>
 
-    {{-- TODO: Pesquisar --}}
+    {{-- Pesquisar --}}
     @auth
-        {{-- <div class="search-bar" x-data="{ showClearButton: false }">
+        @php
+            $search = request()->query('search');
+        @endphp
+
+        <form method="GET" action="{{ url()->current() }}" class="search-bar" x-data="{
+            search: '{{ $search ?: '' }}',
+            showClearButton: {{ $search != null ? 'true' : 'false' }}
+        }">
             <i class="fa-solid fa-search"></i>
-            <input x-model="search" type="text" placeholder="Pesquisar eventos..."
-                @@input="showClearButton = search !== ''">
-            <button class="btn btn-icon btn-clear" x-show="showClearButton" @click="search = ''; showClearButton = false"><i
-                    class="fa-solid fa-xmark"></i></button>
-        </div> --}}
+            <input type="hidden" name="display" value="{{ $display }}">
+            <input x-model="search" type="text" placeholder="Pesquisar eventos..." name="search" id="search"
+                ::value="search" @@input="showClearButton = search !== ''">
+            <button type="reset" class="btn btn-icon btn-clear" x-show="showClearButton"
+                @@click="search = ''; showClearButton = false"><i class="fa-solid fa-xmark"></i></button>
+        </form>
 
         {{-- Trocar View --}}
         @php

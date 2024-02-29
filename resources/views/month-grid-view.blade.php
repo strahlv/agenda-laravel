@@ -59,7 +59,7 @@
                                 $y = 0;
 
                                 foreach ($endDates as $endDate) {
-                                    if ($event->start_date->isAfter($endDate)) {
+                                    if ($event->start_date->isAfter($endDate) && !$event->start_date->isSameDay($endDate)) {
                                         break;
                                     }
 

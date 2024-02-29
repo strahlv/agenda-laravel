@@ -292,7 +292,7 @@ input[type="checkbox"] {
 
 /* SEARCH BAR */
 .search-bar {
-    flex: 1;
+    flex: 0.5;
     display: flex;
     align-items: center;
     gap: 8px;
