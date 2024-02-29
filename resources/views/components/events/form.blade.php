@@ -9,7 +9,7 @@
     }
 @endphp
 <form method="{{ $method }}" action="{{ $errors->get('action')[0] ?? $action }}" @class(['event-form', 'hidden' => !$errors->any()])
-    @@submit="onSubmitEventForm()">
+    onsubmit="onSubmitForm(event)">
     @csrf
     @method($errors->get('method')[0] ?? $spoofMethod)
 

@@ -18,8 +18,8 @@ class CreateUserSettingsTable extends Migration
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->boolean('show_holidays')->default(true);
-            $table->boolean('week_starts_monday');
-            $table->boolean('year_starts_day_one');
+            $table->boolean('week_starts_monday')->default(false);
+            $table->boolean('year_starts_day_one')->default(false);
         });
     }
 

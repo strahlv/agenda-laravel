@@ -6,7 +6,7 @@
             <h1 class="navbar-title">Configurações</h1>
         </nav>
         <section>
-            <form method="POST" action="/user" class="event-form">
+            <form method="POST" action="/user" class="event-form" onsubmit="onSubmitForm(event)">
                 @csrf
                 @method('PATCH')
 
@@ -18,14 +18,14 @@
 
                 <x-input type="text" name="name" label="Nome" placeholder="{{ $user->name }}" />
                 <x-input type="email" name="email" label="E-mail" placeholder="{{ $user->email }}" />
-                <x-input type="password" name="password" label="Senha" />
-                <x-input type="password" name="password_confirmation" label="Confirmar senha" />
+                <x-input.password name="password" label="Senha" />
+                <x-input.password name="password_confirmation" label="Confirmar senha" />
 
                 <button type="submit" class="btn btn-primary btn-save">Salvar</button>
             </form>
         </section>
         <section>
-            <form method="POST" action="/settings" class="event-form">
+            <form method="POST" action="/settings" class="event-form" onsubmit="onSubmitForm(event)">
                 @csrf
                 @method('PATCH')
 

@@ -87,12 +87,13 @@ function togglePasswordVisibility(id) {
     input.focus();
 }
 
-function onSubmitEventForm() {
-    $("#submit-button").prop("disabled", true);
+function onSubmitForm(event) {
+    $(event.target).children('button[type="submit"]').prop("disabled", true);
+    // $('button[type="submit"]').prop("disabled", true);
     $("#loading-bar").removeClass("hidden");
-    $(".calendar-container").addClass("loading-content");
+    $("main").addClass("loading-content");
 }
 
-function disableSubmitButton(event) {
-    $(event.target).children('button[type="submit"]').prop("disabled", true);
+function stopPropagation(event) {
+    event.stopPropagation();
 }
