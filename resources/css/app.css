@@ -67,6 +67,10 @@ input:focus {
     flex: 1 1 0;
 }
 
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
 .gap-10 {
     gap: 10px;
 }

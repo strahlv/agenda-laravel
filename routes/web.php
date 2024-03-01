@@ -26,11 +26,6 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 |
 */
 
-Route::get('/send', function () {
-    $user = auth()->user();
-    // $mail = Mail::to($user)->send(new TestMail($user));
-});
-
 Route::get('/', function () {
     if (session()->has('success')) {
         session()->flash('success', session('success'));
@@ -60,7 +55,7 @@ function getEvents(CarbonImmutable $date)
 
     $period = CarbonPeriod::create($date->startOfYear(), $date->endOfYear());
 
-    $events = $user ? $user->events : collect([]);
+    $events = $user ? $user->events->concat($user->eventsAsParticipant) : collect([]);
     $events->filter(
         fn ($event) =>
         $period->overlaps($event->period)

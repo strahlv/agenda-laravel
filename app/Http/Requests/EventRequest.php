@@ -30,7 +30,8 @@ class EventRequest extends FormRequest
             'end_date' => 'required_if:is_all_day,true|date_format:Y-m-d|after_or_equal:start_date',
             'start_time' => 'exclude_if:is_all_day,true|date_format:H:i',
             'end_time' => 'exclude_if:is_all_day,true|date_format:H:i|after_or_equal:start_time',
-            'is_all_day' => 'nullable'
+            'is_all_day' => 'nullable',
+            'participants' => 'nullable'
         ];
     }
 

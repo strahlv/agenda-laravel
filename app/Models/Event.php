@@ -35,6 +35,11 @@ class Event extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function participants()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
     public function getStartTimeAttribute()
     {
         return $this->start_date->format('H:i');

@@ -8,6 +8,7 @@
         $method = 'POST';
     }
 @endphp
+
 <form method="{{ $method }}" action="{{ $errors->get('action')[0] ?? $action }}" @class(['event-form', 'hidden' => !$errors->any()])
     onsubmit="onSubmitForm(event)">
     @csrf
@@ -39,6 +40,8 @@
     </div>
 
     <x-input.checkbox name="is_all_day" label="Dia inteiro" :checked="$isAllDay" onchange="toggleTimeInputs()" />
+
+    <x-input.array name="participants" label="Participantes" />
 
     <button type="submit" id="submit-button" class="btn btn-primary btn-save">Salvar</button>
 </form>

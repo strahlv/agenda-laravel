@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EventRequest;
 use App\Models\Event;
 use App\Models\User;
+use Illuminate\Support\Str;
 
 class EventController extends Controller
 {
@@ -24,12 +25,20 @@ class EventController extends Controller
             $inputs['end_date'] = $inputs['start_date'];
         }
 
-        Event::create([
+        $event = Event::create([
             'title' => $inputs['title'],
             'start_date' => $inputs['start_date'] . " " . $inputs['start_time'],
             'end_date' => $inputs['end_date'] . " " . $inputs['end_time'],
             'user_id' => $user->id
         ]);
+
+        $participantsStr = $inputs['participants'];
+
+        if ($participantsStr) {
+            $participants = Str::of($participantsStr)->split('/,/')->unique();
+            $ids = User::select('id')->whereIn('email', $participants)->get();
+            $event->participants()->attach($ids);
+        }
 
         return back();
     }
