@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\WelcomeMail;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules\Password;
 
 class RegisterController extends Controller
@@ -28,6 +30,8 @@ class RegisterController extends Controller
         auth()->login($user);
 
         // session()->flash('success', 'Usuário cadastrado com sucesso.');
+
+        Mail::to($user)->send(new WelcomeMail($user));
 
         return redirect('/')->with('success', 'Usuário cadastrado com sucesso.');
     }

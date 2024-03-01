@@ -5,10 +5,12 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserSettingController;
+use App\Mail\TestMail;
 use App\Models\Event;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
@@ -23,6 +25,11 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/send', function () {
+    $user = auth()->user();
+    // $mail = Mail::to($user)->send(new TestMail($user));
+});
 
 Route::get('/', function () {
     if (session()->has('success')) {

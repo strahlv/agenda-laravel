@@ -59,11 +59,13 @@ function updateEndTimeConstraints(event) {
     }
 }
 
+// TODO: usar alpinejs
 function toggleTimeInputs() {
     $("#end-date-control").toggleClass("hidden");
     $("#time-control").toggleClass("hidden");
 }
 
+// TODO: usar alpinejs?
 function setTimeInputsDisplay(isHidden) {
     $("#is-all-day").prop("checked", isHidden);
 
@@ -74,17 +76,6 @@ function setTimeInputsDisplay(isHidden) {
         $("#end-date-control").addClass("hidden");
         $("#time-control").removeClass("hidden");
     }
-}
-
-function togglePasswordVisibility(id) {
-    var input = $("#" + id);
-    input.attr("type", input.attr("type") == "text" ? "password" : "text");
-
-    var icon = $("#" + id + " ~ button").children();
-    icon.toggleClass("fa-eye");
-    icon.toggleClass("fa-eye-slash");
-
-    input.focus();
 }
 
 function onSubmitForm(event) {
