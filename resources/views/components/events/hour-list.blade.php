@@ -7,7 +7,7 @@
 
     @if ($events->count())
         @foreach ($events as $event)
-            <li class="event-list-item">
+            <li class="event-list-item" x-data>
                 <span
                     class="event-day">{{ $lastHour != $event->start_date->hour ? $event->start_date->hour . 'h' : null }}</span>
                 @if (!$event['isHoliday'])
@@ -16,7 +16,7 @@
                     @endphp
 
                     <span class="event-item-title"
-                        onclick='showEditForm(event, @json($event), "{{ $updateRoute }}")'>{{ $event->title }}
+                        @@click='showEditForm(event, @json($event), "{{ $updateRoute }}"); $dispatch("edit_event", {{ $event->participants }})'>{{ $event->title }}
                         <span
                             class="event-item-time">({{ $event->is_all_day ? 'o dia todo' : $event->start_date->format('G:i') . ' - ' . $event->end_date->format('G:i') }})</span>
                     </span>

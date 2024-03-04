@@ -94,6 +94,7 @@ Route::get('/login', [SessionController::class, 'create'])->name('login')->middl
 Route::post('/login', [SessionController::class, 'store'])->middleware('guest');
 Route::post('/logout', [SessionController::class, 'destroy'])->middleware('auth');
 
+Route::get('/users', [UserController::class, 'index'])->middleware('auth');
 Route::get('/settings', [UserController::class, 'edit'])->middleware('auth');
 Route::patch('/user', [UserController::class, 'update'])->middleware('auth');
 

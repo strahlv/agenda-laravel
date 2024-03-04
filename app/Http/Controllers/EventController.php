@@ -35,7 +35,10 @@ class EventController extends Controller
         $participantsStr = $inputs['participants'];
 
         if ($participantsStr) {
-            $participants = Str::of($participantsStr)->split('/,/')->unique();
+            $participants = Str::of($participantsStr)
+                ->split('/,/')
+                ->unique()
+                ->filter(fn ($participant) => $participant != $user->email);
             $ids = User::select('id')->whereIn('email', $participants)->get();
             $event->participants()->attach($ids);
         }
@@ -61,6 +64,17 @@ class EventController extends Controller
             'start_date' => $inputs['start_date'] . " " . $inputs['start_time'],
             'end_date' => $inputs['end_date'] . " " . $inputs['end_time'],
         ]);
+
+        $participantsStr = $inputs['participants'];
+
+        if ($participantsStr) {
+            $participants = Str::of($participantsStr)
+                ->split('/,/')
+                ->unique()
+                ->filter(fn ($participant) => $participant != auth()->user()->email);
+            $ids = User::select('id')->whereIn('email', $participants)->get();
+            $event->participants()->sync($ids);
+        }
 
         return back();
     }

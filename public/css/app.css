@@ -565,20 +565,18 @@ input[type="checkbox"] {
 
 .btn-icon-sm {
     padding: 0;
-    background-color: transparent;
-    color: transparent;
     font-size: 12px;
     height: 16px;
     width: 16px;
 }
 
-.calendar-event:hover .btn-icon-sm {
+.calendar-event .btn-icon-sm {
     background-color: var(--clr-primary);
     color: #fff;
 }
 
-.calendar-event:hover .btn-icon-sm:hover,
-.calendar-event:hover .btn-icon-sm:focus {
+.calendar-event .btn-icon-sm:hover,
+.calendar-event .btn-icon-sm:focus {
     background-color: #fff;
     color: var(--clr-primary);
 }
@@ -798,8 +796,6 @@ input[type="checkbox"] {
     border-bottom-right-radius: 0;
 }
 
-/* SETTINGS */
-
 /* LOADING BAR */
 .loading-bar {
     width: 100%;
@@ -833,5 +829,34 @@ input[type="checkbox"] {
 
 .loading-content {
     opacity: 0.8;
+}
+
+/* USER PICKER */
+.user-picker-option {
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+    padding: 4px;
+    transition: all 0.2s ease;
+}
+
+.user-picker-option:hover,
+.user-picker-option:focus {
+    background-color: var(--clr-primary-lt);
+}
+
+.user-picker-item {
+    padding: 4px;
+    background-color: var(--clr-primary-wt);
+    display: flex;
+    justify-content: space-between;
+}
+
+.opaque-on-hover {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.opaque-on-hover-trigger:hover .opaque-on-hover {
+    opacity: 1;
 }
 

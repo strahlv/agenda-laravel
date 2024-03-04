@@ -7,16 +7,20 @@
 @if ($events->count())
     <ul class="event-list">
         @foreach ($events as $event)
-            <li class="event-list-item" id="{{ $event->id }}">
+            <li class="event-list-item" id="{{ $event->id }}" x-data>
                 <span class="event-day">{{ $lastDay != $event->start_date->day ? $event->start_date->day : '' }}</span>
                 @if (!$event['isHoliday'])
                     @php
                         $updateRoute = route('events.update', ['event' => $event->id ?? -1]) . "#$event->id";
-                        $eventTime = $event->is_all_day ? 'o dia todo' : ($event->start_time == $event->end_time ? $event->start_date->format('G:i') : $event->start_date->format('G:i') . ' - ' . $event->end_date->format('G:i'));
+                        $eventTime = $event->is_all_day
+                            ? 'o dia todo'
+                            : ($event->start_time == $event->end_time
+                                ? $event->start_date->format('G:i')
+                                : $event->start_date->format('G:i') . ' - ' . $event->end_date->format('G:i'));
                     @endphp
 
                     <span class="event-item-title"
-                        onclick='showEditForm(event, @json($event), "{{ $updateRoute }}")'>{{ $event->title }}
+                        @@click='showEditForm(event, @json($event), "{{ $updateRoute }}"); $dispatch("edit_event", {{ $event->participants }})'>{{ $event->title }}
                         <span class="event-item-time">({{ $eventTime }})</span></span>
 
                     <div>

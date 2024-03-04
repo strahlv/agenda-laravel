@@ -8,14 +8,20 @@
     'updateRoute',
 ])
 
-<li {{ $attributes->class(['calendar-event', 'holiday' => $event->is_holiday, 'starts-before' => $startsBefore, 'ends-after' => $endsAfter]) }}
-    style="top: {{ $yOffset }}px; width: {{ $width }}"
-    onclick='showEditForm(event, @json($event), "{{ $updateRoute }}")'>
+<li {{ $attributes->class([
+    'calendar-event',
+    'opaque-on-hover-trigger',
+    'holiday' => $event->is_holiday,
+    'starts-before' => $startsBefore,
+    'ends-after' => $endsAfter,
+]) }}
+    style="top: {{ $yOffset }}px; width: {{ $width }}" x-data
+    @@click='showEditForm(event, @json($event), "{{ $updateRoute }}"); $dispatch("edit_event", {{ $event->participants }})'>
     {{ $slot }}
 
     @can('delete', $event)
         <x-events.delete-form :eventId="$event->id">
-            <button type="submit" class="btn btn-icon-sm" onclick="stopPropagation(event)"><i
+            <button type="submit" class="btn btn-icon-sm opaque-on-hover" onclick="stopPropagation(event)"><i
                     class="fa-solid fa-xmark"></i></button>
         </x-events.delete-form>
     @endcan
