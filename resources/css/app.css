@@ -3,6 +3,7 @@
     --clr-primary: #517dbe;
     --clr-primary-lt: #e3ebf7;
     --clr-primary-wt: #f3f8ff;
+    --clr-secondary: #51a1be;
     --clr-holiday: #e47070;
     --clr-danger: #e71717;
     --clr-danger-lt: #fcdcdc;
@@ -546,6 +547,10 @@ input[type="checkbox"] {
 .calendar-event:hover {
     /* opacity: 0.8; */
     box-shadow: 0 1px 0 #999;
+}
+
+.calendar-event.participant {
+    background-color: var(--clr-secondary);
 }
 
 .calendar-event.holiday {

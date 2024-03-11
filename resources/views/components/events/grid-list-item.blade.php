@@ -8,9 +8,14 @@
     'updateRoute',
 ])
 
+@php
+    $isParticipant = $event->creator?->id != auth()->user()->id;
+@endphp
+
 <li {{ $attributes->class([
     'calendar-event',
     'opaque-on-hover-trigger',
+    'participant' => $isParticipant,
     'holiday' => $event->is_holiday,
     'starts-before' => $startsBefore,
     'ends-after' => $endsAfter,

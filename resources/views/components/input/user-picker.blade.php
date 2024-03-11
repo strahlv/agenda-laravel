@@ -4,7 +4,13 @@
     $id = str_replace('_', '-', $name);
 @endphp
 
-<div id="user-picker" class="flex-col form-input" x-data="{ items: [], options: [], search: '', status: 'pending' }"
+<div id="user-picker" class="flex-col form-input" x-data="{
+    items: [],
+    options: [],
+    search: '',
+    status: 'pending',
+    currEmail: '{{ auth()->user()->email }}'
+}"
     @@edit_event.window="items = $event.detail">
     <label for="{{ $id }}" class="form-label">{{ $label }}</label>
 
@@ -36,7 +42,7 @@
             <template x-for="(item, index) in items" :key="index">
                 <div class="user-picker-item opaque-on-hover-trigger">
                     <div class="flex-col">
-                        <span x-text="item.name"></span>
+                        <span x-text="currEmail === item.email ? 'Você (' + item.name + ')' : item.name"></span>
                         <span class="text-sm" x-text="item.email"></span>
                     </div>
                     <button type="button" class="btn btn-icon-sm btn-remove-participant opaque-on-hover"
