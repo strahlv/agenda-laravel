@@ -41,7 +41,7 @@
 
     <x-input.checkbox name="is_all_day" label="Dia inteiro" :checked="$isAllDay" onchange="toggleTimeInputs()" />
 
-    <x-input.array name="participants" label="Participantes" />
+    <x-input.user-picker name="participants" label="Convidar participantes" placeholder="E-mail do convidado..." />
 
     <button type="submit" id="submit-button" class="btn btn-primary btn-save">Salvar</button>
 </form>

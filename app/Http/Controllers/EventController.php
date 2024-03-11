@@ -74,6 +74,8 @@ class EventController extends Controller
                 ->filter(fn ($participant) => $participant != auth()->user()->email);
             $ids = User::select('id')->whereIn('email', $participants)->get();
             $event->participants()->sync($ids);
+        } else {
+            $event->participants()->detach();
         }
 
         return back();

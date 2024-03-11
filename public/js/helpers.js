@@ -88,3 +88,23 @@ function onSubmitForm(event) {
 function stopPropagation(event) {
     event.stopPropagation();
 }
+
+// User picker
+function removeItem(itemToRemove, array) {
+    return array.filter((item) => item != itemToRemove);
+}
+
+async function fetchEmails(data) {
+    data.status = "pending";
+
+    if (data.search === "") {
+        data.options = [];
+        data.status = "idle";
+        return;
+    }
+
+    var responseData = await $.get(`/users?email=${data.search}`);
+    data.options = responseData.filter((item) => !data.items.includes(item));
+
+    data.status = "idle";
+}
