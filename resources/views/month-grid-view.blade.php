@@ -3,10 +3,15 @@
         $firstWeekDay = auth()->user()->first_week_day ?? Carbon::SUNDAY;
         $lastWeekDay = auth()->user()->last_week_day ?? Carbon::SATURDAY;
 
-        $period = CarbonPeriod::create($date->startOfMonth()->previous($firstWeekDay), $date->endOfMonth()->next($lastWeekDay));
+        $period = CarbonPeriod::create(
+            $date->startOfMonth()->previous($firstWeekDay),
+            $date->endOfMonth()->next($lastWeekDay),
+        );
         $periodDates = $period->toArray();
 
-        $events = $events->filter(fn($event) => CarbonPeriod::create($event->start_date, $event->end_date)->overlaps($period));
+        $events = $events->filter(
+            fn($event) => CarbonPeriod::create($event->start_date, $event->end_date)->overlaps($period),
+        );
     @endphp
 
     <header class="calendar-row calendar-row-header">
@@ -26,7 +31,10 @@
                 @php
                     $dt = $periodDates[$j + $i * 7];
                     $isOtherMonth = !$dt->isSameMonth($date);
-                    $weekPeriod = CarbonPeriod::create($dt->copy()->startOfWeek($firstWeekDay), $dt->copy()->endOfWeek($lastWeekDay));
+                    $weekPeriod = CarbonPeriod::create(
+                        $dt->copy()->startOfWeek($firstWeekDay),
+                        $dt->copy()->endOfWeek($lastWeekDay),
+                    );
                     $weekEvents = $events->filter(fn($event) => $event->period->overlaps($weekPeriod));
 
                     $storeRoute = route('users.events.store', ['user' => auth()->user()->id ?? -1]);
@@ -52,14 +60,22 @@
                                 $isInPeriod = $dt->between($event->start_date, $event->end_date);
                                 $canPlace = ($j == 0 && $startsBeforeThisWeek && $isInPeriod) || $event->startsAt($dt);
 
-                                $eventWidth = min($startsBeforeThisWeek ? $startOfWeek->diffInDays($event->end_date) + 1 : $event->start_date->diffInDays($event->end_date) + 1, 7 - $j);
+                                $eventWidth = min(
+                                    $startsBeforeThisWeek
+                                        ? $startOfWeek->diffInDays($event->end_date) + 1
+                                        : $event->start_date->diffInDays($event->end_date) + 1,
+                                    7 - $j,
+                                );
                                 $updateRoute = route('events.update', ['event' => $event->id ?? -1]) . "#$event->id";
 
                                 // Posiciona os eventos no grid
                                 $y = 0;
 
                                 foreach ($endDates as $endDate) {
-                                    if ($event->start_date->isAfter($endDate) && !$event->start_date->isSameDay($endDate)) {
+                                    if (
+                                        $event->start_date->isAfter($endDate) &&
+                                        !$event->start_date->isSameDay($endDate)
+                                    ) {
                                         break;
                                     }
 
@@ -73,7 +89,7 @@
 
                             @if ($canPlace)
                                 <x-events.grid-list-item :event="$event" :starts-before="$startsBeforeThisWeek" :ends-after="$endsAfterThisWeek"
-                                    :update-route="$updateRoute" :y-offset="$y * 24" :width="'calc(100% *' . $eventWidth . ' + 10px * ' . ($eventWidth - 1) . ')'">
+                                    :update-route="$updateRoute" :y-offset="$y * 24" :width="'calc(100% * ' . $eventWidth . ' - 4px)'">
                                     {{ $event->title }}
                                 </x-events.grid-list-item>
                             @endif

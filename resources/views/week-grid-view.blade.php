@@ -74,11 +74,21 @@
                                             $endsAfterThisWeek = $event->endsAfter($period->getEndDate());
 
                                             $isAllDayEvent = $event->is_all_day;
-                                            $canPlaceAllDay = $i == -1 && ($event->startsAt($dt) || $startsBeforeThisWeek) && $isAllDayEvent;
-                                            $canPlaceAtHour = $event->startsAt($dt) && !$isAllDayEvent && $event->startsAtHour($i);
+                                            $canPlaceAllDay =
+                                                $i == -1 &&
+                                                ($event->startsAt($dt) || $startsBeforeThisWeek) &&
+                                                $isAllDayEvent;
+                                            $canPlaceAtHour =
+                                                $event->startsAt($dt) && !$isAllDayEvent && $event->startsAtHour($i);
 
-                                            $eventWidth = min($startsBeforeThisWeek ? $startOfWeek->diffInDays($event->end_date) + 1 : $event->durationInDays + 1, 7 - $j);
-                                            $updateRoute = route('events.update', ['event' => $event->id ?? -1]) . "#$event->id";
+                                            $eventWidth = min(
+                                                $startsBeforeThisWeek
+                                                    ? $startOfWeek->diffInDays($event->end_date) + 1
+                                                    : $event->durationInDays + 1,
+                                                7 - $j,
+                                            );
+                                            $updateRoute =
+                                                route('events.update', ['event' => $event->id ?? -1]) . "#$event->id";
 
                                             // Posiciona os eventos no grid
                                             $y = 0;
@@ -98,11 +108,7 @@
 
                                         @if ($canPlaceAllDay)
                                             <x-events.grid-list-item :event="$event" :starts-before="$startsBeforeThisWeek"
-                                                :ends-after="$endsAfterThisWeek" :update-route="$updateRoute" :y-offset="$y * 24" :width="'calc(100% *' .
-                                                    $eventWidth .
-                                                    ' + 2px * ' .
-                                                    ($eventWidth - 1) .
-                                                    ')'">
+                                                :ends-after="$endsAfterThisWeek" :update-route="$updateRoute" :y-offset="$y * 24" :width="'calc(100% * ' . $eventWidth . ')'">
                                                 {{ $event->title }}
                                             </x-events.grid-list-item>
                                         @elseif ($canPlaceAtHour)

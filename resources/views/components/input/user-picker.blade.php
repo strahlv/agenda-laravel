@@ -9,7 +9,7 @@
     options: [],
     search: '',
     status: 'pending',
-    currEmail: '{{ auth()->user()->email }}'
+    currEmail: '{{ auth()->user()?->email }}'
 }"
     @@edit_event.window="items = $event.detail">
     <label for="{{ $id }}" class="form-label">{{ $label }}</label>

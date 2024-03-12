@@ -3,7 +3,9 @@
         $period = CarbonPeriod::create($date, $date->endOfDay());
         $periodDates = $period->toArray();
 
-        $events = $events->filter(fn($event) => CarbonPeriod::create($event->start_date, $event->end_date)->overlaps($period));
+        $events = $events->filter(
+            fn($event) => CarbonPeriod::create($event->start_date, $event->end_date)->overlaps($period),
+        );
         $allDayEventsCount = $events->filter(fn($event) => $event->is_all_day)->count();
         $allDayEventsCellHeight = max(74, $allDayEventsCount * 24 + 2);
     @endphp
@@ -76,16 +78,13 @@
 
                                         $eventWidth = 1;
 
-                                        $updateRoute = route('events.update', ['event' => $event->id ?? -1]) . "#$event->id";
+                                        $updateRoute =
+                                            route('events.update', ['event' => $event->id ?? -1]) . "#$event->id";
                                     @endphp
 
                                     @if ($i == -1 && ($isSameDay || $startsBeforeThisWeek) && $isAllDayEvent)
                                         <x-events.grid-list-item :event="$event" :starts-before="$startsBeforeThisWeek" :ends-after="$endsAfterThisWeek"
-                                            :update-route="$updateRoute" :y-offset="$yOffset * 24" :width="'calc(100% *' .
-                                                $eventWidth .
-                                                ' + 2px * ' .
-                                                ($eventWidth - 1) .
-                                                ')'">
+                                            :update-route="$updateRoute" :y-offset="$yOffset * 24" :width="'calc(100% * ' . $eventWidth . ' - 4px' . ')'">
                                             {{ $event->title }}
                                         </x-events.grid-list-item>
                                     @elseif ($isSameDay && !$isAllDayEvent && $isSameStartHour)

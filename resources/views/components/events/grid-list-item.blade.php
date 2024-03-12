@@ -9,7 +9,7 @@
 ])
 
 @php
-    $isParticipant = $event->creator?->id != auth()->user()->id;
+    $isParticipant = $event->creator?->id != auth()->user()?->id;
 @endphp
 
 <li {{ $attributes->class([
