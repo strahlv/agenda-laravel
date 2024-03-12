@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EventRequest;
 use App\Models\Event;
 use App\Models\User;
+use App\Notifications\EventParticipantInvited;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class EventController extends Controller
@@ -35,12 +37,16 @@ class EventController extends Controller
         $participantsStr = $inputs['participants'];
 
         if ($participantsStr) {
-            $participants = Str::of($participantsStr)
+            $participantsEmails = Str::of($participantsStr)
                 ->split('/,/')
                 ->unique()
                 ->filter(fn ($participant) => $participant != $user->email);
-            $ids = User::select('id')->whereIn('email', $participants)->get();
-            $event->participants()->attach($ids);
+            $participants = User::whereIn('email', $participantsEmails)->get();
+            foreach ($participants as $participant) {
+                $participant->notify(new EventParticipantInvited(auth()->user(), $participant, $event));
+            }
+            // $ids = User::select('id')->whereIn('email', $participantsEmails)->get();
+            // $event->participants()->attach($ids);
         }
 
         return back();
@@ -77,6 +83,22 @@ class EventController extends Controller
         } else {
             $event->participants()->detach();
         }
+
+        return back();
+    }
+
+    public function participate(Event $event, Request $request)
+    {
+        $id = $request->input('participant_id');
+
+        ddd($event);
+        // BUG: null
+        if ($id === $event->creator->id) {
+            ddd($event->creator->id);
+            return back();
+        }
+
+        $event->participants()->attach($id);
 
         return back();
     }

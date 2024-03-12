@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UserController;
@@ -48,4 +49,7 @@ Route::patch('/user', [UserController::class, 'update'])->middleware('auth');
 
 Route::patch('/settings', [UserSettingController::class, 'update'])->middleware('auth');
 
+Route::patch('/notifications/markAsRead', [NotificationController::class, 'markAsRead'])->middleware('auth');
+
+Route::patch('/events/{eventId}/participate', [EventController::class, 'participate'])->middleware('auth');
 Route::resource('users.events', EventController::class)->shallow()->middleware('auth');

@@ -110,3 +110,24 @@ async function fetchEmails(data) {
 
     data.status = "idle";
 }
+
+$(document).ready(function () {
+    // Ler notificações ao abrir o menu de notificações
+    $("#notifications").on("click", function () {
+        var notificationIds = $("ul[data-notification-ids]")
+            .data("notificationIds")
+            .map((notif) => notif.id);
+
+        if (notificationIds.length === 0) {
+            return;
+        }
+
+        $.ajax("/notifications/markAsRead", {
+            headers: {
+                "X-CSRF-TOKEN": $("input[name=_token]").val(),
+            },
+            method: "PATCH",
+            data: { ids: notificationIds },
+        }).done((res) => console.log(res));
+    });
+});

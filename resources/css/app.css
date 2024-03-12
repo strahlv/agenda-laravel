@@ -76,6 +76,14 @@ input:focus {
     gap: 10px;
 }
 
+.justify-center {
+    justify-content: center;
+}
+
+.align-center {
+    align-items: center;
+}
+
 .align-end {
     align-items: flex-end;
 }
@@ -267,6 +275,17 @@ input[type="checkbox"] {
 .navbar-active {
     background-color: var(--clr-primary);
     color: #fff;
+}
+
+.notification::after {
+    content: "";
+    width: 6px;
+    height: 6px;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
 }
 
 /* DROPDOWN */
@@ -882,4 +901,25 @@ input[type="checkbox"] {
 .btn-remove-participant {
     height: 100%;
     border-radius: 0%;
+}
+
+/* NOTIFICATION LIST */
+.notification-list {
+    width: 320px;
+}
+
+.notification-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 8px 8px;
+}
+
+.notification-message + .notification-message {
+    border-top: var(--calendar-border);
+}
+
+.unread {
+    background-color: var(--clr-primary-lt);
 }

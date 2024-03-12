@@ -87,6 +87,8 @@
         @endif
     @endauth
 
+    <x-dropdown.notifications />
+
     {{-- Autenticação --}}
     @guest
         <a href="/login" class="btn btn-with-icon"><i class="fa-solid fa-sign-in"></i> Entrar</a>
