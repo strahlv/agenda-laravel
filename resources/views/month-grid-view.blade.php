@@ -89,7 +89,7 @@
 
                             @if ($canPlace)
                                 <x-events.grid-list-item :event="$event" :starts-before="$startsBeforeThisWeek" :ends-after="$endsAfterThisWeek"
-                                    :update-route="$updateRoute" :y-offset="$y * 24" :width="'calc(100% * ' . $eventWidth . ' - 4px)'">
+                                    :update-route="$updateRoute" :y-offset="$y * 24" :width="'calc(100% * ' . $eventWidth . ' + 5px * ' . $eventWidth - 1 . ')'">
                                     {{ $event->title }}
                                 </x-events.grid-list-item>
                             @endif

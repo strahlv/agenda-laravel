@@ -108,7 +108,12 @@
 
                                         @if ($canPlaceAllDay)
                                             <x-events.grid-list-item :event="$event" :starts-before="$startsBeforeThisWeek"
-                                                :ends-after="$endsAfterThisWeek" :update-route="$updateRoute" :y-offset="$y * 24" :width="'calc(100% * ' . $eventWidth . ' - 4px)'">
+                                                :ends-after="$endsAfterThisWeek" :update-route="$updateRoute" :y-offset="$y * 24" :width="'calc(100% * ' .
+                                                    $eventWidth .
+                                                    ' + ' .
+                                                    $eventWidth -
+                                                    1 .
+                                                    'px)'">
                                                 {{ $event->title }}
                                             </x-events.grid-list-item>
                                         @elseif ($canPlaceAtHour)

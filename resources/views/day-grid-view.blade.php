@@ -84,7 +84,7 @@
 
                                     @if ($i == -1 && ($isSameDay || $startsBeforeThisWeek) && $isAllDayEvent)
                                         <x-events.grid-list-item :event="$event" :starts-before="$startsBeforeThisWeek" :ends-after="$endsAfterThisWeek"
-                                            :update-route="$updateRoute" :y-offset="$yOffset * 24" :width="'calc(100% * ' . $eventWidth . ' - 4px' . ')'">
+                                            :update-route="$updateRoute" :y-offset="$yOffset * 24" :width="'calc((100% + 4px) * ' . $eventWidth . ' - 4px' . ')'">
                                             {{ $event->title }}
                                         </x-events.grid-list-item>
                                     @elseif ($isSameDay && !$isAllDayEvent && $isSameStartHour)
