@@ -1,3 +1,5 @@
+function showEvent(event) {}
+
 function showCreateForm(
     dateString,
     timeString = null,
