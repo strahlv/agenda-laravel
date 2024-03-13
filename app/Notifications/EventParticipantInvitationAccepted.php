@@ -35,8 +35,8 @@ class EventParticipantInvitationAccepted extends Notification
      */
     public function via($notifiable)
     {
-        // return ['database', 'mail'];
-        return ['database'];
+        return ['database', 'mail'];
+        // return ['database'];
     }
 
     /**
@@ -47,11 +47,20 @@ class EventParticipantInvitationAccepted extends Notification
      */
     public function toMail($notifiable)
     {
-        // TODO: notificar por email
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+            ->subject(
+                $this->participant->name
+                    . ' aceitou seu convite para o evento "'
+                    . $this->event->title
+                    . '"'
+            )
+            ->view(
+                'emails.event-invitation-accepted',
+                [
+                    'event' => $this->event,
+                    'participant' =>  $this->participant
+                ]
+            );
     }
 
     /**

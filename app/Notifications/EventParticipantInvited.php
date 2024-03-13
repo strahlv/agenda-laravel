@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Mail\EventInvitationMail;
 use App\Models\Event;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
@@ -37,8 +38,8 @@ class EventParticipantInvited extends Notification
      */
     public function via($notifiable)
     {
-        // return ['mail', 'database'];
-        return ['database'];
+        return ['mail', 'database'];
+        // return ['database'];
     }
 
     /**
@@ -49,11 +50,20 @@ class EventParticipantInvited extends Notification
      */
     public function toMail($notifiable)
     {
-        // TODO: notificar por email
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+            ->subject(
+                $this->inviter->name
+                    . ' te convidou para o evento "'
+                    . $this->event->title
+                    . '"'
+            )
+            ->view(
+                'emails.event-invitation',
+                [
+                    'event' => $this->event,
+                    'inviter' =>  $this->inviter
+                ]
+            );
     }
 
     /**

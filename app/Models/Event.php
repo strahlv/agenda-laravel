@@ -89,6 +89,11 @@ class Event extends Model
         return CarbonPeriod::create($this->start_date, $this->end_date);
     }
 
+    public function getUrl(string $view)
+    {
+        return $view . $this->start_date->format('/Y/n/j');
+    }
+
     public function startsAt(Carbon $date)
     {
         return $this->start_date->isSameDay($date);
