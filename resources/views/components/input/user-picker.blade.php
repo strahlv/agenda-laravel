@@ -20,10 +20,11 @@
         @@input.debounce="await fetchEmails($data)">
 
     <div class="flex-col">
+        {{-- TODO: Limitar resultados; scrollbar --}}
         <div class="flex-col user-picker-option-contents" x-show="options.length > 0" x-transition>
             <template x-for="(option, index) in options" :key="index">
                 <div class="user-picker-option"
-                    @@click="items.push(option); options = options.filter((op) => op != option)">
+                    @@click="addOrRemoveById(items, option); search = ''; options = [];">
                     <div class="flex-col">
                         <span x-text="option.name"></span>
                         <span class="text-sm" x-text="option.email"></span>
@@ -36,6 +37,7 @@
                 (Nenhum usuário encontrado.)
         </div>
         </span>
+        {{-- TODO: Listar convidados e diferenciar de participantes --}}
         <span class="user-picker-participant-count" x-show="items.length > 0"
             x-text="`${items.length} participante(s)`"></span>
         <div class="flex-col" x-show="items.length > 0">

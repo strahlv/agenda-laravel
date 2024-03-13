@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EventRequest;
 use App\Models\Event;
 use App\Models\User;
+use App\Notifications\EventParticipantInvitationAccepted;
 use App\Notifications\EventParticipantInvited;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -34,6 +35,8 @@ class EventController extends Controller
             'user_id' => $user->id
         ]);
 
+        // TODO: Criar relação many-to-many entre tabelas Event e Invitation
+        // diferenciar participantes (já participam) de convidados (ainda não participam)
         $participantsStr = $inputs['participants'];
 
         if ($participantsStr) {
@@ -42,11 +45,10 @@ class EventController extends Controller
                 ->unique()
                 ->filter(fn ($participant) => $participant != $user->email);
             $participants = User::whereIn('email', $participantsEmails)->get();
+
             foreach ($participants as $participant) {
                 $participant->notify(new EventParticipantInvited(auth()->user(), $participant, $event));
             }
-            // $ids = User::select('id')->whereIn('email', $participantsEmails)->get();
-            // $event->participants()->attach($ids);
         }
 
         return back();
@@ -71,15 +73,48 @@ class EventController extends Controller
             'end_date' => $inputs['end_date'] . " " . $inputs['end_time'],
         ]);
 
-        $participantsStr = $inputs['participants'];
+        // TODO: Criar relação many-to-many entre tabelas Event e Invitation
+        // diferenciar participantes (já participam) de convidados (ainda não participam)
+        $invitedStr = $inputs['participants'];
 
-        if ($participantsStr) {
-            $participants = Str::of($participantsStr)
+        if ($invitedStr) {
+            $invitedEmails = Str::of($invitedStr)
                 ->split('/,/')
                 ->unique()
-                ->filter(fn ($participant) => $participant != auth()->user()->email);
-            $ids = User::select('id')->whereIn('email', $participants)->get();
-            $event->participants()->sync($ids);
+                ->filter(
+                    fn ($invitedEmail)
+                    => $invitedEmail != $event->creator->email
+                );
+
+            $invitedParticipants = User::whereIn('email', $invitedEmails)->get();
+
+            // Não enviar notificações para usuários que já participam do evento!
+            $participantsToNotify = $invitedParticipants->filter(
+                fn ($invitedEmail)
+                => !$event->participants->contains(
+                    fn ($participant)
+                    => $participant->email === $invitedEmail
+                )
+            );
+
+            foreach ($participantsToNotify as $participant) {
+                $participant->notify(new EventParticipantInvited(auth()->user(), $participant, $event));
+            }
+
+            $detachIds = $invitedParticipants
+                ->filter(
+                    fn ($invitedParticipant)
+                    => $event->participants->contains(
+                        fn ($participant)
+                        => $participant === $invitedParticipant
+                    )
+                )
+                ->map(
+                    fn ($participant)
+                    => $participant->id
+                );
+
+            $event->participants()->sync($detachIds);
         } else {
             $event->participants()->detach();
         }
@@ -91,14 +126,14 @@ class EventController extends Controller
     {
         $id = $request->input('participant_id');
 
-        ddd($event);
-        // BUG: null
         if ($id === $event->creator->id) {
-            ddd($event->creator->id);
             return back();
         }
 
-        $event->participants()->attach($id);
+        $event->participants()->syncWithoutDetaching($id);
+
+        $participant = User::findOrFail($id);
+        $event->creator->notify(new EventParticipantInvitationAccepted($participant, $event));
 
         return back();
     }

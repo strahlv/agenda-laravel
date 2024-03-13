@@ -2,6 +2,8 @@
 
 namespace App\Notifications;
 
+use App\Models\Event;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -11,14 +13,18 @@ class EventParticipantInvitationAccepted extends Notification
 {
     use Queueable;
 
+    private User $participant;
+    private Event $event;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($participant, $event)
     {
-        //
+        $this->participant = $participant;
+        $this->event = $event;
     }
 
     /**
@@ -29,7 +35,8 @@ class EventParticipantInvitationAccepted extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        // return ['database', 'mail'];
+        return ['database'];
     }
 
     /**
@@ -40,10 +47,11 @@ class EventParticipantInvitationAccepted extends Notification
      */
     public function toMail($notifiable)
     {
+        // TODO: notificar por email
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->line('The introduction to the notification.')
+            ->action('Notification Action', url('/'))
+            ->line('Thank you for using our application!');
     }
 
     /**
@@ -55,7 +63,8 @@ class EventParticipantInvitationAccepted extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'participant_name' => $this->participant->name,
+            'message' => 'aceitou seu convite para o evento "' . $this->event->title . '"',
         ];
     }
 }

@@ -20,7 +20,7 @@
     'starts-before' => $startsBefore,
     'ends-after' => $endsAfter,
 ]) }}
-    style="top: {{ $yOffset }}px; width: {{ $width }}" x-data
+    id="{{ $event->id }}" style="top: {{ $yOffset }}px; width: {{ $width }}" x-data
     @@click='showEditForm(event, @json($event), "{{ $updateRoute }}"); $dispatch("edit_event", {{ $event->participants }})'>
     {{ $slot }}
 

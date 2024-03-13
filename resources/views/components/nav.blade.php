@@ -87,6 +87,7 @@
         @endif
     @endauth
 
+    {{-- Notificações --}}
     <x-dropdown.notifications />
 
     {{-- Autenticação --}}

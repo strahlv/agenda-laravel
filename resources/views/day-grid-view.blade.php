@@ -31,7 +31,7 @@
         <div class="week-grid">
             <div class="hour-col">
                 @for ($i = -1; $i < 24; $i++)
-                    <span id="{{ $i }}"
+                    <span id="h{{ $i }}"
                         @if ($i == -1) style="{{ $allDayEventsCount ? 'flex: 0 0 auto; height: ' . $allDayEventsCellHeight . 'px;' : null }}" @endif>
                         {{ $i >= 0 ? $i . 'h' : 'O dia todo' }}</span>
                 @endfor
@@ -55,7 +55,7 @@
                             $yOffset = 0;
                             $yOffsetHour = 0;
 
-                            $storeRoute = route('users.events.store', ['user' => auth()->user()->id ?? -1]) . "#$i";
+                            $storeRoute = route('users.events.store', ['user' => auth()->user()->id ?? -1]) . "#h$i";
                         @endphp
                         <div class="week-cell"
                             onclick="showCreateForm('{{ $dt->format('Y-m-d') }}', '{{ $dt->format('H:i') }}', {{ $i == -1 ? 'true' : 'false' }}, '{{ $storeRoute }}')"

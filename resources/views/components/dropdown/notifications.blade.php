@@ -20,7 +20,7 @@
                 <x-notification-message :notification="$notification" />
             @endforeach
             @if (count($notifications) === 0)
-                <p>Sem notificações.</p>
+                <p class="no-notifications">Sem notificações.</p>
             @endif
         </ul>
     </x-dropdown>

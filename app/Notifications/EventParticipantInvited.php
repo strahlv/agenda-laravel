@@ -67,8 +67,7 @@ class EventParticipantInvited extends Notification
         return [
             'inviter_name' => $this->inviter->name,
             'event_id' => $this->event->id,
-            'message' => 'te convidou para o evento "'
-                . $this->event->title,
+            'message' => 'te convidou para o evento "' . $this->event->title . '"',
         ];
     }
 }

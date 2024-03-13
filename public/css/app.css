@@ -486,6 +486,7 @@ input[type="checkbox"] {
     flex-direction: column;
     padding-top: 4px;
     padding-left: 4px;
+    padding-left: 2px;
     border-top: var(--calendar-border);
     border-left: var(--calendar-border);
     background-color: #fff;
@@ -764,7 +765,6 @@ input[type="checkbox"] {
     border-left: var(--calendar-border);
     flex: 1;
     height: 74px;
-    /* overflow-y: clip; */
 }
 
 .week-cell:hover {
@@ -773,9 +773,8 @@ input[type="checkbox"] {
 
 .week-cell .calendar-event-list {
     margin-top: 2px;
-    margin-left: 1px;
+    margin-left: 2px;
     padding-right: 8px;
-    /* height: fit-content; */
 }
 
 .week-row:first-of-type .week-cell {
@@ -906,6 +905,8 @@ input[type="checkbox"] {
 /* NOTIFICATION LIST */
 .notification-list {
     width: 320px;
+    max-height: 50vh;
+    overflow: auto;
 }
 
 .notification-message {
@@ -916,11 +917,17 @@ input[type="checkbox"] {
     padding: 16px 8px 8px;
 }
 
-.notification-message + .notification-message {
+.notification-message:nth-of-type(n + 2) {
     border-top: var(--calendar-border);
 }
 
 .unread {
     background-color: var(--clr-primary-lt);
+}
+
+.no-notifications {
+    width: 100%;
+    padding: 32px;
+    text-align: center;
 }
 

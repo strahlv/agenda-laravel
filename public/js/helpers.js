@@ -91,6 +91,16 @@ function stopPropagation(event) {
     event.stopPropagation();
 }
 
+function addOrRemoveById(array, value) {
+    var sameId = (item) => item.id === value.id;
+
+    if (!array.find(sameId)) {
+        array.push(value);
+    } else {
+        array.splice(array.findIndex(sameId), 1);
+    }
+}
+
 // User picker
 function removeItem(itemToRemove, array) {
     return array.filter((item) => item != itemToRemove);
@@ -114,6 +124,8 @@ async function fetchEmails(data) {
 $(document).ready(function () {
     // Ler notificações ao abrir o menu de notificações
     $("#notifications").on("click", function () {
+        $(this).removeClass("notification");
+
         var notificationIds = $("ul[data-notification-ids]")
             .data("notificationIds")
             .map((notif) => notif.id);

@@ -32,7 +32,7 @@
         <div class="week-grid">
             <div class="hour-col">
                 @for ($i = -1; $i < 24; $i++)
-                    <span id="{{ $i }}"
+                    <span id="h{{ $i }}"
                         @if ($i == -1) style="{{ $allDayEventsCount ? 'flex: 0 0 auto; height: ' . $allDayEventsCellHeight . 'px;' : null }}" @endif>
                         {{ $i >= 0 ? $i . 'h' : 'O dia todo' }}</span>
                 @endfor
@@ -60,7 +60,8 @@
 
                                 $yHour = 0;
 
-                                $storeRoute = route('users.events.store', ['user' => auth()->user()->id ?? -1]) . "#$i";
+                                $storeRoute =
+                                    route('users.events.store', ['user' => auth()->user()->id ?? -1]) . "#h$i";
                             @endphp
                             <div class="week-cell"
                                 onclick="showCreateForm('{{ $dt->format('Y-m-d') }}', '{{ $dt->format('H:i') }}', {{ $i == -1 ? 'true' : 'false' }}, '{{ $storeRoute }}')"
@@ -87,6 +88,7 @@
                                                     : $event->durationInDays + 1,
                                                 7 - $j,
                                             );
+
                                             $updateRoute =
                                                 route('events.update', ['event' => $event->id ?? -1]) . "#$event->id";
 
@@ -110,10 +112,10 @@
                                             <x-events.grid-list-item :event="$event" :starts-before="$startsBeforeThisWeek"
                                                 :ends-after="$endsAfterThisWeek" :update-route="$updateRoute" :y-offset="$y * 24" :width="'calc(100% * ' .
                                                     $eventWidth .
-                                                    ' + ' .
+                                                    ' + 3px * ' .
                                                     $eventWidth -
                                                     1 .
-                                                    'px)'">
+                                                    ' - 2px)'">
                                                 {{ $event->title }}
                                             </x-events.grid-list-item>
                                         @elseif ($canPlaceAtHour)

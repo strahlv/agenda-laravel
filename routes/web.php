@@ -51,5 +51,5 @@ Route::patch('/settings', [UserSettingController::class, 'update'])->middleware(
 
 Route::patch('/notifications/markAsRead', [NotificationController::class, 'markAsRead'])->middleware('auth');
 
-Route::patch('/events/{eventId}/participate', [EventController::class, 'participate'])->middleware('auth');
+Route::patch('/events/{event}/participate', [EventController::class, 'participate'])->middleware('auth');
 Route::resource('users.events', EventController::class)->shallow()->middleware('auth');
