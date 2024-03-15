@@ -88,7 +88,7 @@
     @endauth
 
     {{-- Notificações --}}
-    <x-dropdown.notifications />
+    <x-notification.list />
 
     {{-- Autenticação --}}
     @guest

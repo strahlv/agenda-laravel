@@ -17,7 +17,7 @@
 
         <ul class="notification-list" data-notification-ids="{{ $unreadNotifications }}">
             @foreach ($notifications as $notification)
-                <x-notification-message :notification="$notification" />
+                <x-notification.message :notification="$notification" />
             @endforeach
             @if (count($notifications) === 0)
                 <p class="no-notifications">Sem notificações.</p>

@@ -88,6 +88,14 @@ input:focus {
     align-items: flex-end;
 }
 
+.self-start {
+    align-self: flex-start;
+}
+
+.self-end {
+    align-self: flex-end;
+}
+
 /* EVENT FORM */
 .event-form {
     display: flex;
@@ -914,7 +922,7 @@ input[type="checkbox"] {
     flex-direction: column;
     align-items: center;
     gap: 8px;
-    padding: 16px 8px 8px;
+    padding: 16px 8px;
 }
 
 .notification-message:nth-of-type(n + 2) {
@@ -929,4 +937,6 @@ input[type="checkbox"] {
     width: 100%;
     padding: 32px;
     text-align: center;
+    font-style: italic;
+    color: #999;
 }
