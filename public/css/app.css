@@ -265,9 +265,7 @@ input[type="checkbox"] {
 }
 
 .btn-primary:hover,
-.btn-primary:focus,
-.btn-danger:hover,
-.btn-danger:focus {
+.btn-primary:focus {
     box-shadow: 0 1px 0 #aaa;
 }
 
@@ -281,15 +279,10 @@ input[type="checkbox"] {
     box-shadow: 0 1px 0 #aaa;
 }
 
-.btn-danger {
-    background-color: var(--clr-danger);
-    color: #fff;
-}
-
 .btn-danger:hover,
 .btn-danger:focus {
-    background-color: var(--clr-danger);
-    color: #fff;
+    background-color: #fff;
+    color: var(--clr-danger);
 }
 
 .btn:disabled {

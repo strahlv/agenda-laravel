@@ -7,7 +7,7 @@
 @if ($events->count())
     <ul class="event-list">
         @foreach ($events as $event)
-            <li class="event-list-item" id="{{ $event->id }}" x-data>
+            <li class="event-list-item opaque-on-hover-trigger" id="{{ $event->id }}" x-data>
                 <span class="event-day">{{ $lastDay != $event->start_date->day ? $event->start_date->day : '' }}</span>
 
                 @php
@@ -21,14 +21,12 @@
                     {{ $event->title }} <span class="label">({{ $event->fancy_time }})</span>
                 </h2>
 
-                <div>
-                    @if ($event->id)
-                        <x-events.delete-form :eventId="$event->id">
-                            <button type="submit" class="btn btn-icon btn-danger"><i
-                                    class="fa-solid fa-trash-can"></i></button>
-                        </x-events.delete-form>
-                    @endif
-                </div>
+                @if ($event->id)
+                    <x-events.delete-form :eventId="$event->id">
+                        <button type="submit" class="btn btn-icon btn-danger opaque-on-hover"><i
+                                class="fa-solid fa-trash-can"></i></button>
+                    </x-events.delete-form>
+                @endif
             </li>
 
             @php
