@@ -40,8 +40,8 @@
                     $storeRoute = route('users.events.store', ['user' => auth()->user()->id ?? -1]);
                 @endphp
 
-                <div @class(['calendar-day', 'other-month' => $isOtherMonth])
-                    onclick="showCreateForm('{{ $dt->format('Y-m-d') }}', '{{ $dt->format('H:i') }}', true, '{{ $storeRoute }}')">
+                <div @class(['calendar-day', 'other-month' => $isOtherMonth]) x-data
+                    @@click="$dispatch('create-event', { data: { date: '{{ $dt->format('Y-m-d') }}', time: '{{ $dt->format('H:i') }}', isAllDay: true }, url: '{{ $storeRoute }}' })">
                     <div @class([
                         'calendar-day-number',
                         'other-month' => $isOtherMonth,
@@ -51,7 +51,7 @@
                         {{ $dt->day }}
                     </div>
                     {{-- TODO: extrair componente --}}
-                    <ul class="calendar-event-list" {{-- x-data="items = {{ $events }}" --}}>
+                    <ul class="calendar-event-list">
                         @foreach ($weekEvents as $event)
                             @php
                                 $startOfWeek = $weekPeriod->getStartDate();
@@ -66,7 +66,6 @@
                                         : $event->start_date->diffInDays($event->end_date) + 1,
                                     7 - $j,
                                 );
-                                $updateRoute = route('events.update', ['event' => $event->id ?? -1]) . "#$event->id";
 
                                 // Posiciona os eventos no grid
                                 $y = 0;
@@ -85,19 +84,17 @@
                                 if ($canPlace) {
                                     $endDates[$y] = $event->end_date;
                                 }
+
+                                $updateRoute = route('events.update', ['event' => $event->id ?? -1]);
                             @endphp
 
                             @if ($canPlace)
                                 <x-events.grid-list-item :event="$event" :starts-before="$startsBeforeThisWeek" :ends-after="$endsAfterThisWeek"
-                                    :update-route="$updateRoute" :y-offset="$y * 24" :width="'calc(100% * ' . $eventWidth . ' + 3px * ' . $eventWidth - 1 . ' - 2px)'">
+                                    :y-offset="$y * 24" :width="'calc(100% * ' . $eventWidth . ' + 3px * ' . $eventWidth - 1 . ' - 2px)'" :update-route="$updateRoute">
                                     {{ $event->title }}
                                 </x-events.grid-list-item>
                             @endif
                         @endforeach
-                        {{-- CSS BUG!!! --}}
-                        {{-- <template x-for="item in filteredItems">
-                            <li x-text="item.title" class="calendar-event"></li>
-                        </template> --}}
                     </ul>
                 </div>
             @endfor

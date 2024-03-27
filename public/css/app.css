@@ -53,66 +53,90 @@ input:focus {
     transition: all 0.2s ease-out;
 }
 
-/* FLEX UTILS */
-.flex-col {
+/* COMMON */
+.clr-primary {
+    color: var(--clr-primary);
+}
+
+/* EVENT SIDEBAR */
+.sidebar {
+    width: 400px;
+    padding: 16px 32px;
+    margin-left: 0;
     display: flex;
     flex-direction: column;
+    transition: all 0.2s ease;
 }
 
-.flex-row {
+.sidebar.hidden {
+    margin-left: -400px;
+}
+
+/* EVENT DETAILS */
+.event-details {
     display: flex;
-    width: 100%;
+    flex-direction: column;
+    gap: 8px;
 }
 
-.flex-1 {
-    flex: 1 1 0;
+.event-details-title {
+    font-size: 32px;
+    font-weight: 500;
 }
 
-.flex-wrap {
-    flex-wrap: wrap;
+.event-details-date-time {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 16px 0;
 }
 
-.gap-10 {
-    gap: 10px;
-}
-
-.justify-center {
-    justify-content: center;
-}
-
-.align-center {
+.event-details-date-time-item {
+    display: flex;
     align-items: center;
+    gap: 8px;
 }
 
-.align-end {
+.event-details-participant-list {
+    margin: 8px 0 32px;
+    padding-bottom: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.event-details-participant {
+    padding: 0 8px;
+    display: flex;
+    gap: 4px;
     align-items: flex-end;
 }
 
-.self-start {
+.participant-role {
+    font-size: 12px;
+    font-style: italic;
+    margin-left: auto;
     align-self: flex-start;
 }
 
-.self-center {
-    align-self: center;
-}
-
-.self-end {
-    align-self: flex-end;
+.label {
+    font-size: 12px;
+    color: #555;
 }
 
 /* EVENT FORM */
+/* TODO: refatorar */
 .event-form {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    padding: 32px;
-    width: 400px;
-    margin-left: 0;
-    transition: all 0.2s ease;
+    width: 100%;
 }
 
 .event-form.hidden {
-    margin-left: -400px;
+    display: none;
 }
 
 .event-form.hidden * {
@@ -137,8 +161,10 @@ input:invalid {
     background-color: var(--clr-danger-lt);
 }
 
+/* TODO: remover; codigo duplicado */
 .form-label {
     font-size: 12px;
+    color: #555;
 }
 
 .form-input {
@@ -199,8 +225,10 @@ input[type="checkbox"] {
 
 .btn-with-icon {
     display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 4px;
+    line-height: 16px;
 }
 
 .btn-icon {
@@ -235,8 +263,11 @@ input[type="checkbox"] {
     background-color: var(--clr-primary);
     color: #fff;
 }
+
 .btn-primary:hover,
-.btn-primary:focus {
+.btn-primary:focus,
+.btn-danger:hover,
+.btn-danger:focus {
     box-shadow: 0 1px 0 #aaa;
 }
 
@@ -251,14 +282,14 @@ input[type="checkbox"] {
 }
 
 .btn-danger {
-    opacity: 0;
-    color: var(--clr-primary);
+    background-color: var(--clr-danger);
+    color: #fff;
 }
 
 .btn-danger:hover,
 .btn-danger:focus {
-    opacity: 1;
-    color: var(--clr-holiday);
+    background-color: var(--clr-danger);
+    color: #fff;
 }
 
 .btn:disabled {
@@ -407,8 +438,9 @@ input[type="checkbox"] {
 
 .event-item-title {
     flex: 1 1 0;
+    font-size: 16px;
+    font-weight: 500;
     cursor: pointer;
-    font-size: 16px !important;
     border: 2px solid transparent;
     border-radius: 4px;
     padding: 4px 8px;
@@ -942,5 +974,56 @@ input[type="checkbox"] {
     text-align: center;
     font-style: italic;
     color: #999;
+}
+
+/* FLEX UTILS */
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-row {
+    display: flex;
+    width: 100%;
+}
+
+.flex-1 {
+    flex: 1 1 0;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.gap-10 {
+    gap: 10px;
+}
+
+.justify-start {
+    justify-content: flex-start;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.align-end {
+    align-items: flex-end;
+}
+
+.self-start {
+    align-self: flex-start;
+}
+
+.self-center {
+    align-self: center;
+}
+
+.self-end {
+    align-self: flex-end;
 }
 

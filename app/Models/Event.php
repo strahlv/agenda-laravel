@@ -26,8 +26,17 @@ class Event extends Model
 
     protected $appends = [
         'start_time',
+        'formatted_start_time',
         'end_time',
-        'is_all_day'
+        'formatted_end_time',
+        'is_all_day',
+        'fancy_date',
+        'fancy_time',
+    ];
+
+    protected $with = [
+        'creator',
+        'participants',
     ];
 
     public function creator()
@@ -38,6 +47,29 @@ class Event extends Model
     public function participants()
     {
         return $this->belongsToMany(User::class);
+    }
+
+    public function getFormattedStartDateAttribute()
+    {
+        return $this->start_date->isSameYear(today())
+            ? $this->start_date->format('d/m')
+            : $this->start_date->format('d/m/Y');
+    }
+
+    public function getFormattedEndDateAttribute()
+    {
+        return $this->end_date->isSameYear(today())
+            ? $this->end_date->format('d/m')
+            : $this->end_date->format('d/m/Y');
+    }
+
+    public function getFancyDateAttribute()
+    {
+        if ($this->start_date->isSameDay($this->end_date)) {
+            return $this->formatted_start_date;
+        }
+
+        return $this->formatted_start_date . ' -- ' . $this->formatted_end_date;
     }
 
     public function getStartTimeAttribute()
@@ -58,6 +90,19 @@ class Event extends Model
     public function getFormattedEndTimeAttribute()
     {
         return $this->end_date->format('G:i');
+    }
+
+    public function getFancyTimeAttribute()
+    {
+        if ($this->is_all_day) {
+            return 'O dia todo';
+        }
+
+        if ($this->start_time === $this->end_time) {
+            return $this->formattedStartTime;
+        }
+
+        return $this->formattedStartTime . ' -- ' . $this->formattedEndTime;
     }
 
     public function getIsAllDayAttribute()

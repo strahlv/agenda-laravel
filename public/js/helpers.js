@@ -1,82 +1,74 @@
 function showEvent(event) {}
 
-function showCreateForm(
-    dateString,
-    timeString = null,
-    isAllDay = true,
-    url = "/"
-) {
-    console.log("showCreateForm"); //
-    var form = $(".event-form");
-    form.removeClass("hidden");
+function showCreateForm(dateString, timeString, isAllDay, storeUrl) {
+    $("#create-event").attr("action", storeUrl);
 
-    form.attr("action", url);
-    $('.event-form > input[name="_method"]').val("POST");
+    $("#create-event #title").val("");
+    $("#create-event #start-date").val(dateString);
+    $("#create-event #end-date").val(dateString);
+    $("#create-event #start-time").val(timeString);
+    $("#create-event #end-time").val(timeString);
 
-    $("#form-title").html("Criar evento");
-    $("#title").val("");
-    $("#start-date").val(dateString);
-    $("#end-date").val(dateString);
-    $("#start-time").val(timeString);
-    $("#end-time").val(timeString);
+    setTimeInputsDisplay("#create-event", isAllDay);
 
-    setTimeInputsDisplay(isAllDay);
-
-    $("#title").focus();
+    $("#create-event #title").focus();
 }
 
-function showEditForm(event, calendarEvent, url) {
-    console.log("showEditForm"); //
-    event.stopPropagation();
+function showEditForm(calendarEvent, updateUrl) {
+    $("#edit-event").attr("action", updateUrl);
 
-    var form = $(".event-form");
-    form.removeClass("hidden");
+    $("#edit-event #title").val(calendarEvent.title);
+    $("#edit-event #start-date").val(calendarEvent.start_date);
+    $("#edit-event #end-date").val(calendarEvent.end_date);
+    $("#edit-event #start-time").val(calendarEvent.start_time);
+    $("#edit-event #end-time").val(calendarEvent.end_time);
 
-    form.attr("action", url);
-    $('.event-form > input[name="_method"]').val("PUT");
-
-    $("#form-title").html("Editar evento");
-    $("#title").val(calendarEvent.title);
-    $("#start-date").val(calendarEvent.start_date);
-    $("#end-date").val(calendarEvent.end_date);
-    $("#start-time").val(calendarEvent.start_time);
-    $("#end-time").val(calendarEvent.end_time);
-
-    setTimeInputsDisplay(calendarEvent.is_all_day);
+    setTimeInputsDisplay("#edit-event", calendarEvent.is_all_day);
 }
 
 function hideForm() {
+    $("#event-sidebar").addClass("hidden");
     $(".event-form").addClass("hidden");
 }
 
-function updateEndTimeConstraints(event) {
-    var startTime = event.target.value;
-    var endTime = $("#end-time");
-    console.log(endTime);
+// TODO: também alterar o tempo inicial, data?
+function updateEndTimeConstraints(event, formId) {
+    let startTime = $(formId + " #start-time");
+    let endTime = event.target.value;
 
-    endTime.attr("min", startTime);
+    let startDate = new Date();
+    let split = startTime.val().split(":");
+    startDate.setHours(split[0], split[1], 0);
+    console.log(startDate);
 
-    if (!endTime.value && new Date(startTime) > new Date(endTime.val)) {
-        endTime.val(startTime);
+    let endDate = new Date();
+    split = endTime.split(":");
+    endDate.setHours(split[0], split[1], 0);
+    console.log(endDate);
+
+    console.log(startDate.getTime() > endDate.getTime());
+
+    if (startDate.getTime() > endDate.getTime()) {
+        event.target.value = startTime.val();
     }
 }
 
-// TODO: usar alpinejs
-function toggleTimeInputs() {
-    $("#end-date-control").toggleClass("hidden");
-    $("#time-control").toggleClass("hidden");
+// TODO: usar alpinejs?
+function toggleTimeInputs(formId) {
+    $(formId + " #end-date-control").toggleClass("hidden");
+    $(formId + " #time-control").toggleClass("hidden");
 }
 
 // TODO: usar alpinejs?
-function setTimeInputsDisplay(isHidden) {
-    $("#is-all-day").prop("checked", isHidden);
+function setTimeInputsDisplay(formId, isHidden) {
+    $(formId + " #is-all-day").prop("checked", isHidden);
 
     if (isHidden) {
-        $("#end-date-control").removeClass("hidden");
-        $("#time-control").addClass("hidden");
+        $(formId + " #end-date-control").removeClass("hidden");
+        $(formId + " #time-control").addClass("hidden");
     } else {
-        $("#end-date-control").addClass("hidden");
-        $("#time-control").removeClass("hidden");
+        $(formId + " #end-date-control").addClass("hidden");
+        $(formId + " #time-control").removeClass("hidden");
     }
 }
 
@@ -92,7 +84,7 @@ function stopPropagation(event) {
 }
 
 function addOrRemoveById(array, value) {
-    var sameId = (item) => item.id === value.id;
+    let sameId = (item) => item.id === value.id;
 
     if (!array.find(sameId)) {
         array.push(value);
@@ -115,7 +107,7 @@ async function fetchEmails(data) {
         return;
     }
 
-    var responseData = await $.get(`/users?email=${data.search}`);
+    let responseData = await $.get(`/users?email=${data.search}`);
     data.options = responseData.filter((item) => !data.items.includes(item));
 
     data.status = "idle";
@@ -126,7 +118,7 @@ $(document).ready(function () {
     $("#notifications").on("click", function () {
         $(this).removeClass("notification");
 
-        var notificationIds = $("ul[data-notification-ids]")
+        let notificationIds = $("ul[data-notification-ids]")
             .data("notificationIds")
             .map((notif) => notif.id);
 

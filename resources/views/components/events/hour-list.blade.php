@@ -10,16 +10,17 @@
             <li class="event-list-item" x-data>
                 <span
                     class="event-day">{{ $lastHour != $event->start_date->hour ? $event->start_date->hour . 'h' : null }}</span>
-                @if (!$event['isHoliday'])
+                @if (!$event->is_holiday)
                     @php
+                        $isParticipant = $event->creator?->id != auth()->user()?->id;
+                        $clickAction = $isParticipant ? 'show-event' : 'edit-event';
                         $updateRoute = route('events.update', ['event' => $event->id ?? -1]) . "#$event->id";
                     @endphp
 
-                    <span class="event-item-title"
-                        @@click='showEditForm(event, @json($event), "{{ $updateRoute }}"); $dispatch("edit_event", {{ $event->participants }})'>{{ $event->title }}
-                        <span
-                            class="event-item-time">({{ $event->is_all_day ? 'o dia todo' : $event->start_date->format('G:i') . ' - ' . $event->end_date->format('G:i') }})</span>
-                    </span>
+                    <h2 class="event-item-title"
+                        @@click.stop="$dispatch('{{ $clickAction }}', { data: {{ $event->toJson() }}, url: '{{ $updateRoute }}' })">
+                        {{ $event->title }} <span class="label">({{ $event->fancy_time }})</span>
+                    </h2>
 
                     <div>
                         @if ($event->id)

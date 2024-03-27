@@ -9,31 +9,26 @@
         @foreach ($events as $event)
             <li class="event-list-item" id="{{ $event->id }}" x-data>
                 <span class="event-day">{{ $lastDay != $event->start_date->day ? $event->start_date->day : '' }}</span>
-                @if (!$event['isHoliday'])
-                    @php
-                        $updateRoute = route('events.update', ['event' => $event->id ?? -1]) . "#$event->id";
-                        $eventTime = $event->is_all_day
-                            ? 'o dia todo'
-                            : ($event->start_time == $event->end_time
-                                ? $event->start_date->format('G:i')
-                                : $event->start_date->format('G:i') . ' - ' . $event->end_date->format('G:i'));
-                    @endphp
 
-                    <span class="event-item-title"
-                        @@click='showEditForm(event, @json($event), "{{ $updateRoute }}"); $dispatch("edit_event", {{ $event->participants }})'>{{ $event->title }}
-                        <span class="event-item-time">({{ $eventTime }})</span></span>
+                @php
+                    $isParticipant = $event->creator?->id != auth()->user()?->id;
+                    $clickAction = $isParticipant ? 'show-event' : 'edit-event';
+                    $updateRoute = route('events.update', ['event' => $event->id ?? -1]) . "#$event->id";
+                @endphp
 
-                    <div>
-                        @if ($event->id)
-                            <x-events.delete-form :eventId="$event->id">
-                                <button type="submit" class="btn btn-icon btn-danger"><i
-                                        class="fa-solid fa-trash-can"></i></button>
-                            </x-events.delete-form>
-                        @endif
-                    </div>
-                @else
-                    <span class="event-item-title">{{ $event->title }}</span>
-                @endif
+                <h2 class="event-item-title"
+                    @@click.stop="$dispatch('{{ $clickAction }}', { data: {{ $event->toJson() }}, url: '{{ $updateRoute }}' })">
+                    {{ $event->title }} <span class="label">({{ $event->fancy_time }})</span>
+                </h2>
+
+                <div>
+                    @if ($event->id)
+                        <x-events.delete-form :eventId="$event->id">
+                            <button type="submit" class="btn btn-icon btn-danger"><i
+                                    class="fa-solid fa-trash-can"></i></button>
+                        </x-events.delete-form>
+                    @endif
+                </div>
             </li>
 
             @php

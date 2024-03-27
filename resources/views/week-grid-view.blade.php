@@ -63,8 +63,8 @@
                                 $storeRoute =
                                     route('users.events.store', ['user' => auth()->user()->id ?? -1]) . "#h$i";
                             @endphp
-                            <div class="week-cell"
-                                onclick="showCreateForm('{{ $dt->format('Y-m-d') }}', '{{ $dt->format('H:i') }}', {{ $i == -1 ? 'true' : 'false' }}, '{{ $storeRoute }}')"
+                            <div class="week-cell" x-data
+                                @@click="$dispatch('create-event', { data: { date: '{{ $dt->format('Y-m-d') }}', time: '{{ $dt->format('H:i') }}', isAllDay: {{ $i == -1 ? 'true' : 'false' }} }, url: '{{ $storeRoute }}' })"
                                 @if ($i == -1) style={{ $allDayEventsCount ? 'height:' . $allDayEventsCellHeight . 'px;' : null }} @endif>
                                 {{-- TODO: extrair componente --}}
                                 <ul class="calendar-event-list" {{-- x-data="items = {{ $events }}" --}}>

@@ -90,10 +90,10 @@ class EventController extends Controller
 
             // Não enviar notificações para usuários que já participam do evento!
             $participantsToNotify = $invitedParticipants->filter(
-                fn ($invitedEmail)
+                fn ($invitedParticipant)
                 => !$event->participants->contains(
                     fn ($participant)
-                    => $participant->email === $invitedEmail
+                    => $participant->email === $invitedParticipant->email
                 )
             );
 
@@ -101,12 +101,12 @@ class EventController extends Controller
                 $participant->notify(new EventParticipantInvited(auth()->user(), $participant, $event));
             }
 
-            $detachIds = $invitedParticipants
+            $syncIds = $invitedParticipants
                 ->filter(
                     fn ($invitedParticipant)
                     => $event->participants->contains(
                         fn ($participant)
-                        => $participant === $invitedParticipant
+                        => $participant->id === $invitedParticipant->id
                     )
                 )
                 ->map(
@@ -114,7 +114,7 @@ class EventController extends Controller
                     => $participant->id
                 );
 
-            $event->participants()->sync($detachIds);
+            $event->participants()->sync($syncIds);
         } else {
             $event->participants()->detach();
         }

@@ -5,7 +5,6 @@
     'isHoliday' => false,
     'yOffset' => 0,
     'width' => '100%',
-    'updateRoute',
 ])
 
 @php
@@ -19,9 +18,10 @@
     'holiday' => $event->is_holiday,
     'starts-before' => $startsBefore,
     'ends-after' => $endsAfter,
+    'updateRoute',
 ]) }}
     id="{{ $event->id }}" style="top: {{ $yOffset }}px; width: {{ $width }}" x-data
-    @@click='showEditForm(event, @json($event), "{{ $updateRoute }}"); $dispatch("edit_event", {{ $event->participants }})'>
+    @@click.stop="$dispatch('{{ $isParticipant ? 'show-event' : 'edit-event' }}', { data: {{ $event->toJson() }}, url: '{{ $updateRoute }}' })">
     {{ $slot }}
 
     @can('delete', $event)

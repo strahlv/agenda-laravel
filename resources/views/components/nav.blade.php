@@ -103,12 +103,13 @@
 
             <p class="greeting">Olá, {{ auth()->user()->name }}!</p>
 
-            <a href="/settings" class="btn btn-with-icon"><i class="fa-solid fa-gear"></i> Configurações</a>
+            <a href="/settings" class="btn btn-with-icon justify-start"><i class="fa-solid fa-gear"></i> Configurações</a>
 
             <form method="POST" action="/logout" class="flex-col">
                 @csrf
 
-                <button type="submit" class="btn btn-with-icon"><i class="fa-solid fa-sign-out"></i> Sair</button>
+                <button type="submit" class="btn btn-with-icon justify-start"><i class="fa-solid fa-sign-out"></i>
+                    Sair</button>
             </form>
         </x-dropdown>
     @endauth

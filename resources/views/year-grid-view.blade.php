@@ -2,7 +2,9 @@
     @for ($m = 1; $m < 13; $m++)
         @php
             $monthDate = CarbonImmutable::create($date->year, $m);
-            $startOfMonth = auth()->user()->settings->year_starts_day_one ? $monthDate->startOfMonth() : $monthDate->startOfMonth()->previous(Carbon::SUNDAY);
+            $startOfMonth = auth()->user()->settings->year_starts_day_one
+                ? $monthDate->startOfMonth()
+                : $monthDate->startOfMonth()->previous(Carbon::SUNDAY);
             $period = CarbonPeriod::create($startOfMonth, $monthDate->addWeeks(6));
             $periodDates = $period->toArray();
         @endphp
@@ -30,7 +32,10 @@
                             $hasEvent = false;
 
                             foreach ($events as $event) {
-                                if ((!$isOtherMonth && $event->start_date->isSameDay($dt)) || $dt->between($event->start_date, $event->end_date)) {
+                                if (
+                                    (!$isOtherMonth && $event->start_date->isSameDay($dt)) ||
+                                    $dt->between($event->start_date, $event->end_date)
+                                ) {
                                     $hasEvent = true;
                                     break;
                                 }
@@ -49,8 +54,8 @@
                                 'other-month' => $isOtherMonth,
                                 'holiday' => $dt->dayOfWeek == 0,
                                 'today' => $dt->isSameDay(today()) && !$isOtherMonth,
-                            ])
-                                onclick="showCreateForm('{{ $dt->format('Y-m-d') }}','{{ $dt->format('H:i') }}', true, '{{ $storeRoute }}')">
+                            ]) x-data
+                                @@click="$dispatch('create-event', { data: { date: '{{ $dt->format('Y-m-d') }}', time: '{{ $dt->format('H:i') }}', isAllDay: true }, url: '{{ $storeRoute }}' })">
                                 {{ $dt->day }}
                             </div>
                         </div>

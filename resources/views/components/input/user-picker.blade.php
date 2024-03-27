@@ -11,7 +11,8 @@
     status: 'pending',
     currEmail: '{{ auth()->user()?->email }}'
 }"
-    @@edit_event.window="items = $event.detail">
+    @@create-event.window="items = []"
+    @@edit-event.window="items = $event.detail.data.participants">
     <label for="{{ $id }}" class="form-label">{{ $label }}</label>
 
     <input type="hidden" name="{{ $name }}" :value="items.map(item => item.email)">

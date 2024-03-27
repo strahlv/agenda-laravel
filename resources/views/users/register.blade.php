@@ -1,3 +1,4 @@
+{{-- !TODO: consertar css --}}
 <x-layout title="Cadastrar">
     <main>
         <form method="POST" action="/register" class="event-form" onsubmit="onSubmitForm(event)">
