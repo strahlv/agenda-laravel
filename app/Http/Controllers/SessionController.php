@@ -45,6 +45,6 @@ class SessionController extends Controller
         session()->invalidate();
         session()->regenerateToken();
 
-        return redirect('/')->with('success', 'Usuário deslogado com sucesso.');
+        return redirect('/login')->with('success', 'Usuário deslogado com sucesso.');
     }
 }

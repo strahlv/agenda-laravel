@@ -101,16 +101,17 @@
                 <button class="btn btn-icon"><i class="fa-solid fa-user"></i></button>
             </x-slot>
 
+            <img src="/imgs/avatar.avif" alt="Foto de {{ auth()->user()->name }}" width="96" height="96"
+                class="self-center" style="border-radius: 50%">
+
             <p class="greeting">Olá, {{ auth()->user()->name }}!</p>
 
             <a href="/settings" class="btn btn-with-icon justify-start"><i class="fa-solid fa-gear"></i> Configurações</a>
 
-            <form method="POST" action="/logout" class="flex-col">
-                @csrf
-
+            <x-form method="POST" action="/logout" class="flex-col">
                 <button type="submit" class="btn btn-with-icon justify-start"><i class="fa-solid fa-sign-out"></i>
                     Sair</button>
-            </form>
+            </x-form>
         </x-dropdown>
     @endauth
 </nav>
