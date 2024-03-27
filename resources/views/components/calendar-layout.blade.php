@@ -12,7 +12,7 @@
 <x-layout :calendar-view="$calendarView" :date="$date" :title="$title">
     <x-nav :calendar-view="$calendarView" :date="$date" />
     <main class="calendar-container">
-        <div id="event-sidebar" class="sidebar" :class="{ 'hidden': !show }" x-data="{
+        <div id="event-sidebar" class="sidebar hidden" :class="{ 'hidden': !show }" x-data="{
             show: false,
             showContentType: null,
             data: {},
