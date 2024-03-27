@@ -31,7 +31,7 @@ class RegisterController extends Controller
 
         // session()->flash('success', 'Usuário cadastrado com sucesso.');
 
-        Mail::to($user)->send(new WelcomeMail($user));
+        // Mail::to($user)->send(new WelcomeMail($user));
 
         return redirect('/')->with('success', 'Usuário cadastrado com sucesso.');
     }

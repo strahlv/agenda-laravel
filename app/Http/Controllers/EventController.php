@@ -122,7 +122,7 @@ class EventController extends Controller
         return back();
     }
 
-    public function participate(Event $event, Request $request)
+    public function join(Event $event, Request $request)
     {
         $id = $request->input('participant_id');
 
@@ -135,6 +135,12 @@ class EventController extends Controller
         $participant = User::findOrFail($id);
         $event->creator->notify(new EventParticipantInvitationAccepted($participant, $event));
 
+        return back();
+    }
+
+    public function leave(Event $event, Request $request)
+    {
+        $event->participants()->detach(auth()->id());
         return back();
     }
 

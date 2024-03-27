@@ -6,10 +6,7 @@
             <h1 class="navbar-title">Configurações</h1>
         </nav>
         <section>
-            <form method="POST" action="/user" class="form" onsubmit="onSubmitForm(event)">
-                @csrf
-                @method('PATCH')
-
+            <x-form method="PATCH" action="/user" class="form">
                 @php
                     $user = auth()->user();
                 @endphp
@@ -22,13 +19,10 @@
                 <x-input.password name="password_confirmation" label="Confirmar senha" />
 
                 <button type="submit" class="btn btn-primary btn-save">Salvar</button>
-            </form>
+            </x-form>
         </section>
         <section>
-            <form method="POST" action="/settings" class="form" onsubmit="onSubmitForm(event)">
-                @csrf
-                @method('PATCH')
-
+            <x-form method="PATCH" action="/settings" class="form">
                 @php
                     $settings = auth()->user()->settings;
                 @endphp
@@ -41,7 +35,7 @@
                 <x-input.checkbox name="show_holidays" label="Mostrar feriados" :checked="$settings->show_holidays" />
 
                 <button type="submit" class="btn btn-primary btn-save">Salvar</button>
-            </form>
+            </x-form>
         </section>
     </main>
 </x-layout>

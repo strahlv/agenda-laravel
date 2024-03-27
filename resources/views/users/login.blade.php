@@ -1,8 +1,6 @@
 <x-layout title="Entrar">
     <main>
-        <form method="POST" action="/login" class="form" onsubmit="onSubmitForm(event)">
-            @csrf
-
+        <x-form method="POST" action="/login" class="form">
             <h1>Entrar</h1>
 
             <x-input type="email" name="email" label="E-mail" />
@@ -10,6 +8,6 @@
 
             <button type="submit" id="submit-button" class="btn btn-primary">Entrar</button>
             <p>Não possui uma conta? <a href="/register">Cadastrar</a></p>
-        </form>
+        </x-form>
     </main>
 </x-layout>

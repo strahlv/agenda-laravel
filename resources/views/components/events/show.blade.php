@@ -48,12 +48,9 @@
     </template>
 
     <template x-if="data?.creator?.name">
-        <form method="POST" action="/">
-            @csrf
-            @method('PATCH')
-
+        <x-form method="PATCH" ::action="'/events/' + data.id + '/leave'" class="self-end">
             <button type="submit" class="btn btn-primary btn-with-icon"><i class="fa-solid fa-xmark"></i>
                 Cancelar presença</button>
-        </form>
+        </x-form>
     </template>
 </section>
