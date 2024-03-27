@@ -1,7 +1,6 @@
-{{-- !TODO: consertar css --}}
 <x-layout title="Entrar">
     <main>
-        <form method="POST" action="/login" class="event-form" onsubmit="onSubmitForm(event)">
+        <form method="POST" action="/login" class="form" onsubmit="onSubmitForm(event)">
             @csrf
 
             <h1>Entrar</h1>

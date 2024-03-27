@@ -1,4 +1,3 @@
-{{-- !TODO: consertar css --}}
 <x-layout title="Configurações">
     <main>
         <x-flash />
@@ -7,7 +6,7 @@
             <h1 class="navbar-title">Configurações</h1>
         </nav>
         <section>
-            <form method="POST" action="/user" class="event-form" onsubmit="onSubmitForm(event)">
+            <form method="POST" action="/user" class="form" onsubmit="onSubmitForm(event)">
                 @csrf
                 @method('PATCH')
 
@@ -26,7 +25,7 @@
             </form>
         </section>
         <section>
-            <form method="POST" action="/settings" class="event-form" onsubmit="onSubmitForm(event)">
+            <form method="POST" action="/settings" class="form" onsubmit="onSubmitForm(event)">
                 @csrf
                 @method('PATCH')
 

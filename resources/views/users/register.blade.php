@@ -1,7 +1,6 @@
-{{-- !TODO: consertar css --}}
 <x-layout title="Cadastrar">
     <main>
-        <form method="POST" action="/register" class="event-form" onsubmit="onSubmitForm(event)">
+        <form method="POST" action="/register" class="form" onsubmit="onSubmitForm(event)">
             @csrf
 
             <h1>Cadastrar</h1>

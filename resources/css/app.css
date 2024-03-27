@@ -58,6 +58,15 @@ input:focus {
     color: var(--clr-primary);
 }
 
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 32px;
+    width: 100%;
+    max-width: 400px;
+}
+
 /* EVENT SIDEBAR */
 .sidebar {
     width: 400px;
